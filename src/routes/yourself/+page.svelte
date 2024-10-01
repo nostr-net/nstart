@@ -7,14 +7,14 @@
 		<div class="w-full sm:mr-10 sm:max-w-[350px]">
 			<div class="mb-8 border-l-[0.9rem] border-strongpink pl-4 sm:-ml-8">
 				<h1 class="font-bold">
-					<div class="text-[3em] leading-[1em] text-neutral-500 sm:text-[3em]">PRESENT</div>
-					<div class="break-words text-[3.5em] leading-[1em] sm:h-auto sm:text-[3.5em]" id="tw">
+					<div class="text-[3rem] leading-[1em] text-neutral-500 sm:text-[3rem]">PRESENT</div>
+					<div class="break-words text-[3.5rem] leading-[1em] sm:h-auto sm:text-[3.5rem]" id="tw">
 						YOURSELF
 					</div>
 				</h1>
 			</div>
 
-			<div class="text-[1.1rem] leading-5 text-neutral-700 sm:w-[90%]">
+			<div class="leading-5 text-neutral-700 sm:w-[90%]">
 				<p class="mb-6">On Nostr you decide to be whoever you want.</p>
 				<p class="mb-6">
 					A Nostr profile usually include a name, a picture and some additional information. Every
@@ -36,40 +36,38 @@
 	</div>
 
 	<div slot="interactive">
-		<div class="flex flex-col sm:ml-16 sm:max-w-[350px]">
-			<div class="mb-6 flex items-end justify-end">
-				<div class="text-xl text-neutral-400">Your image</div>
-				<div class="-mr-8 mb-2 ml-2 h-1 w-20 border-t-2 border-neutral-300"></div>
-				<div class="h-24 w-24 rounded-full border-2 border-neutral-300 bg-neutral-100">
-					<img src="/icons/pfp.svg" alt="pfp " />
-				</div>
+		<div class="mb-6 flex items-end justify-end">
+			<div class="text-xl text-neutral-400">Your image</div>
+			<div class="-mr-8 mb-2 ml-2 h-1 w-20 border-t-2 border-neutral-300"></div>
+			<div class="h-24 w-24 rounded-full border-2 border-neutral-300 bg-neutral-100">
+				<img src="/icons/pfp.svg" alt="pfp " />
 			</div>
-			<div>
-				<!-- svelte-ignore a11y-autofocus -->
-				<input
-					type="text"
-					placeholder="Your name"
-					class="mb-6 w-full rounded border-2 border-neutral-300 px-4 py-2 text-xl focus:border-neutral-700 focus:outline-none"
-					autofocus
-				/>
-				<textarea
-					placeholder="A brief presentation"
-					class="mb-6 w-full rounded border-2 border-neutral-300 px-4 py-2 text-xl focus:border-neutral-700 focus:outline-none"
-				></textarea>
-				<input
-					type="text"
-					placeholder="Your website"
-					class="w-full rounded border-2 border-neutral-300 px-4 py-2 text-xl focus:border-neutral-700 focus:outline-none"
-				/>
-			</div>
-			<div class="mt-20 flex justify-end">
-				<a
-					class="inline-flex items-center rounded bg-strongpink px-8 py-2 text-[1.3rem] text-white"
-					href="/yourself"
-				>
-					Continue <img src="/icons/arrow-right.svg" alt="continue" class="ml-4 mr-2 h-5 w-5" />
-				</a>
-			</div>
+		</div>
+		<div>
+			<!-- svelte-ignore a11y-autofocus -->
+			<input
+				type="text"
+				placeholder="Your name"
+				class="mb-6 w-full rounded border-2 border-neutral-300 px-4 py-2 text-xl focus:border-neutral-700 focus:outline-none"
+				autofocus
+			/>
+			<textarea
+				placeholder="A brief presentation"
+				class="mb-6 w-full rounded border-2 border-neutral-300 px-4 py-2 text-xl focus:border-neutral-700 focus:outline-none"
+			></textarea>
+			<input
+				type="text"
+				placeholder="Your website"
+				class="w-full rounded border-2 border-neutral-300 px-4 py-2 text-xl focus:border-neutral-700 focus:outline-none"
+			/>
+		</div>
+		<div class="mt-20 flex justify-end">
+			<a
+				class="inline-flex items-center rounded bg-strongpink px-8 py-4 text-[1.3rem] text-white"
+				href="/download"
+			>
+				Continue <img src="/icons/arrow-right.svg" alt="continue" class="ml-4 mr-2 h-5 w-5" />
+			</a>
 		</div>
 	</div>
 </TwoColumnLayout>

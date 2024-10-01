@@ -7,15 +7,15 @@
 		<!-- Welcome title -->
 		<div class="mb-8 border-l-[0.9rem] border-strongpink pl-4 sm:-ml-8">
 			<h1 class="font-bold">
-				<div class="text-[3em] leading-[1em] text-neutral-500 sm:text-[5em]">WELCOME</div>
-				<div class="break-words text-[3.5em] leading-[1em] sm:h-auto sm:text-[6em]" id="tw">
+				<div class="text-[3rem] leading-[1em] text-neutral-500 sm:text-[6rem]">WELCOME</div>
+				<div class="break-words text-[3.5rem] leading-[1em] sm:h-auto sm:text-[7rem]" id="tw">
 					<span class="text-neutral-400">TO</span> NOSTR
 				</div>
 			</h1>
 		</div>
 
 		<!-- Intro text -->
-		<div class="w-[80%] text-[1.3rem] leading-7 text-neutral-700">
+		<div class="text-[1.3rem] leading-7 text-neutral-700 sm:w-[80%]">
 			<p class="mb-6">
 				To join Nostr you need a “profile”, but it is not the usual one that a company generates and
 				manages for you. You manage the protocol.
@@ -42,7 +42,7 @@
 		</div>
 
 		<!-- Footer -->
-		<div class="text-lg leading-6 text-neutral-500">
+		<div class="leading-6 text-neutral-500">
 			Would you like to know more about Nostr, first?<br class="hidden sm:inline-block" />
 			<a href="https://njump.me" class="underline">Read a quick introduction</a>
 		</div>
