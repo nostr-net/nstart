@@ -1,5 +1,17 @@
 <script>
 	import TwoColumnLayout from '$lib/TwoColumnLayout.svelte';
+	import { goto } from '$app/navigation';
+
+	let name = '';
+
+	function navigateToDownload() {
+		if (!name) {
+			alert('Please enter a name, bio and website are optional');
+			return;
+		}
+
+		goto('/download'); // Navigate to the options page
+	}
 </script>
 
 <TwoColumnLayout>
@@ -48,8 +60,9 @@
 			<input
 				type="text"
 				placeholder="Your name"
-				class="mb-6 w-full rounded border-2 border-neutral-300 px-4 py-2 text-xl focus:border-neutral-700 focus:outline-none"
+				bind:value={name}
 				autofocus
+				class="mb-6 w-full rounded border-2 border-neutral-300 px-4 py-2 text-xl focus:border-neutral-700 focus:outline-none"
 			/>
 			<textarea
 				placeholder="A brief presentation"
@@ -62,12 +75,12 @@
 			/>
 		</div>
 		<div class="mt-20 flex justify-end">
-			<a
-				class="inline-flex items-center rounded bg-strongpink px-8 py-4 text-[1.3rem] text-white"
-				href="/download"
+			<button
+				on:click={navigateToDownload}
+				class="inline-flex items-center rounded bg-strongpink px-8 py-3 text-[1.3rem] text-white"
 			>
 				Continue <img src="/icons/arrow-right.svg" alt="continue" class="ml-4 mr-2 h-5 w-5" />
-			</a>
+			</button>
 		</div>
 	</div>
 </TwoColumnLayout>
