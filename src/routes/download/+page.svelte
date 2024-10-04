@@ -1,0 +1,188 @@
+<script>
+	import TwoColumnLayout from '$lib/TwoColumnLayout.svelte';
+	import { goto } from '$app/navigation';
+
+	let ncryptOption = false;
+	let backupInitialized = false;
+	let backupDone = false;
+	let password = '';
+
+	function togglePasswordField() {
+		ncryptOption = !ncryptOption;
+	}
+
+	function downloadBackup() {
+		if (ncryptOption && !password) {
+			alert('Please enter a password before downloading the encrypted backup');
+			return;
+		}
+
+		const blob = new Blob(['nsecxxxxxxxxxxxxxxxxxxxxxxxxxx'], { type: 'text/plain' });
+		const link = document.createElement('a');
+		link.href = URL.createObjectURL(blob);
+		link.download = 'nostr-private-key.txt';
+		link.style.display = 'none';
+		document.body.appendChild(link);
+		link.click();
+		document.body.removeChild(link);
+		backupInitialized = true;
+	}
+
+	function navigateToOptions() {
+		goto('/options'); // Navigate to the options page
+	}
+</script>
+
+<TwoColumnLayout>
+	<div slot="intro">
+		<div class="w-full sm:mr-10 sm:max-w-[350px]">
+			<div class="mb-8 border-l-[0.9rem] border-strongpink pl-4 sm:-ml-8">
+				<h1 class="font-bold">
+					<div class="text-[3rem] leading-[1em] text-neutral-500 sm:text-[3rem]">YOUR KEYS</div>
+					<div class="break-words text-[3.5rem] leading-[1em] sm:h-auto sm:text-[3.5rem]" id="tw">
+						ARE READY
+					</div>
+				</h1>
+			</div>
+
+			<div class="leading-5 text-neutral-700 sm:w-[90%]">
+				<p class="mb-6">
+					Well done <strong>name</strong>, your Nostr profile is ready, yes it was so easy!
+				</p>
+				<p class="mb-6">
+					On Nostr your public profile is identified by a unique string that start with “npub”, this
+					is the public part you can share with anyone.
+				</p>
+				<p class="mb-6">
+					Then there is the private key, that starts with “nsec”, with wich you can control you
+					profile and act, for example posting notes. This must clearly be kept absolutely secret.
+				</p>
+				<p class="mb-6">
+					Now please download your nsec as a txt file and save it in a safe place, for example your
+					password manager.
+				</p>
+			</div>
+		</div>
+	</div>
+
+	<div slot="interactive">
+		<div class="mb-10 text-xl">
+			<div class=" text-neutral-400">Your npub is</div>
+			<div class="break-words">npub1s8ezangeqamw7ukghlcaqzep734el58kv88dvwm5pjntc04cy5xq86j0qp</div>
+		</div>
+
+		<div class="mb-6 flex flex-col justify-end">
+			{#if !backupInitialized}
+				{#if !ncryptOption}
+					<button
+						on:click={downloadBackup}
+						class="inline-flex w-full items-center justify-center rounded bg-strongpink px-8 py-3 text-[1.3rem] text-white"
+					>
+						Save my nsec <img
+							src="/icons/arrow-right.svg"
+							alt="continue"
+							class="ml-4 mr-2 h-5 w-5 rotate-90"
+						/>
+					</button>
+
+					<button
+						on:click={togglePasswordField}
+						class="mt-2 text-center text-sm text-neutral-400 hover:underline"
+						>I want do download the encrypted version</button
+					>
+				{/if}
+
+				{#if ncryptOption}
+					<!-- svelte-ignore a11y-autofocus -->
+					<input
+						type="text"
+						bind:value={password}
+						placeholder="Pick a password"
+						required
+						class="mb-6 w-full rounded border-2 border-neutral-300 px-4 py-2 text-xl focus:border-neutral-700 focus:outline-none"
+						autofocus
+					/>
+					<button
+						class="inline-flex w-full items-center justify-center rounded bg-strongpink px-8 py-3 text-[1.3rem] text-white"
+						on:click={downloadBackup}
+					>
+						Save my ncryptsec <img
+							src="/icons/arrow-right.svg"
+							alt="continue"
+							class="ml-4 mr-2 h-5 w-5 rotate-90"
+						/>
+					</button>
+
+					<button
+						on:click={togglePasswordField}
+						class="mt-2 text-center text-sm text-neutral-400 hover:underline"
+						>Never mind, I want do download the plain nsec</button
+					>
+				{/if}
+				<div class="mt-10 text-neutral-600">
+					From your nsec you can generate your npub, so it is the only information you really need
+					to keep safe. But feel free to also copy your npub and keep it at hand.
+				</div>
+			{:else}
+				<div class="flex justify-center">
+					<img src="/icons/done.svg" alt="Done" class="w-32" />
+				</div>
+				<div class="mt-12 text-lg">
+					<input
+						type="checkbox"
+						id="backup-checkbox"
+						class="hidden"
+						on:click={() => (backupDone = true)}
+						bind:checked={backupDone}
+					/>
+					<label for="backup-checkbox" class="flex cursor-pointer items-start">
+						<span
+							class={`mr-2 inline-block h-6 w-6 flex-none rounded border-2 ${backupDone ? 'border-strongpink bg-strongpink' : 'border-gray-300'}`}
+						>
+							{#if backupDone}
+								<svg
+									class="h-[19px] w-[18px] text-white"
+									fill="none"
+									viewBox="0 0 24 24"
+									stroke="currentColor"
+								>
+									<path
+										stroke-linecap="round"
+										stroke-linejoin="round"
+										stroke-width="4"
+										d="M5 13l4 4L19 7"
+									/>
+								</svg>
+							{/if}
+						</span>
+						<div>
+							{#if ncryptOption}
+								I confirm I saved the file and the password <strong>{password}</strong> in a safe place
+							{:else}
+								I confirm I saved the file with my unencrypted nsec in a safe place
+							{/if}
+						</div>
+					</label>
+				</div>
+				<button
+					on:click={() => {
+						backupInitialized = false;
+						backupDone = false;
+					}}
+					class="mt-6 text-left text-sm text-neutral-400 hover:underline"
+					>Do you need to download it again?</button
+				>
+			{/if}
+		</div>
+
+		<div class="mt-16 flex justify-end">
+			<button
+				on:click={navigateToOptions}
+				disabled={!backupDone}
+				class={`inline-flex items-center rounded px-8 py-3 text-[1.3rem] ${backupDone ? 'bg-strongpink text-white' : 'cursor-not-allowed bg-neutral-400 text-neutral-100'}`}
+			>
+				Continue <img src="/icons/arrow-right.svg" alt="continue" class="ml-4 mr-2 h-5 w-5" />
+			</button>
+		</div>
+	</div>
+</TwoColumnLayout>
