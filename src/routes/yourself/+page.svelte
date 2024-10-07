@@ -1,11 +1,10 @@
 <script>
 	import TwoColumnLayout from '$lib/TwoColumnLayout.svelte';
 	import { goto } from '$app/navigation';
-
-	let name = '';
+	import { name } from '$lib/store';
 
 	function navigateToDownload() {
-		if (!name) {
+		if (!$name) {
 			alert('Please enter a name, bio and website are optional');
 			return;
 		}
@@ -60,7 +59,7 @@
 			<input
 				type="text"
 				placeholder="Your name"
-				bind:value={name}
+				bind:value={$name}
 				autofocus
 				class="mb-6 w-full rounded border-2 border-neutral-300 px-4 py-2 text-xl focus:border-neutral-700 focus:outline-none"
 			/>

@@ -1,11 +1,18 @@
 <script>
 	import TwoColumnLayout from '$lib/TwoColumnLayout.svelte';
 	import { goto } from '$app/navigation';
+	import { name, npub } from '$lib/store';
 
 	let ncryptOption = false;
 	let backupInitialized = false;
 	let backupDone = false;
+
 	let password = '';
+
+	function createKey() {
+		// TODO
+		$npub = 'npub1xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx';
+	}
 
 	function togglePasswordField() {
 		ncryptOption = !ncryptOption;
@@ -31,6 +38,8 @@
 	function navigateToOptions() {
 		goto('/options'); // Navigate to the options page
 	}
+
+	createKey();
 </script>
 
 <TwoColumnLayout>
@@ -47,7 +56,7 @@
 
 			<div class="leading-5 text-neutral-700 sm:w-[90%]">
 				<p class="mb-6">
-					Well done <strong>name</strong>, your Nostr profile is ready, yes it was so easy!
+					Well done <strong>{$name}</strong>, your Nostr profile is ready, yes it was so easy!
 				</p>
 				<p class="mb-6">
 					On Nostr your public profile is identified by a unique string that start with “npub”, this
@@ -68,7 +77,7 @@
 	<div slot="interactive">
 		<div class="mb-10 text-xl">
 			<div class=" text-neutral-400">Your npub is</div>
-			<div class="break-words">npub1s8ezangeqamw7ukghlcaqzep734el58kv88dvwm5pjntc04cy5xq86j0qp</div>
+			<div class="break-words">{$npub}</div>
 		</div>
 
 		<div class="mb-6 flex flex-col justify-end">
