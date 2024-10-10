@@ -2,6 +2,7 @@
 	import TwoColumnLayout from '$lib/TwoColumnLayout.svelte';
 	import { goto } from '$app/navigation';
 	import { name, npub } from '$lib/store';
+	import ClipToCopy from '$lib/ClipToCopy.svelte';
 
 	let ncryptOption = false;
 	let backupInitialized = false;
@@ -77,7 +78,9 @@
 	<div slot="interactive">
 		<div class="mb-10 text-xl">
 			<div class=" text-neutral-400">Your npub is</div>
-			<div class="break-words">{$npub}</div>
+			<div class="break-words">
+				<ClipToCopy textToCopy={$npub} confirmMessage="Copied!" />
+			</div>
 		</div>
 
 		<div class="mb-6 flex flex-col justify-end">
