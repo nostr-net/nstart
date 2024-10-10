@@ -139,11 +139,11 @@
 				<div class="flex justify-center">
 					<img src="/icons/done.svg" alt="Done" class="w-32" />
 				</div>
-				<div class="mt-12 text-lg">
+				<div class="custom-focus mt-12 text-lg focus-within:ring-1">
 					<input
 						type="checkbox"
 						id="backup-checkbox"
-						class="hidden"
+						class="absolute h-0 w-0 opacity-0"
 						on:click={() => (backupDone = true)}
 						bind:checked={backupDone}
 					/>
