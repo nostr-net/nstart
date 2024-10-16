@@ -1,7 +1,7 @@
 <script>
 	import TwoColumnLayout from '$lib/TwoColumnLayout.svelte';
 	import { goto } from '$app/navigation';
-	import { name, npub } from '$lib/store';
+	import { name, npub, backupPrivKey } from '$lib/store';
 	import ClipToCopy from '$lib/ClipToCopy.svelte';
 
 	let ncryptOption = false;
@@ -12,7 +12,7 @@
 
 	function createKey() {
 		// TODO
-		$npub = 'npub1xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx';
+		$npub = 'npub1test31geqamw7ukghlcaqzep734el58kv88dvwm5pjntc04cy5xq86test';
 	}
 
 	function togglePasswordField() {
@@ -20,12 +20,18 @@
 	}
 
 	function downloadBackup() {
+		if (ncryptOption) {
+			$backupPrivKey = 'ncryptsec1xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx12345';
+		} else {
+			$backupPrivKey = 'nsec1xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx12345';
+		}
+
 		if (ncryptOption && !password) {
 			alert('Please enter a password before downloading the encrypted backup');
 			return;
 		}
 
-		const blob = new Blob(['nsecxxxxxxxxxxxxxxxxxxxxxxxxxx'], { type: 'text/plain' });
+		const blob = new Blob([$npub + '\n' + $backupPrivKey], { type: 'text/plain' });
 		const link = document.createElement('a');
 		link.href = URL.createObjectURL(blob);
 		link.download = 'nostr-private-key.txt';
@@ -38,6 +44,20 @@
 
 	function navigateToOptions() {
 		goto('/options'); // Navigate to the options page
+	}
+
+	function previewDownloadKey(str) {
+		// Check if the string is long enough
+		if (str.length <= 18) {
+			return str; // Return the original string if it's too short
+		}
+
+		// Get the first 10 characters and the last 8 characters
+		const firstPart = str.slice(0, 10);
+		const lastPart = str.slice(-8);
+
+		// Combine them with ellipsis
+		return `${firstPart}...${lastPart}`;
 	}
 
 	createKey();
@@ -76,14 +96,16 @@
 	</div>
 
 	<div slot="interactive">
-		<div class="mb-10 text-xl">
-			<div class=" text-neutral-400">Your npub is</div>
-			<div class="break-words">
-				<ClipToCopy textToCopy={$npub} confirmMessage="Copied!" />
+		{#if !backupInitialized}
+			<div class="text-xl">
+				<div class=" text-neutral-400">Your npub is</div>
+				<div class="break-words">
+					<ClipToCopy textToCopy={$npub} confirmMessage="Copied!" />
+				</div>
 			</div>
-		</div>
+		{/if}
 
-		<div class="mb-6 flex flex-col justify-end">
+		<div class="mt-10 flex flex-col justify-end">
 			{#if !backupInitialized}
 				{#if !ncryptOption}
 					<button
@@ -131,15 +153,28 @@
 						>Never mind, I want do download the plain nsec</button
 					>
 				{/if}
-				<div class="mt-10 text-neutral-600">
+				<div class="mt-8 text-neutral-600">
 					From your nsec you can generate your npub, so it is the only information you really need
 					to keep safe. But feel free to also copy your npub and keep it at hand.
 				</div>
 			{:else}
 				<div class="flex justify-center">
-					<img src="/icons/done.svg" alt="Done" class="w-32" />
+					<img src="/icons/done.svg" alt="Done" class="w-24" />
 				</div>
-				<div class="custom-focus mt-12 text-lg focus-within:ring-1">
+				<div class="mt-10 text-neutral-600">
+					Now please open the file and check that the long string matches these starting and
+					finishing characters:
+					<div class="my-4 rounded bg-yellow-100 px-6 py-4">
+						{previewDownloadKey($backupPrivKey)}
+					</div>
+					{#if ncryptOption}
+						Finally, copy the file in another safe place as additional backup and separately save
+						the chosen password (<strong>{password}</strong>).
+					{:else}
+						Finally, copy the file in another safe place as additional backup.
+					{/if}
+				</div>
+				<div class="custom-focus mt-8 focus-within:ring-1">
 					<input
 						type="checkbox"
 						id="backup-checkbox"
@@ -147,6 +182,7 @@
 						on:click={() => (backupDone = true)}
 						bind:checked={backupDone}
 					/>
+
 					<label for="backup-checkbox" class="flex cursor-pointer items-start">
 						<span
 							class={`mr-2 inline-block h-6 w-6 flex-none rounded border-2 ${backupDone ? 'border-strongpink bg-strongpink' : 'border-gray-300'}`}
@@ -169,9 +205,9 @@
 						</span>
 						<div>
 							{#if ncryptOption}
-								I confirm I saved the file and the password <strong>{password}</strong> in a safe place
+								I saved the file and the password in a couple of safe places
 							{:else}
-								I confirm I saved the file with my unencrypted nsec in a safe place
+								I saved the file in a couple of safe place
 							{/if}
 						</div>
 					</label>
