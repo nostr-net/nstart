@@ -3,6 +3,7 @@
 	import { goto } from '$app/navigation';
 	import { name, npub, backupPrivKey } from '$lib/store';
 	import ClipToCopy from '$lib/ClipToCopy.svelte';
+	import CheckboxWithLabel from '$lib/CheckboxWithLabel.svelte';
 
 	let ncryptOption = false;
 	let backupInitialized = false;
@@ -175,42 +176,13 @@
 					{/if}
 				</div>
 				<div class="custom-focus mt-8 focus-within:ring-1">
-					<input
-						type="checkbox"
-						id="backup-checkbox"
-						class="absolute h-0 w-0 opacity-0"
-						on:click={() => (backupDone = true)}
-						bind:checked={backupDone}
-					/>
-
-					<label for="backup-checkbox" class="flex cursor-pointer items-start">
-						<span
-							class={`mr-2 inline-block h-6 w-6 flex-none rounded border-2 ${backupDone ? 'border-strongpink bg-strongpink' : 'border-gray-300'}`}
-						>
-							{#if backupDone}
-								<svg
-									class="h-[19px] w-[18px] text-white"
-									fill="none"
-									viewBox="0 0 24 24"
-									stroke="currentColor"
-								>
-									<path
-										stroke-linecap="round"
-										stroke-linejoin="round"
-										stroke-width="4"
-										d="M5 13l4 4L19 7"
-									/>
-								</svg>
-							{/if}
-						</span>
-						<div>
-							{#if ncryptOption}
-								I saved the file and the password in a couple of safe places
-							{:else}
-								I saved the file in a couple of safe place
-							{/if}
-						</div>
-					</label>
+						<CheckboxWithLabel bind:checked={backupDone}>
+						{#if ncryptOption}
+							I saved the file and the password in a couple of safe places
+						{:else}
+							I saved the file in a couple of safe places
+						{/if}
+					</CheckboxWithLabel>
 				</div>
 				<button
 					on:click={() => {
