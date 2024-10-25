@@ -1,15 +1,12 @@
 <script>
 	import TwoColumnLayout from '$lib/TwoColumnLayout.svelte';
 	import { goto } from '$app/navigation';
-	import { name, npub, backupPrivKey } from '$lib/store';
+	import { name, npub, ncryptOption, backupPrivKey, password } from '$lib/store';
 	import ClipToCopy from '$lib/ClipToCopy.svelte';
 	import CheckboxWithLabel from '$lib/CheckboxWithLabel.svelte';
 
-	let ncryptOption = false;
 	let backupInitialized = false;
 	let backupDone = false;
-
-	let password = '';
 
 	function createKey() {
 		// TODO
@@ -17,17 +14,17 @@
 	}
 
 	function togglePasswordField() {
-		ncryptOption = !ncryptOption;
+		$ncryptOption = !$ncryptOption;
 	}
 
 	function downloadBackup() {
-		if (ncryptOption) {
+		if ($ncryptOption) {
 			$backupPrivKey = 'ncryptsec1xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx12345';
 		} else {
 			$backupPrivKey = 'nsec1xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx12345';
 		}
 
-		if (ncryptOption && !password) {
+		if ($ncryptOption && !$password) {
 			alert('Please enter a password before downloading the encrypted backup');
 			return;
 		}
@@ -108,7 +105,7 @@
 
 		<div class="mt-10 flex flex-col justify-end">
 			{#if !backupInitialized}
-				{#if !ncryptOption}
+				{#if !$ncryptOption}
 					<button
 						on:click={downloadBackup}
 						class="inline-flex w-full items-center justify-center rounded bg-strongpink px-8 py-3 text-[1.3rem] text-white"
@@ -127,11 +124,11 @@
 					>
 				{/if}
 
-				{#if ncryptOption}
+				{#if $ncryptOption}
 					<!-- svelte-ignore a11y-autofocus -->
 					<input
 						type="text"
-						bind:value={password}
+						bind:value={$password}
 						placeholder="Pick a password"
 						required
 						class="mb-6 w-full rounded border-2 border-neutral-300 px-4 py-2 text-xl focus:border-neutral-700 focus:outline-none"
@@ -168,16 +165,16 @@
 					<div class="my-4 rounded bg-yellow-100 px-6 py-4">
 						{previewDownloadKey($backupPrivKey)}
 					</div>
-					{#if ncryptOption}
+					{#if $ncryptOption}
 						Finally, copy the file in another safe place as additional backup and separately save
-						the chosen password (<strong>{password}</strong>).
+						the chosen password (<strong>{$password}</strong>).
 					{:else}
 						Finally, copy the file in another safe place as additional backup.
 					{/if}
 				</div>
 				<div class="custom-focus mt-8 focus-within:ring-1">
-						<CheckboxWithLabel bind:checked={backupDone}>
-						{#if ncryptOption}
+					<CheckboxWithLabel bind:checked={backupDone}>
+						{#if $ncryptOption}
 							I saved the file and the password in a couple of safe places
 						{:else}
 							I saved the file in a couple of safe places
