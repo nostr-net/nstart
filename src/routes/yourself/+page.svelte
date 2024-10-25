@@ -3,13 +3,13 @@
 	import { goto } from '$app/navigation';
 	import { name } from '$lib/store';
 
-	function navigateToDownload() {
+	function navigateContinue() {
 		if (!$name) {
 			alert('Please enter a name, bio and website are optional');
 			return;
 		}
-
-		goto('/download'); // Navigate to the options page
+		
+		goto('/download');
 	}
 </script>
 
@@ -75,7 +75,7 @@
 		</div>
 		<div class="mt-20 flex justify-end">
 			<button
-				on:click={navigateToDownload}
+				on:click={navigateContinue}
 				class="inline-flex items-center rounded bg-strongpink px-8 py-3 text-[1.3rem] text-white"
 			>
 				Continue <img src="/icons/arrow-right.svg" alt="continue" class="ml-4 mr-2 h-5 w-5" />

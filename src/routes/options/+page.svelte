@@ -8,22 +8,20 @@
 	let sendEmail = false;
 	let email = '';
 
-	function navigateToFollow() {
+	function navigateContinue() {
 		if (sendEmail) {
 			if (!email || !$password) {
 				alert('Please enter your email and pick a password');
 				return;
 			}
-
 			const inputElement = document.getElementById('email');
-
 			if (inputElement && !inputElement.validity.valid) {
 				alert('Please double check your email');
 				return;
 			}
 		}
-
-		goto('/follow'); // Navigate to the options page
+		
+		goto('/follow');
 	}
 </script>
 
@@ -103,7 +101,7 @@
 
 		<div class="mt-20 flex justify-end">
 			<button
-				on:click={navigateToFollow}
+				on:click={navigateContinue}
 				class="inline-flex items-center rounded bg-strongpink px-8 py-3 text-[1.3rem] text-white"
 			>
 				Continue <img src="/icons/arrow-right.svg" alt="continue" class="ml-4 mr-2 h-5 w-5" />

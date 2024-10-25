@@ -40,22 +40,14 @@
 		backupInitialized = true;
 	}
 
-	function navigateToOptions() {
-		goto('/options'); // Navigate to the options page
+	function navigateContinue() {
+		goto('/options');
 	}
 
 	function previewDownloadKey(str) {
-		// Check if the string is long enough
-		if (str.length <= 18) {
-			return str; // Return the original string if it's too short
-		}
-
-		// Get the first 10 characters and the last 8 characters
 		const firstPart = str.slice(0, 10);
 		const lastPart = str.slice(-8);
-
-		// Combine them with ellipsis
-		return `${firstPart}...${lastPart}`;
+		return `${firstPart} ... ${lastPart}`;
 	}
 
 	createKey();
@@ -194,7 +186,7 @@
 
 		<div class="mt-16 flex justify-end">
 			<button
-				on:click={navigateToOptions}
+				on:click={navigateContinue}
 				disabled={!backupDone}
 				class={`inline-flex items-center rounded px-8 py-3 text-[1.3rem] ${backupDone ? 'bg-strongpink text-white' : 'cursor-not-allowed bg-neutral-400 text-neutral-100'}`}
 			>

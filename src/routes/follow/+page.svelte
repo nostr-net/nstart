@@ -3,7 +3,7 @@
 	import { goto } from '$app/navigation';
 	import CheckboxWithLabel from '$lib/CheckboxWithLabel.svelte';
 
-	function navigateToFinish() {
+	function navigateContinue() {
 		goto('/finish');
 	}
 </script>
@@ -72,7 +72,7 @@
 
 		<div class="mt-20 flex justify-end">
 			<button
-				on:click={navigateToFinish}
+				on:click={navigateContinue}
 				class="inline-flex items-center rounded bg-strongpink px-8 py-3 text-[1.3rem] text-white"
 			>
 				Finish <img src="/icons/arrow-right.svg" alt="continue" class="ml-4 mr-2 h-5 w-5" />
