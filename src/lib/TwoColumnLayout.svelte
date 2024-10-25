@@ -8,7 +8,7 @@
 
 	<!-- Interactive block -->
 	<div class="mb-10 flex flex-none items-center justify-start bg-white p-8 sm:w-[52%] sm:p-0">
-		<div class="flex max-w-full flex-col sm:ml-16 sm:max-w-[350px]">
+		<div class="flex w-full max-w-full flex-col sm:ml-16 sm:max-w-[350px]">
 			<slot name="interactive" />
 		</div>
 	</div>
