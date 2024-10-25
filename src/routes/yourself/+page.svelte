@@ -8,7 +8,7 @@
 			alert('Please enter a name, bio and website are optional');
 			return;
 		}
-		
+
 		goto('/download');
 	}
 </script>
@@ -26,19 +26,19 @@
 			</div>
 
 			<div class="leading-5 text-neutral-700 sm:w-[90%]">
-				<p class="mb-6">On Nostr you decide to be whoever you want.</p>
-				<p class="mb-6">
+				<p class="">On Nostr you decide to be whoever you want.</p>
+				<p class="mt-6">
 					A Nostr profile usually include a name, a picture and some additional information. Every
 					data is optional.
 				</p>
 
-				<p class="mb-6">
+				<p class="mt-6">
 					The name is not a unique username, we can have as many Jacks we want! Feel free to use
 					your real name or a nickname; you can change any info whenever you want.<br />
 					But remember: online privacy matters, don’t share sensitive data.
 				</p>
 
-				<p class="mb-6">
+				<p class="mt-6">
 					And yes, to join Nostr you don’t need to give your email, phone number or other data, it
 					is KYC free.
 				</p>
@@ -47,9 +47,9 @@
 	</div>
 
 	<div slot="interactive">
-		<div class="mb-6 flex items-end justify-end">
+		<div class="flex items-end justify-end">
 			<div class="text-xl text-neutral-400">Your image</div>
-			<div class="-mr-8 mb-2 ml-2 h-1 w-20 border-t-2 border-neutral-300"></div>
+			<div class="-mr-8 ml-2 mt-2 h-1 w-20 border-t-2 border-neutral-300"></div>
 			<div class="h-24 w-24 rounded-full border-2 border-neutral-300 bg-neutral-100">
 				<img src="/icons/pfp.svg" alt="pfp " />
 			</div>
@@ -61,16 +61,16 @@
 				placeholder="Your name"
 				bind:value={$name}
 				autofocus
-				class="mb-6 w-full rounded border-2 border-neutral-300 px-4 py-2 text-xl focus:border-neutral-700 focus:outline-none"
+				class="mt-6 w-full rounded border-2 border-neutral-300 px-4 py-2 text-xl focus:border-neutral-700 focus:outline-none"
 			/>
 			<textarea
 				placeholder="A brief presentation"
-				class="mb-6 w-full rounded border-2 border-neutral-300 px-4 py-2 text-xl focus:border-neutral-700 focus:outline-none"
+				class="mt-6 w-full rounded border-2 border-neutral-300 px-4 py-2 text-xl focus:border-neutral-700 focus:outline-none"
 			></textarea>
 			<input
 				type="text"
 				placeholder="Your website"
-				class="w-full rounded border-2 border-neutral-300 px-4 py-2 text-xl focus:border-neutral-700 focus:outline-none"
+				class="mt-6 w-full rounded border-2 border-neutral-300 px-4 py-2 text-xl focus:border-neutral-700 focus:outline-none"
 			/>
 		</div>
 		<div class="mt-20 flex justify-end">

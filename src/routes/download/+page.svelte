@@ -66,18 +66,18 @@
 			</div>
 
 			<div class="leading-5 text-neutral-700 sm:w-[90%]">
-				<p class="mb-6">
+				<p class="">
 					Well done <strong>{$name}</strong>, your Nostr profile is ready, yes it was so easy!
 				</p>
-				<p class="mb-6">
+				<p class="mt-6">
 					On Nostr your public profile is identified by a unique string that start with “npub”, this
 					is the public part you can share with anyone.
 				</p>
-				<p class="mb-6">
+				<p class="mt-6">
 					Then there is the private key, that starts with “nsec”, with wich you can control you
 					profile and act, for example posting notes. This must clearly be kept absolutely secret.
 				</p>
-				<p class="mb-6">
+				<p class="mt-6">
 					Now please download your nsec as a txt file and save it in a safe place, for example your
 					password manager.
 				</p>
@@ -123,11 +123,11 @@
 						bind:value={$password}
 						placeholder="Pick a password"
 						required
-						class="mb-6 w-full rounded border-2 border-neutral-300 px-4 py-2 text-xl focus:border-neutral-700 focus:outline-none"
+						class="w-full rounded border-2 border-neutral-300 px-4 py-2 text-xl focus:border-neutral-700 focus:outline-none"
 						autofocus
 					/>
 					<button
-						class="inline-flex w-full items-center justify-center rounded bg-strongpink px-8 py-3 text-[1.3rem] text-white"
+						class="mt-6 inline-flex w-full items-center justify-center rounded bg-strongpink px-8 py-3 text-[1.3rem] text-white"
 						on:click={downloadBackup}
 					>
 						Save my ncryptsec <img

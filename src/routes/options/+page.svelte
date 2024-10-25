@@ -20,7 +20,7 @@
 				return;
 			}
 		}
-		
+
 		goto('/follow');
 	}
 </script>
@@ -38,12 +38,12 @@
 			</div>
 
 			<div class="leading-5 text-neutral-700 sm:w-[90%]">
-				<p class="mb-6">
+				<p class="">
 					Now you have the possibility to save your nsec, split in part, in a pool of remote
 					signers; this will allow to obtain a "bunker" url that you can use to login in many web,
 					mobile and desktop apps (<a href="#" class="underline">learn more</a>).
 				</p>
-				<p class="mb-6">
+				<p class="mt-6">
 					Finally we offer you the possibility to send your nsec, encrypted, to your email address
 					to have another convenient backup location.<br />
 					{#if !$ncryptOption}

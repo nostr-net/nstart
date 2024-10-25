@@ -16,16 +16,16 @@
 
 		<!-- Intro text -->
 		<div class="text-[1.3rem] leading-7 text-neutral-700 sm:w-[80%]">
-			<p class="mb-6">
+			<p class="">
 				To join Nostr you need a “profile”, but it is not the usual one that a company generates and
 				manages for you. You manage the protocol.
 			</p>
-			<p class="mb-6">
+			<p class="mt-6">
 				Nostr is a different and freedom experience from the beginning: it empowers user using
 				cryptographic key-pairs that don’t require a third part; don’t worry about the tech slang,
 				it is just a strong password that you will have to keep safe.
 			</p>
-			<p class="mb-6">
+			<p class="mt-6">
 				This wizard is one of the many way to bootstrap a Nostr profile that you can use anywhere,
 				we help you to create you key-pair and safely manage it in 3 easy steps. Are you ready?
 			</p>

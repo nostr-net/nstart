@@ -21,16 +21,16 @@
 			</div>
 
 			<div class="leading-5 text-neutral-700 sm:w-[90%]">
-				<p class="mb-6">What do you think now of following some interesting profiles?</p>
-				<p class="mb-6">
+				<p class="">What do you think now of following some interesting profiles?</p>
+				<p class="mt-6">
 					When you will use any Nostr application you will automatically find the profiles you
 					followed and their content.
 				</p>
-				<p class="mb-6">
+				<p class="mt-6">
 					You can later follow more people, or remove previously selected ones as well; with Nostr
 					you control what you want to see, no obscure and deceptive algorithms, no impositions.
 				</p>
-				<p class="mb-6">
+				<p class="mt-6">
 					In some apps you will have also the possibility to create lists, and so organize betters
 					who you are following.
 				</p>

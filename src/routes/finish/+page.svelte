@@ -18,7 +18,7 @@
 
 		<!-- Intro text -->
 		<div class="text-neutral-700 sm:w-[80%]">
-			<p class="mb-6 text-xl">
+			<p class="text-xl">
 				We have finished, <strong>{$name}</strong>! Now you can start exploring Nostr, using a web
 				applications or downloading an app. These are some suggestions for getting started
 				immediately:
