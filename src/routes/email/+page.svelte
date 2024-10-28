@@ -35,7 +35,7 @@
 	}
 
 	function navigateContinue() {
-		goto('/follow');
+		goto('/bunker');
 	}
 </script>
 
