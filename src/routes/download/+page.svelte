@@ -41,7 +41,7 @@
 	}
 
 	function navigateContinue() {
-		goto('/options');
+		goto('/email');
 	}
 
 	function previewDownloadKey(str) {
