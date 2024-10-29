@@ -1,7 +1,15 @@
 <script>
-	import TwoColumnLayout from '$lib/TwoColumnLayout.svelte';
+	import { onMount } from 'svelte';
 	import { goto } from '$app/navigation';
+	import { sk } from '$lib/store';
+	import TwoColumnLayout from '$lib/TwoColumnLayout.svelte';
 	import CheckboxWithLabel from '$lib/CheckboxWithLabel.svelte';
+
+	onMount(() => {
+		if ($sk.length === 0) {
+			goto('/');
+		}
+	});
 
 	function navigateContinue() {
 		goto('/finish');

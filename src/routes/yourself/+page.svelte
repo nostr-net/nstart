@@ -7,12 +7,10 @@
 	import * as nip19 from 'nostr-tools/nip19';
 	import { calculateFileHash } from 'nostr-tools/nip96';
 	import { utf8Encoder } from 'nostr-tools/utils';
-	import { sha256 } from '@noble/hashes/sha256';
 
 	import { base64 } from '@scure/base';
 
 	let picturePreview = null;
-	let authkey = '';
 
 	onMount(() => {
 		if ($sk.length === 0) {

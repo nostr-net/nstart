@@ -1,7 +1,8 @@
 <script>
-	import TwoColumnLayout from '$lib/TwoColumnLayout.svelte';
+	import { onMount } from 'svelte';
 	import { goto } from '$app/navigation';
-	import { npub } from '$lib/store';
+	import TwoColumnLayout from '$lib/TwoColumnLayout.svelte';
+	import { sk, npub } from '$lib/store';
 	import ClipToCopy from '$lib/ClipToCopy.svelte';
 	import CheckboxWithLabel from '$lib/CheckboxWithLabel.svelte';
 	import LoadingBar from '$lib/LoadingBar.svelte';
@@ -11,6 +12,12 @@
 	let bunkerActivated = false;
 	let activationProgress = 0;
 	let bunkerURL = '';
+
+	onMount(() => {
+		if ($sk.length === 0) {
+			goto('/');
+		}
+	});
 
 	function activate() {
 		bunkerActivating = true;

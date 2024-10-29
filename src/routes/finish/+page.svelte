@@ -1,7 +1,15 @@
 <script lang="ts">
+	import { onMount } from 'svelte';
+	import { goto } from '$app/navigation';
+	import { sk } from '$lib/store';
 	import BasicLayout from '$lib/BasicLayout.svelte';
 	import { name, npub } from '$lib/store';
-	import ClipToCopy from '$lib/ClipToCopy.svelte';
+
+	onMount(() => {
+		if ($sk.length === 0) {
+			goto('/');
+		}
+	});
 </script>
 
 <BasicLayout>
@@ -23,7 +31,7 @@
 				applications or downloading an app. These are some suggestions for getting started
 				immediately:
 			</p>
-			<div class="mt-8 grid grid-cols-2 sm:flex sm:flex-row sm:gap-12 gap-x-12 gap-y-6">
+			<div class="mt-8 grid grid-cols-2 gap-x-12 gap-y-6 sm:flex sm:flex-row sm:gap-12">
 				<div class="flex w-24 flex-col justify-self-center">
 					<div class="h-24 w-24 rounded-full border-8 border-strongpink bg-white"></div>
 					<div class="mt-2 text-center">Coracle</div>

@@ -1,4 +1,5 @@
 <script>
+	import { onMount } from 'svelte';
 	import { goto } from '$app/navigation';
 	import {
 		sk,
@@ -21,6 +22,12 @@
 
 	let backupInitialized = false;
 	let backupDone = false;
+
+	onMount(() => {
+		if ($sk.length === 0) {
+			goto('/');
+		}
+	});
 
 	function togglePasswordField() {
 		$ncryptOption = !$ncryptOption;

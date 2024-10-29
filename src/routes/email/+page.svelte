@@ -1,6 +1,8 @@
 <script>
-	import TwoColumnLayout from '$lib/TwoColumnLayout.svelte';
+	import { onMount } from 'svelte';
 	import { goto } from '$app/navigation';
+	import { sk } from '$lib/store';
+	import TwoColumnLayout from '$lib/TwoColumnLayout.svelte';
 	import { ncryptOption, password } from '$lib/store';
 	import CheckboxWithLabel from '$lib/CheckboxWithLabel.svelte';
 
@@ -15,6 +17,12 @@
 			emailInput.focus();
 		}, 10); // Use a timeout to ensure the DOM has updated
 	}
+
+	onMount(() => {
+		if ($sk.length === 0) {
+			goto('/');
+		}
+	});
 
 	function send() {
 		if (sendEmail) {
