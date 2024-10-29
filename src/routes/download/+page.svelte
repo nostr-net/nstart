@@ -8,11 +8,6 @@
 	let backupInitialized = false;
 	let backupDone = false;
 
-	function createKey() {
-		// TODO
-		$npub = 'npub1test31geqamw7ukghlcaqzep734el58kv88dvwm5pjntc04cy5xq86test';
-	}
-
 	function togglePasswordField() {
 		$ncryptOption = !$ncryptOption;
 	}
@@ -50,7 +45,6 @@
 		return `${firstPart} ... ${lastPart}`;
 	}
 
-	createKey();
 </script>
 
 <TwoColumnLayout>

@@ -1,8 +1,19 @@
 <script>
-	import TwoColumnLayout from '$lib/TwoColumnLayout.svelte';
+	import { onMount } from 'svelte';
 	import { goto } from '$app/navigation';
-	import { name } from '$lib/store';
+	import { sk, pk, npub, name } from '$lib/store';
+	import TwoColumnLayout from '$lib/TwoColumnLayout.svelte';
+	import { generateSecretKey, getPublicKey } from 'nostr-tools/pure';
+	import * as nip19 from 'nostr-tools/nip19';
 
+	onMount(() => {
+		// TODO: keep the session if the page is reloaded
+		if ($sk.length === 0) {
+			$sk = generateSecretKey();
+			$pk = getPublicKey($sk);
+			$npub = nip19.npubEncode($pk);
+		}
+	});
 	function navigateContinue() {
 		if (!$name) {
 			alert('Please enter a name, bio and website are optional');
