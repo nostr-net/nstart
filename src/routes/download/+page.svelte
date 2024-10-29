@@ -1,9 +1,11 @@
 <script>
-	import TwoColumnLayout from '$lib/TwoColumnLayout.svelte';
 	import { goto } from '$app/navigation';
-	import { name, npub, ncryptOption, backupPrivKey, password } from '$lib/store';
+	import { name, sk, npub, ncryptOption, backupPrivKey, password } from '$lib/store';
+	import TwoColumnLayout from '$lib/TwoColumnLayout.svelte';
 	import ClipToCopy from '$lib/ClipToCopy.svelte';
 	import CheckboxWithLabel from '$lib/CheckboxWithLabel.svelte';
+	import * as nip19 from 'nostr-tools/nip19';
+	import * as nip49 from 'nostr-tools/nip49';
 
 	let backupInitialized = false;
 	let backupDone = false;
@@ -14,9 +16,9 @@
 
 	function downloadBackup() {
 		if ($ncryptOption) {
-			$backupPrivKey = 'ncryptsec1xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx12345';
+			$backupPrivKey = nip49.encrypt($sk, $password)
 		} else {
-			$backupPrivKey = 'nsec1xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx12345';
+			$backupPrivKey = nip19.nsecEncode($sk);
 		}
 
 		if ($ncryptOption && !$password) {
@@ -24,7 +26,7 @@
 			return;
 		}
 
-		const blob = new Blob([$npub + '\n' + $backupPrivKey], { type: 'text/plain' });
+		const blob = new Blob([$npub + '\n\n' + $backupPrivKey], { type: 'text/plain' });
 		const link = document.createElement('a');
 		link.href = URL.createObjectURL(blob);
 		link.download = 'nostr-private-key.txt';
@@ -44,7 +46,6 @@
 		const lastPart = str.slice(-8);
 		return `${firstPart} ... ${lastPart}`;
 	}
-
 </script>
 
 <TwoColumnLayout>
@@ -146,7 +147,7 @@
 					<img src="/icons/done.svg" alt="Done" class="w-24" />
 				</div>
 				<div class="mt-10 text-neutral-600">
-					Now please open the file and check that the long string matches these starting and
+					Now please open the file and check that the long string after your npub matches these starting and
 					finishing characters:
 					<div class="my-4 rounded bg-yellow-100 px-6 py-4">
 						{previewDownloadKey($backupPrivKey)}
