@@ -1,14 +1,33 @@
 import { writable } from 'svelte/store';
 
-export const sk = writable(new Uint8Array());
-export const pk = writable('');
-export const npub = writable('');
+// Utility function to handle sessionStorage
+function createSessionWritable(key, initialValue) {
+    const isBrowser = typeof window !== 'undefined';
 
-export const name = writable('');
-export const picture = writable('');
-export const about = writable('');
-export const website = writable('');
+    const storedValue = isBrowser ? sessionStorage.getItem(key) : null;
+    const data = storedValue ? storedValue : initialValue;
 
-export const backupPrivKey = writable('');
-export const password = writable('');
-export const ncryptOption = writable(false);
+    const store = writable(data);
+
+    if (isBrowser) {
+        store.subscribe(value => {
+            sessionStorage.setItem(key, value);
+        });
+    }
+
+    return store;
+}
+
+// Create your stores with session persistence
+export const sk = createSessionWritable('sk', new Uint8Array());
+export const pk = createSessionWritable('pk', '');
+export const npub = createSessionWritable('npub', '');
+
+export const name = createSessionWritable('name', '');
+export const picture = createSessionWritable('picture', '');
+export const about = createSessionWritable('about', '');
+export const website = createSessionWritable('website', '');
+
+export const backupPrivKey = createSessionWritable('backupPrivKey', '');
+export const password = createSessionWritable('password', '');
+export const ncryptOption = createSessionWritable('ncryptOption', false);

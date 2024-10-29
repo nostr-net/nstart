@@ -15,7 +15,6 @@
 	let authkey = '';
 
 	onMount(() => {
-		// TODO: keep the session if the page is reloaded
 		if ($sk.length === 0) {
 			$sk = generateSecretKey();
 			$pk = getPublicKey($sk);
