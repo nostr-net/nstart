@@ -1,10 +1,18 @@
 <script>
 	import { onMount } from 'svelte';
 	import { goto } from '$app/navigation';
-	import { sk, pk, npub, name } from '$lib/store';
+	import { sk, pk, npub, name, picture, about, website } from '$lib/store';
 	import TwoColumnLayout from '$lib/TwoColumnLayout.svelte';
-	import { generateSecretKey, getPublicKey } from 'nostr-tools/pure';
+	import { generateSecretKey, getPublicKey, finalizeEvent } from 'nostr-tools/pure';
 	import * as nip19 from 'nostr-tools/nip19';
+	import { calculateFileHash } from 'nostr-tools/nip96';
+	import { utf8Encoder } from 'nostr-tools/utils';
+	import { sha256 } from '@noble/hashes/sha256';
+
+	import { base64 } from '@scure/base';
+
+	let picturePreview = null;
+	let authkey = '';
 
 	onMount(() => {
 		// TODO: keep the session if the page is reloaded
@@ -14,12 +22,83 @@
 			$npub = nip19.npubEncode($pk);
 		}
 	});
-	function navigateContinue() {
+
+	function triggerFileInput() {
+		document.getElementById('image').click();
+	}
+
+	function previewImage(event) {
+		const file = event.target.files[0];
+		if (file) {
+			const reader = new FileReader();
+			reader.onload = () => {
+				picturePreview = reader.result;
+			};
+			reader.readAsDataURL(file);
+		}
+	}
+
+	async function blossomAuth(file) {
+		// Calculate the hash of the image
+		let imageHash = await calculateFileHash(file);
+
+		// Create the event and sign it
+		let eventTemplate = {
+			kind: 24242,
+			created_at: Math.floor(Date.now() / 1000),
+			tags: [
+				['t', 'upload'],
+				['x', imageHash],
+				['expiration', Math.floor(Date.now() / 1000) + 86400]
+			],
+			content: 'Upload profile pic'
+		};
+		let signedEvent = finalizeEvent(eventTemplate, $sk);
+
+		// Return a base64 of the json event
+		return base64.encode(utf8Encoder.encode(JSON.stringify(signedEvent)));
+	}
+
+	async function uploadImage(file) {
+		let auth = await blossomAuth(file);
+		const formData = new FormData();
+		formData.append('uploadtype', 'avatar');
+		formData.append('file', file);
+
+		const response = await fetch('https://cdn.nostrcheck.me', {
+			method: 'POST',
+			headers: {
+				Authorization: `Nostr ${auth}`
+			},
+			body: formData
+		});
+
+		if (response.ok) {
+			const data = await response.json();
+			console.log('Upload successful:', data);
+			return data;
+		} else {
+			console.error('Upload failed:', response.statusText);
+			alert('Image upload failed. Please try again.');
+		}
+	}
+
+	async function navigateContinue() {
 		if (!$name) {
 			alert('Please enter a name, bio and website are optional');
 			return;
 		}
 
+		const file = document.getElementById('image').files[0];
+
+		if (file) {
+			try {
+				let data = await uploadImage(file); // Wait for the upload to complete
+				$picture = data.url;
+			} catch (error) {
+				console.error('Error during upload:', error);
+			}
+		}
 		goto('/download');
 	}
 </script>
@@ -61,11 +140,29 @@
 		<div class="flex items-end justify-end">
 			<div class="text-xl text-neutral-400">Your image</div>
 			<div class="-mr-8 ml-2 mt-2 h-1 w-20 border-t-2 border-neutral-300"></div>
-			<div class="h-24 w-24 rounded-full border-2 border-neutral-300 bg-neutral-100">
-				<img src="/icons/pfp.svg" alt="pfp " />
-			</div>
+			<button
+				on:click={triggerFileInput}
+				class="h-24 w-24 rounded-full border-2 border-neutral-300 bg-neutral-100"
+			>
+				<!-- svelte-ignore a11y-img-redundant-alt -->
+				{#if picturePreview || $picture}
+					<img
+						src={picturePreview || $picture}
+						alt="Profile Picture"
+						class="h-full w-full rounded-full object-cover"
+					/>
+				{:else}
+					<img
+						src="/icons/pfp.svg"
+						alt="Default Profile Picture"
+						class="h-full w-full rounded-full object-cover"
+					/>
+				{/if}
+			</button>
 		</div>
 		<div>
+			<!-- File input for image upload -->
+			<input type="file" id="image" accept="image/*" on:change={previewImage} class="hidden" />
 			<!-- svelte-ignore a11y-autofocus -->
 			<input
 				type="text"
@@ -76,11 +173,13 @@
 			/>
 			<textarea
 				placeholder="A brief presentation"
+				bind:value={$about}
 				class="mt-6 w-full rounded border-2 border-neutral-300 px-4 py-2 text-xl focus:border-neutral-700 focus:outline-none"
 			></textarea>
 			<input
 				type="text"
 				placeholder="Your website"
+				bind:value={$website}
 				class="mt-6 w-full rounded border-2 border-neutral-300 px-4 py-2 text-xl focus:border-neutral-700 focus:outline-none"
 			/>
 		</div>
