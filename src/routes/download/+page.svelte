@@ -1,11 +1,23 @@
 <script>
 	import { goto } from '$app/navigation';
-	import { name, sk, npub, ncryptOption, backupPrivKey, password } from '$lib/store';
+	import {
+		sk,
+		npub,
+		name,
+		picture,
+		about,
+		website,
+		ncryptOption,
+		backupPrivKey,
+		password
+	} from '$lib/store';
 	import TwoColumnLayout from '$lib/TwoColumnLayout.svelte';
 	import ClipToCopy from '$lib/ClipToCopy.svelte';
 	import CheckboxWithLabel from '$lib/CheckboxWithLabel.svelte';
+	import { finalizeEvent } from 'nostr-tools/pure';
 	import * as nip19 from 'nostr-tools/nip19';
 	import * as nip49 from 'nostr-tools/nip49';
+	import { Relay } from 'nostr-tools/relay';
 
 	let backupInitialized = false;
 	let backupDone = false;
@@ -16,7 +28,7 @@
 
 	function downloadBackup() {
 		if ($ncryptOption) {
-			$backupPrivKey = nip49.encrypt($sk, $password)
+			$backupPrivKey = nip49.encrypt($sk, $password);
 		} else {
 			$backupPrivKey = nip19.nsecEncode($sk);
 		}
@@ -37,7 +49,20 @@
 		backupInitialized = true;
 	}
 
+	async function publishProfile() {
+		let eventTemplate = {
+			kind: 0,
+			created_at: Math.floor(Date.now() / 1000),
+			tags: [],
+			content: `{"name": "${$name}", "picture": "${$picture}", "about": "${$about}", "website": "${$website}"}`
+		};
+		let signedEvent = finalizeEvent(eventTemplate, $sk);
+		const relay = await Relay.connect('wss://purplepag.es');
+		await relay.publish(signedEvent);
+	}
+
 	function navigateContinue() {
+		publishProfile();
 		goto('/email');
 	}
 
@@ -147,8 +172,8 @@
 					<img src="/icons/done.svg" alt="Done" class="w-24" />
 				</div>
 				<div class="mt-10 text-neutral-600">
-					Now please open the file and check that the long string after your npub matches these starting and
-					finishing characters:
+					Now please open the file and check that the long string after your npub matches these
+					starting and finishing characters:
 					<div class="my-4 rounded bg-yellow-100 px-6 py-4">
 						{previewDownloadKey($backupPrivKey)}
 					</div>
