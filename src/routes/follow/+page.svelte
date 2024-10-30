@@ -6,6 +6,7 @@
 	import CheckboxWithLabel from '$lib/CheckboxWithLabel.svelte';
 	import { finalizeEvent, type EventTemplate } from 'nostr-tools/pure';
 	import { pool, indexRelays } from '$lib/nostr';
+	import { SimplePool } from 'nostr-tools/pool';
 
 	const FOLLOWS = [
 		{
@@ -64,24 +65,34 @@
 		}
 	}
 
-	function getSelectedUsersArray() {
+	async function getSelectedUsersArray() {
+		const ids = [];
 		const result = [];
 
 		for (const user of FOLLOWS) {
 			if (selectedUsers.has(user.pubKey)) {
 				const userArray = ['p', user.pubKey, '', user.name];
+				ids.push(user.pubKey);
 				result.push(userArray);
 			}
 		}
 
+		const pool = new SimplePool();
+		let events = await pool.querySync(['wss://purplepag.es'], { kinds: [3], authors: ids });
+		events.forEach((e) => {
+			e.tags.forEach((tag) => {
+				result.push(tag);
+			});
+		});
 		return result;
 	}
 
-	function publishFollow() {
+	async function publishFollow() {
+		let contacts = await getSelectedUsersArray();
 		let eventTemplate: EventTemplate = {
 			kind: 3,
 			created_at: Math.floor(Date.now() / 1000),
-			tags: getSelectedUsersArray(),
+			tags: contacts,
 			content: ''
 		};
 		let signedEvent = finalizeEvent(eventTemplate, $sk);
@@ -107,7 +118,7 @@
 			</div>
 
 			<div class="leading-5 text-neutral-700 sm:w-[90%]">
-				<p class="">What do you think now of following some interesting profiles?</p>
+				<p class="">What do you think now of following some interesting profiles? We offer you the possibility to copy the full following list of some Nostr users!</p>
 				<p class="mt-6">
 					When you will use any Nostr application you will automatically find the profiles you
 					followed and their content.
@@ -125,8 +136,12 @@
 	</div>
 
 	<div slot="interactive">
-		<div class="sm:mt-10">
+		<div class="sm:mt-20">
 			<!-- list of follows -->
+			<div>
+				See the same things these Nostr users are seeing in their feed:
+			</div>
+			<div class="mt-4">
 			{#each randomUsers as user}
 				<CheckboxWithLabel
 					checked={selectedUsers.has(user.pubKey)}
@@ -144,8 +159,9 @@
 				</CheckboxWithLabel>
 			{/each}
 		</div>
+		</div>
 
-		<div class="mt-20 flex justify-end">
+		<div class="mt-10 flex justify-end">
 			<button
 				on:click={navigateContinue}
 				class="inline-flex items-center rounded bg-strongpink px-8 py-3 text-[1.3rem] text-white"
