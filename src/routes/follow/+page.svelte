@@ -4,14 +4,92 @@
 	import { sk } from '$lib/store';
 	import TwoColumnLayout from '$lib/TwoColumnLayout.svelte';
 	import CheckboxWithLabel from '$lib/CheckboxWithLabel.svelte';
+	import { finalizeEvent, type EventTemplate } from 'nostr-tools/pure';
+	import { pool, indexRelays } from '$lib/nostr';
+
+	const FOLLOWS = [
+		{
+			name: 'daniele',
+			pubKey: '7d7ab7a90fbc8e4f0f3689f0fa696451bc85d2d41f9f1f532c116f00001a5f54',
+			image: 'https://avatars.githubusercontent.com/u/89577423'
+		},
+		{
+			name: 'fiatjaf',
+			pubKey: '54823f12df08849c934ee40e474445f1c48ece76f9b4794f2adf7102baba3fba',
+			image: 'https://fiatjaf.com/static/favicon.jpg'
+		},
+		{
+			name: 'hodlbod',
+			pubKey: '97c70a44366a6535c145b333f973ea86dfdc2d7a99da618c40c64705ad98e322',
+			image: 'https://i.nostr.build/AZ0L.jpg'
+		},
+		{
+			name: 'Michael Dilger',
+			pubKey: 'ee11a5dff40c19a555f41fe42b48f00e618c91225622ae37b6c2bb67b76c4e49',
+			image: 'https://mikedilger.com/bs.webp'
+		},
+		{
+			name: 'Snowden',
+			pubKey: '86c23ef6610e4e639868d2f36527eed585a861afcc49cae8955ff8c1dbe31723',
+			image: 'https://nostr.build/i/p/6838p.jpeg'
+		},
+		{
+			name: 'jack',
+			pubKey: '7d7ab7a90fbc8e4f0f3689f0fa696451bc85d2d41f9f1f532c116f00001a5f54',
+			image:
+				'https://image.nostr.build/26867ce34e4b11f0a1d083114919a9f4eca699f3b007454c396ef48c43628315.jpg'
+		}
+	];
+
+	let randomUsers: any[] = [];
+	let selectedUsers = new Set();
 
 	onMount(() => {
 		if ($sk.length === 0) {
 			goto('/');
 		}
+		pickRandomUsers();
 	});
 
+	function pickRandomUsers() {
+		const shuffled = FOLLOWS.sort(() => 0.5 - Math.random());
+		randomUsers = shuffled.slice(0, 5);
+	}
+
+	function toggleUserSelection(user: { pubKey: unknown }) {
+		if (selectedUsers.has(user.pubKey)) {
+			selectedUsers.delete(user.pubKey);
+		} else {
+			selectedUsers.add(user.pubKey);
+		}
+	}
+
+	function getSelectedUsersArray() {
+		const result = [];
+
+		for (const user of FOLLOWS) {
+			if (selectedUsers.has(user.pubKey)) {
+				const userArray = ['p', user.pubKey, '', user.name];
+				result.push(userArray);
+			}
+		}
+
+		return result;
+	}
+
+	function publishFollow() {
+		let eventTemplate: EventTemplate = {
+			kind: 3,
+			created_at: Math.floor(Date.now() / 1000),
+			tags: getSelectedUsersArray(),
+			content: ''
+		};
+		let signedEvent = finalizeEvent(eventTemplate, $sk);
+		pool.publish(indexRelays, signedEvent);
+	}
+
 	function navigateContinue() {
+		publishFollow();
 		goto('/finish');
 	}
 </script>
@@ -47,36 +125,25 @@
 	</div>
 
 	<div slot="interactive">
-		<CheckboxWithLabel position="right" alignment="center">
-			<div class="flex items-center border-b-4 border-neutral-200 pb-4 pt-4">
-				<img class="inline-block w-8 rounded-full" src="/icons/pfp.svg" alt="pfp" />
-				<div class="ml-2 text-xl">Your friend</div>
-			</div>
-		</CheckboxWithLabel>
-		<CheckboxWithLabel position="right" alignment="center">
-			<div class="flex items-center border-b-4 border-neutral-200 pb-4 pt-4">
-				<img class="inline-block w-8 rounded-full" src="/icons/pfp.svg" alt="pfp" />
-				<div class="ml-2 text-xl">My basket team</div>
-			</div>
-		</CheckboxWithLabel>
-		<CheckboxWithLabel position="right" alignment="center">
-			<div class="flex items-center border-b-4 border-neutral-200 pb-4 pt-4">
-				<img class="inline-block w-8 rounded-full" src="/icons/pfp.svg" alt="pfp" />
-				<div class="ml-2 text-xl">Michael Jordan</div>
-			</div>
-		</CheckboxWithLabel>
-		<CheckboxWithLabel position="right" alignment="center">
-			<div class="flex items-center border-b-4 border-neutral-200 pb-4 pt-4">
-				<img class="inline-block w-8 rounded-full" src="/icons/pfp.svg" alt="pfp" />
-				<div class="ml-2 text-xl">Sport group</div>
-			</div>
-		</CheckboxWithLabel>
-		<CheckboxWithLabel position="right" alignment="center">
-			<div class="flex items-center border-b-4 border-neutral-200 pb-4 pt-4">
-				<img class="inline-block w-8 rounded-full" src="/icons/pfp.svg" alt="pfp" />
-				<div class="ml-2 text-xl">Nike</div>
-			</div>
-		</CheckboxWithLabel>
+		<div class="sm:mt-10">
+			<!-- list of follows -->
+			{#each randomUsers as user}
+				<CheckboxWithLabel
+					checked={selectedUsers.has(user.pubKey)}
+					onClick={() => toggleUserSelection(user)}
+					position="right"
+					alignment="center"
+				>
+					<div class="flex items-center border-b-4 border-neutral-200 pb-4 pt-4">
+						<div
+							class="inline-block h-8 w-8 rounded-full bg-cover bg-center"
+							style="background-image: url('{user.image}');"
+						></div>
+						<div class="ml-2 text-xl">{user.name}</div>
+					</div>
+				</CheckboxWithLabel>
+			{/each}
+		</div>
 
 		<div class="mt-20 flex justify-end">
 			<button
