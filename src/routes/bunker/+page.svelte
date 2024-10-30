@@ -1,39 +1,59 @@
-<script>
+<script lang="ts">
 	import { onMount } from 'svelte';
+	import { shardGetBunker } from '@fiatjaf/promenade-trusted-dealer';
 	import { goto } from '$app/navigation';
 	import TwoColumnLayout from '$lib/TwoColumnLayout.svelte';
-	import { sk, npub } from '$lib/store';
+	import { sk, pk } from '$lib/store';
 	import ClipToCopy from '$lib/ClipToCopy.svelte';
 	import CheckboxWithLabel from '$lib/CheckboxWithLabel.svelte';
 	import LoadingBar from '$lib/LoadingBar.svelte';
+	import { pool, getInboxes, signers, minePow } from '$lib/nostr';
 
 	let activateBunker = false;
 	let bunkerActivating = false;
 	let bunkerActivated = false;
 	let activationProgress = 0;
 	let bunkerURL = '';
+	let inboxes: { [pubkey: string]: string[] } = {};
 
 	onMount(() => {
 		if ($sk.length === 0) {
 			goto('/');
+			return;
 		}
+
+		getInboxes([$pk, ...signers]).then((res: { [pubkey: string]: string[] }) => {
+			inboxes = res;
+		});
 	});
 
-	function activate() {
+	async function activate(event: Event) {
+		event.preventDefault();
 		bunkerActivating = true;
 
-		// TODO: activate bunker
-
-		const interval = setInterval(() => {
-			if (activationProgress < 100) {
-				activationProgress += 10;
-			} else {
-				clearInterval(interval);
-				bunkerActivating = false;
-				bunkerActivated = true;
-				bunkerURL = `bunker://${$npub}?relay=wss%3A%2F%2Fnos.lol&relay=wss%3A%2F%2Frelay.damus.io&relay=wss%3A%2F%2Frelay.nsecbunker.com&secret=xxxxxxx-yyyyyy-zzzzzzz`;
-			}
-		}, 200);
+		try {
+			bunkerURL = await shardGetBunker(
+				pool,
+				$sk,
+				$pk,
+				2,
+				3,
+				signers,
+				'wss://promenade.fiatjaf.com',
+				20,
+				inboxes,
+				inboxes[$pk],
+				minePow,
+				(p: number) => {
+					activationProgress = p;
+				}
+			);
+			bunkerActivating = false;
+			bunkerActivated = true;
+		} catch (err) {
+			console.error(err);
+			bunkerActivating = false;
+		}
 	}
 
 	function navigateContinue() {
@@ -80,7 +100,7 @@
 			</div>
 			{#if activateBunker}
 				<div class="mt-6">
-					The key will be splitted and shared with these 3 indipendent signers:<br />
+					The key will be splitted and shared with these 3 independent signers:<br />
 				</div>
 				<div class="mt-6">
 					signer.server-a.com<br />

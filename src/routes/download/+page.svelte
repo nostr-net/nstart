@@ -1,5 +1,8 @@
-<script>
+<script lang="ts">
 	import { onMount } from 'svelte';
+	import { finalizeEvent, type EventTemplate } from 'nostr-tools/pure';
+	import * as nip19 from 'nostr-tools/nip19';
+	import * as nip49 from 'nostr-tools/nip49';
 	import { goto } from '$app/navigation';
 	import {
 		sk,
@@ -15,10 +18,7 @@
 	import TwoColumnLayout from '$lib/TwoColumnLayout.svelte';
 	import ClipToCopy from '$lib/ClipToCopy.svelte';
 	import CheckboxWithLabel from '$lib/CheckboxWithLabel.svelte';
-	import { finalizeEvent } from 'nostr-tools/pure';
-	import * as nip19 from 'nostr-tools/nip19';
-	import * as nip49 from 'nostr-tools/nip49';
-	import { Relay } from 'nostr-tools/relay';
+	import { pool, indexRelays, selectReadRelays, selectWriteRelays } from '$lib/nostr';
 
 	let backupInitialized = false;
 	let backupDone = false;
@@ -57,23 +57,47 @@
 	}
 
 	async function publishProfile() {
-		let eventTemplate = {
+		let eventTemplate: EventTemplate = {
 			kind: 0,
 			created_at: Math.floor(Date.now() / 1000),
 			tags: [],
 			content: `{"name": "${$name}", "picture": "${$picture}", "about": "${$about}", "website": "${$website}"}`
 		};
 		let signedEvent = finalizeEvent(eventTemplate, $sk);
-		const relay = await Relay.connect('wss://purplepag.es');
-		await relay.publish(signedEvent);
+		pool.publish(indexRelays, signedEvent);
+	}
+
+	async function publishRelayList() {
+		let ourInbox: string[] = selectReadRelays();
+		let ourOutbox: string[] = selectWriteRelays();
+
+		const tags: string[][] = [];
+		for (let i = 0; i < ourOutbox.length; i++) {
+			const url = ourOutbox[i];
+			tags.push(['r', url, 'write']);
+		}
+		for (let i = 0; i < ourInbox.length; i++) {
+			const url = ourInbox[i];
+			tags.push(['r', url, 'read']);
+		}
+
+		let eventTemplate: EventTemplate = {
+			kind: 10002,
+			created_at: Math.floor(Date.now() / 1000),
+			tags,
+			content: ''
+		};
+		let signedEvent = finalizeEvent(eventTemplate, $sk);
+		pool.publish(indexRelays, signedEvent);
 	}
 
 	function navigateContinue() {
 		publishProfile();
+		publishRelayList();
 		goto('/email');
 	}
 
-	function previewDownloadKey(str) {
+	function previewDownloadKey(str: string): string {
 		const firstPart = str.slice(0, 10);
 		const lastPart = str.slice(-8);
 		return `${firstPart} ... ${lastPart}`;

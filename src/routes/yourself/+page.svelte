@@ -1,16 +1,21 @@
-<script>
+<script lang="ts">
 	import { onMount } from 'svelte';
 	import { goto } from '$app/navigation';
 	import { sk, pk, npub, name, picture, about, website } from '$lib/store';
 	import TwoColumnLayout from '$lib/TwoColumnLayout.svelte';
-	import { generateSecretKey, getPublicKey, finalizeEvent } from 'nostr-tools/pure';
+	import {
+		generateSecretKey,
+		getPublicKey,
+		finalizeEvent,
+		type EventTemplate
+	} from 'nostr-tools/pure';
 	import * as nip19 from 'nostr-tools/nip19';
 	import { calculateFileHash } from 'nostr-tools/nip96';
 	import { utf8Encoder } from 'nostr-tools/utils';
 
 	import { base64 } from '@scure/base';
 
-	let picturePreview = null;
+	let picturePreview: string | null = null;
 
 	onMount(() => {
 		if ($sk.length === 0) {
@@ -21,32 +26,32 @@
 	});
 
 	function triggerFileInput() {
-		document.getElementById('image').click();
+		document.getElementById('image')?.click();
 	}
 
-	function previewImage(event) {
-		const file = event.target.files[0];
+	function previewImage(event: Event & { currentTarget: HTMLInputElement }) {
+		const file = event.currentTarget.files?.[0];
 		if (file) {
 			const reader = new FileReader();
 			reader.onload = () => {
-				picturePreview = reader.result;
+				picturePreview = reader.result as string;
 			};
 			reader.readAsDataURL(file);
 		}
 	}
 
-	async function blossomAuth(file) {
+	async function blossomAuth(file: File) {
 		// Calculate the hash of the image
 		let imageHash = await calculateFileHash(file);
 
 		// Create the event and sign it
-		let eventTemplate = {
+		let eventTemplate: EventTemplate = {
 			kind: 24242,
 			created_at: Math.floor(Date.now() / 1000),
 			tags: [
 				['t', 'upload'],
 				['x', imageHash],
-				['expiration', Math.floor(Date.now() / 1000) + 86400]
+				['expiration', String(Math.floor(Date.now() / 1000) + 86400)]
 			],
 			content: 'Upload profile pic'
 		};
@@ -56,7 +61,7 @@
 		return base64.encode(utf8Encoder.encode(JSON.stringify(signedEvent)));
 	}
 
-	async function uploadImage(file) {
+	async function uploadImage(file: File) {
 		let auth = await blossomAuth(file);
 		const formData = new FormData();
 		formData.append('uploadtype', 'avatar');
@@ -86,7 +91,7 @@
 			return;
 		}
 
-		const file = document.getElementById('image').files[0];
+		const file = (document.getElementById('image') as HTMLInputElement).files?.[0];
 
 		if (file) {
 			try {

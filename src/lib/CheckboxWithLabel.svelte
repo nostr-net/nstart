@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
 	export let checked = false;
 	export let id = `checkbox-${Math.random().toString(36).slice(2, 11)}`;
 	export let position = 'left'; // New prop to define position

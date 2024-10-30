@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
 	import { onMount } from 'svelte';
 	import { goto } from '$app/navigation';
 	import { sk } from '$lib/store';
@@ -6,11 +6,11 @@
 	import { ncryptOption, password } from '$lib/store';
 	import CheckboxWithLabel from '$lib/CheckboxWithLabel.svelte';
 
-	let browserSave = true;
+	// let browserSave = true;
 	let sendEmail = false;
 	let emailSent = false;
 	let email = '';
-	let emailInput;
+	let emailInput: HTMLInputElement;
 
 	$: if (sendEmail && emailInput) {
 		setTimeout(() => {
@@ -31,7 +31,7 @@
 				return;
 			}
 			const inputElement = document.getElementById('email');
-			if (inputElement && !inputElement.validity.valid) {
+			if (inputElement && !(inputElement as HTMLObjectElement).validity!.valid) {
 				alert('Please double check your email');
 				return;
 			}

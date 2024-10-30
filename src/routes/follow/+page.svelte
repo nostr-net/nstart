@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
 	import { onMount } from 'svelte';
 	import { goto } from '$app/navigation';
 	import { sk } from '$lib/store';
@@ -39,7 +39,7 @@
 					you control what you want to see, no obscure and deceptive algorithms, no impositions.
 				</p>
 				<p class="mt-6">
-					In some apps you will have also the possibility to create lists, and so organize betters
+					In some apps you will have also the possibility to create lists, and so organize better
 					who you are following.
 				</p>
 			</div>
