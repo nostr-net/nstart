@@ -31,6 +31,10 @@
 		event.preventDefault();
 		bunkerActivating = true;
 
+		let intv = setInterval(() => {
+			if (activationProgress < 98) activationProgress++;
+		}, 1000);
+
 		try {
 			bunkerURL = await shardGetBunker(
 				pool,
@@ -54,6 +58,8 @@
 			console.error(err);
 			bunkerActivating = false;
 		}
+
+		clearInterval(intv);
 	}
 
 	function navigateContinue() {
