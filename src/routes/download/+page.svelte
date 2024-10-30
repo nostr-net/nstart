@@ -4,17 +4,8 @@
 	import * as nip19 from 'nostr-tools/nip19';
 	import * as nip49 from 'nostr-tools/nip49';
 	import { goto } from '$app/navigation';
-	import {
-		sk,
-		npub,
-		name,
-		picture,
-		about,
-		website,
-		ncryptOption,
-		backupPrivKey,
-		password
-	} from '$lib/store';
+	import { sk, npub, name, ncryptOption, backupPrivKey, password, published } from '$lib/store';
+	import { publishProfile } from '$lib/utils';
 	import TwoColumnLayout from '$lib/TwoColumnLayout.svelte';
 	import ClipToCopy from '$lib/ClipToCopy.svelte';
 	import CheckboxWithLabel from '$lib/CheckboxWithLabel.svelte';
@@ -54,17 +45,6 @@
 		link.click();
 		document.body.removeChild(link);
 		backupInitialized = true;
-	}
-
-	async function publishProfile() {
-		let eventTemplate: EventTemplate = {
-			kind: 0,
-			created_at: Math.floor(Date.now() / 1000),
-			tags: [],
-			content: `{"name": "${$name}", "picture": "${$picture}", "about": "${$about}", "website": "${$website}"}`
-		};
-		let signedEvent = finalizeEvent(eventTemplate, $sk);
-		pool.publish(indexRelays, signedEvent);
 	}
 
 	async function publishRelayList() {
@@ -238,8 +218,8 @@
 		<div class="mt-16 flex justify-end">
 			<button
 				on:click={navigateContinue}
-				disabled={!backupDone}
-				class={`inline-flex items-center rounded px-8 py-3 text-[1.3rem] ${backupDone ? 'bg-strongpink text-white' : 'cursor-not-allowed bg-neutral-400 text-neutral-100'}`}
+				disabled={!backupDone && !$published}
+				class={`inline-flex items-center rounded px-8 py-3 text-[1.3rem] ${backupDone || $published ? 'bg-strongpink text-white' : 'cursor-not-allowed bg-neutral-400 text-neutral-100'}`}
 			>
 				Continue <img src="/icons/arrow-right.svg" alt="continue" class="ml-4 mr-2 h-5 w-5" />
 			</button>

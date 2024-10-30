@@ -1,7 +1,8 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
 	import { goto } from '$app/navigation';
-	import { sk, pk, npub, name, picture, about, website } from '$lib/store';
+	import { sk, pk, npub, name, picture, about, website, published } from '$lib/store';
+	import { publishProfile } from '$lib/utils';
 	import TwoColumnLayout from '$lib/TwoColumnLayout.svelte';
 	import {
 		generateSecretKey,
@@ -101,6 +102,11 @@
 				console.error('Error during upload:', error);
 			}
 		}
+
+		if ($published) {
+			publishProfile();
+		}
+
 		goto('/download');
 	}
 </script>

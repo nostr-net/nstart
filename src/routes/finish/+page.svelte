@@ -59,7 +59,7 @@
 			</p>
 			<p class="mt-6">
 				This is your web profile, you can share it anywhere and with anyone:<br />
-				<a href="https://njump.me/{$npub}" class="underline">njump.me/{$npub}</a>
+				<a href="https://njump.me/{$npub}" class="underline break-all">njump.me/{$npub}</a>
 			</p>
 		</div>
 	</div>
