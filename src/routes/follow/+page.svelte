@@ -11,12 +11,12 @@
 	const FOLLOWS = [
 		{
 			name: 'daniele',
-			pubKey: '7d7ab7a90fbc8e4f0f3689f0fa696451bc85d2d41f9f1f532c116f00001a5f54',
+			pubKey: '7bdef7be22dd8e59f4600e044aa53a1cf975a9dc7d27df5833bc77db784a5805',
 			image: 'https://avatars.githubusercontent.com/u/89577423'
 		},
 		{
 			name: 'fiatjaf',
-			pubKey: '54823f12df08849c934ee40e474445f1c48ece76f9b4794f2adf7102baba3fba',
+			pubKey: '3bf0c63fcb93463407af97a5e5ee64fa883d107ef9e558472c4eb9aaaefa459d',
 			image: 'https://fiatjaf.com/static/favicon.jpg'
 		},
 		{
@@ -31,12 +31,12 @@
 		},
 		{
 			name: 'Snowden',
-			pubKey: '86c23ef6610e4e639868d2f36527eed585a861afcc49cae8955ff8c1dbe31723',
+			pubKey: '84dee6e676e5bb67b4ad4e042cf70cbd8681155db535942fcc6a0533858a7240',
 			image: 'https://nostr.build/i/p/6838p.jpeg'
 		},
 		{
 			name: 'jack',
-			pubKey: '7d7ab7a90fbc8e4f0f3689f0fa696451bc85d2d41f9f1f532c116f00001a5f54',
+			pubKey: '82341f882b6eabcd2ba7f1ef90aad961cf074af15b9ef44a09f9d2a8fbfbe6a2',
 			image:
 				'https://image.nostr.build/26867ce34e4b11f0a1d083114919a9f4eca699f3b007454c396ef48c43628315.jpg'
 		}
@@ -67,24 +67,27 @@
 
 	async function getSelectedUsersArray() {
 		const ids = [];
-		const result = [];
+		const trusted: string[][] = [];
+		const result: string[][] = [];
 
 		for (const user of FOLLOWS) {
 			if (selectedUsers.has(user.pubKey)) {
-				const userArray = ['p', user.pubKey, '', user.name];
 				ids.push(user.pubKey);
-				result.push(userArray);
+				trusted.push(["p", user.pubKey])
 			}
 		}
 
 		const pool = new SimplePool();
-		let events = await pool.querySync(['wss://purplepag.es'], { kinds: [3], authors: ids });
+		let events = await pool.querySync(indexRelays, { kinds: [3], authors: ids });
 		events.forEach((e) => {
 			e.tags.forEach((tag) => {
 				result.push(tag);
 			});
 		});
-		return result;
+
+		// Randomize contacts, keep the selected trusted npub, remove duplicates and trucate to 500 contacts
+		const uniqueResult = Array.from(new Map(result.map(item => [item[1], item])).values()).sort(() => 0.5 - Math.random());
+		return Array.from(new Map(trusted.concat(uniqueResult).map(item => [item[1], item])).values()).slice(0, 500);
 	}
 
 	async function publishFollow() {
