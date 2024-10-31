@@ -32,30 +32,40 @@
 				immediately:
 			</p>
 			<div class="mt-8 grid grid-cols-2 gap-x-12 gap-y-6 sm:flex sm:flex-row sm:gap-12">
-				<div class="flex w-24 flex-col justify-self-center">
-					<div class="h-24 w-24 rounded-full border-8 border-strongpink bg-white"></div>
-					<div class="mt-2 text-center">Coracle</div>
-					<div class="mt-2 text-center text-sm text-neutral-500">Social network</div>
-				</div>
-				<div class="flex w-24 flex-col justify-self-center">
-					<div class="h-24 w-24 rounded-full border-8 border-strongpink bg-white"></div>
-					<div class="mt-2 text-center">Wikistr</div>
-					<div class="mt-2 text-center text-sm text-neutral-500">Free encyclopedia</div>
-				</div>
-				<div class="flex w-24 flex-col justify-self-center">
-					<div class="h-24 w-24 rounded-full border-8 border-strongpink bg-white"></div>
-					<div class="mt-2 text-center">Habla.news</div>
-					<div class="mt-2 text-center text-sm text-neutral-500">Blogging platform</div>
-				</div>
-				<div class="flex w-24 flex-col justify-self-center">
-					<div class="h-24 w-24 rounded-full border-8 border-strongpink bg-white"></div>
-					<div class="mt-2 text-center">Zap.stream</div>
-					<div class="mt-2 text-center text-sm text-neutral-500">Streaming platform</div>
-				</div>
+				<a
+					href="https://coracle.social"
+					target="_blank"
+					class="flex w-24 flex-col justify-self-center"
+				>
+					<img src="/icons/coracle.svg" alt="Coracle" class="h-24" />
+					<div class="mt-2 w-24 text-center">Coracle</div>
+					<div class="mt-2 w-24 text-center text-sm text-neutral-500">Social network</div>
+				</a>
+				<a
+					href="https://wikistr.com"
+					target="_blank"
+					class="flex w-24 flex-col justify-self-center"
+				>
+					<img src="/icons/wikistr.svg" alt="Wikistr" class="h-24" />
+					<div class="mt-2 w-24 text-center">Wikistr</div>
+					<div class="mt-2 w-24 text-center text-sm text-neutral-500">Free encyclopedia</div>
+				</a>
+				<a href="https://habla.news" target="_blank" class="flex flex-col justify-self-center">
+					<img src="/icons/habla.svg" alt="Habla" class="h-24" />
+					<div class="mt-2 w-24 text-center">Habla.news</div>
+					<div class="mt-2 w-24 text-center text-sm text-neutral-500">Blogging platform</div>
+				</a>
+				<a href="https://zap.stream" target="_blank" class="flex w-24 flex-col justify-self-center">
+					<img src="/icons/zap-stream.svg" alt="Zap.stream" class="h-24" />
+					<div class="mt-2 w-24 text-center">Zap.stream</div>
+					<div class="mt-2 w-24 text-center text-sm text-neutral-500">Streaming platform</div>
+				</a>
 			</div>
 			<p class="mt-8 text-neutral-500">
 				This is only a quick selection of the 80+ applications that have already been built on
-				Nostr, <a href="https://nostrapps.com" class="underline">discover them all</a>!
+				Nostr, <a href="https://nostrapps.com" target="_blank" class="underline"
+					>discover them all</a
+				>!
 			</p>
 			<p class="mt-6">
 				This is your web profile, you can share it anywhere and with anyone:<br />

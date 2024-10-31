@@ -2,7 +2,7 @@
 	import { onMount } from 'svelte';
 	import { goto } from '$app/navigation';
 	import { sk, pk, npub, name, picture, about, website, published } from '$lib/store';
-	import isMobileStore from '$lib/mobile'
+	import isMobileStore from '$lib/mobile';
 	import { publishProfile } from '$lib/utils';
 	import TwoColumnLayout from '$lib/TwoColumnLayout.svelte';
 	import {
@@ -26,7 +26,7 @@
 			$npub = nip19.npubEncode($pk);
 		}
 
-		console.log("isMobileStore", isMobileStore)
+		console.log('isMobileStore', isMobileStore);
 	});
 
 	function triggerFileInput() {
