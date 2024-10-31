@@ -69,8 +69,5 @@ export const name = createSessionWritable('name', '');
 export const picture = createSessionWritable('picture', '');
 export const about = createSessionWritable('about', '');
 export const website = createSessionWritable('website', '');
-
-export const backupPrivKey = createSessionWritable('backupPrivKey', '');
 export const password = createSessionWritable('password', '');
-export const ncryptOption = createSessionWritable('ncryptOption', false);
 export const published = createSessionWritable('published', false);

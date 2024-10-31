@@ -1,9 +1,10 @@
 <script lang="ts">
 	export let checked = false;
+	export let disabled = false;
 	export let id = `checkbox-${Math.random().toString(36).slice(2, 11)}`;
 	export let position = 'left';
 	export let alignment = 'start';
-	export let onClick;
+	export let onClick: (() => void) | undefined = undefined;
 </script>
 
 <div class="custom-focus focus-within:ring-1">
@@ -15,6 +16,7 @@
 			checked = !checked;
 			if (onClick) onClick();
 		}}
+		{disabled}
 		bind:checked
 	/>
 

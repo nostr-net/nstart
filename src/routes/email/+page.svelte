@@ -1,18 +1,26 @@
 <script lang="ts">
+	import dotenv from 'dotenv';
 	import { onMount } from 'svelte';
 	import { goto } from '$app/navigation';
-	import { sk } from '$lib/store';
+	import { sk, npub, password } from '$lib/store';
 	import TwoColumnLayout from '$lib/TwoColumnLayout.svelte';
-	import { ncryptOption, password } from '$lib/store';
 	import CheckboxWithLabel from '$lib/CheckboxWithLabel.svelte';
+	import * as nip49 from 'nostr-tools/nip49';
 
 	// let browserSave = true;
-	let sendEmail = false;
+	let requireEmailBackup = false;
 	let emailSent = false;
+	let emailSending = false;
 	let email = '';
 	let emailInput: HTMLInputElement;
+	let backupPrivKey = '';
+	let body = '';
 
-	$: if (sendEmail && emailInput) {
+	const smtpFromEmail = import.meta.env.VITE_SMTP_FROM_EMAIL;
+
+	const subject = 'Your Nostr account';
+
+	$: if (requireEmailBackup && emailInput) {
 		setTimeout(() => {
 			emailInput.focus();
 		}, 10); // Use a timeout to ensure the DOM has updated
@@ -24,8 +32,44 @@
 		}
 	});
 
+	async function sendEmail() {
+		emailSending = true;
+
+		const response = await fetch('/send-email', {
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/json'
+			},
+			body: JSON.stringify({ to: email, subject, body })
+		});
+
+		const result = await response.json();
+
+		if (response.ok) {
+			console.log(result.message);
+			emailSent = true;
+			emailSending = false;
+		} else {
+			console.log(result.error);
+		}
+	}
+
 	function send() {
-		if (sendEmail) {
+		backupPrivKey = nip49.encrypt($sk, $password);
+
+		body = `Hello!
+
+This is your Nostr npub:
+${$npub}
+
+And this is your encrypted Nostr key:
+${backupPrivKey}
+
+Remember to save the chosen password in a safe place!
+
+Welcome to Nostr :)`;
+
+		if (requireEmailBackup) {
 			if (!email || !$password) {
 				alert('Please enter your email and pick a password');
 				return;
@@ -36,10 +80,7 @@
 				return;
 			}
 		}
-
-		// TODO: send email
-
-		emailSent = true;
+		sendEmail();
 	}
 
 	function navigateContinue() {
@@ -65,12 +106,15 @@
 					your email address to have another convenient backup location.<br />
 				</p>
 				<p class="mt-6">
-					{#if !$ncryptOption}
-						Just pick a strong password and keep it safe, write it downw now. make sure you don't
+					{#if !$password}
+						Just pick a strong password and keep it safe, write it downw now, make sure you don't
 						forget it.
 					{:else}
 						We will use the password you picked up previously. Did you wrote it down, right? :)
 					{/if}
+				</p>
+				<p class="mt-6">
+					You will receive an email from {smtpFromEmail}, if you see nothing, check the spam folder.
 				</p>
 			</div>
 		</div>
@@ -80,8 +124,8 @@
 		{#if !emailSent}
 			<div class=" mt-6">
 				<div class="custom-focus focus-within:ring-1">
-					<CheckboxWithLabel bind:checked={sendEmail}>
-						{#if !$ncryptOption}
+					<CheckboxWithLabel bind:checked={requireEmailBackup} disabled={emailSending}>
+						{#if !$password}
 							I want to send my encrypted nsec, to the following email address
 						{:else}
 							I want to send my encrypted nsec (with the same password already entered), to the
@@ -97,7 +141,7 @@
 					placeholder="Your email address"
 					bind:value={email}
 					autofocus
-					disabled={!sendEmail}
+					disabled={!requireEmailBackup}
 					class="mt-6 w-full rounded border-2 border-neutral-300 px-4 py-2 text-xl focus:border-neutral-700 focus:outline-none"
 				/>
 
@@ -105,7 +149,7 @@
 					type="password"
 					placeholder="Pick a password"
 					bind:value={$password}
-					disabled={$ncryptOption || !sendEmail}
+					disabled={$password != '' || !requireEmailBackup}
 					class="mt-6 w-full rounded border-2 border-neutral-300 px-4 py-2 text-xl focus:border-neutral-700 focus:outline-none"
 				/>
 			</div>
@@ -126,16 +170,17 @@
 		{/if}
 
 		<div class="mt-16 flex justify-center sm:justify-end">
-			{#if sendEmail && !emailSent}
+			{#if requireEmailBackup && !emailSent}
 				<button
 					on:click={send}
-					class="inline-flex items-center rounded bg-strongpink px-8 py-3 text-[1.6rem] text-white sm:text-[1.3rem]"
+					disabled={emailSending}
+					class={`inline-flex items-center rounded px-8 py-3 text-[1.6rem] text-white sm:text-[1.3rem] ${!emailSending ? 'bg-strongpink text-white' : 'cursor-not-allowed bg-neutral-400 text-neutral-100'}`}
 				>
 					Send now <img src="/icons/arrow-right.svg" alt="continue" class="ml-4 mr-2 h-6 w-6" />
 				</button>
 			{/if}
 
-			{#if emailSent || !sendEmail}
+			{#if emailSent || !requireEmailBackup}
 				<button
 					on:click={navigateContinue}
 					class="inline-flex items-center rounded bg-strongpink px-8 py-3 text-[1.6rem] text-white sm:text-[1.3rem]"

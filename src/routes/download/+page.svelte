@@ -1,42 +1,48 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
-	import { finalizeEvent, type EventTemplate } from 'nostr-tools/pure';
-	import * as nip19 from 'nostr-tools/nip19';
-	import * as nip49 from 'nostr-tools/nip49';
 	import { goto } from '$app/navigation';
-	import { sk, npub, name, ncryptOption, backupPrivKey, password, published } from '$lib/store';
+	import { sk, npub, name, password, published } from '$lib/store';
 	import { publishProfile } from '$lib/utils';
 	import TwoColumnLayout from '$lib/TwoColumnLayout.svelte';
 	import ClipToCopy from '$lib/ClipToCopy.svelte';
 	import CheckboxWithLabel from '$lib/CheckboxWithLabel.svelte';
+	import { finalizeEvent, type EventTemplate } from 'nostr-tools/pure';
+	import * as nip19 from 'nostr-tools/nip19';
+	import * as nip49 from 'nostr-tools/nip49';
 	import { pool, indexRelays, selectReadRelays, selectWriteRelays } from '$lib/nostr';
 
 	let backupInitialized = false;
 	let backupDone = false;
+	let backupPrivKey = '';
+	let ncryptOption = false;
 
 	onMount(() => {
 		if ($sk.length === 0) {
 			goto('/');
 		}
+
+		if ($password) {
+			ncryptOption = true;
+		}
 	});
 
 	function togglePasswordField() {
-		$ncryptOption = !$ncryptOption;
+		ncryptOption = !ncryptOption;
 	}
 
 	function downloadBackup() {
-		if ($ncryptOption) {
-			$backupPrivKey = nip49.encrypt($sk, $password);
+		if (ncryptOption) {
+			backupPrivKey = nip49.encrypt($sk, $password);
 		} else {
-			$backupPrivKey = nip19.nsecEncode($sk);
+			backupPrivKey = nip19.nsecEncode($sk);
 		}
 
-		if ($ncryptOption && !$password) {
+		if (ncryptOption && !$password) {
 			alert('Please enter a password before downloading the encrypted backup');
 			return;
 		}
 
-		const blob = new Blob([$npub + '\n\n' + $backupPrivKey], { type: 'text/plain' });
+		const blob = new Blob([$npub + '\n\n' + backupPrivKey], { type: 'text/plain' });
 		const link = document.createElement('a');
 		link.href = URL.createObjectURL(blob);
 		link.download = 'nostr-private-key.txt';
@@ -128,7 +134,7 @@
 
 		<div class="mt-10 flex flex-col justify-end">
 			{#if !backupInitialized}
-				{#if !$ncryptOption}
+				{#if !ncryptOption}
 					<button
 						on:click={downloadBackup}
 						class="inline-flex w-full items-center justify-center rounded bg-strongpink px-8 py-3 text-[1.3rem] text-white"
@@ -147,7 +153,7 @@
 					>
 				{/if}
 
-				{#if $ncryptOption}
+				{#if ncryptOption}
 					<!-- svelte-ignore a11y-autofocus -->
 					<input
 						type="text"
@@ -186,9 +192,9 @@
 					Now please open the file and check that the long string after your npub matches these
 					starting and finishing characters:
 					<div class="my-4 rounded bg-yellow-100 px-6 py-4">
-						{previewDownloadKey($backupPrivKey)}
+						{previewDownloadKey(backupPrivKey)}
 					</div>
-					{#if $ncryptOption}
+					{#if ncryptOption}
 						Finally, copy the file in another safe place as additional backup and separately save
 						the chosen password (<strong>{$password}</strong>).
 					{:else}
@@ -197,7 +203,7 @@
 				</div>
 				<div class="custom-focus mt-8 focus-within:ring-1">
 					<CheckboxWithLabel bind:checked={backupDone}>
-						{#if $ncryptOption}
+						{#if ncryptOption}
 							I saved the file and the password in a couple of safe places
 						{:else}
 							I saved the file in a couple of safe places
