@@ -98,7 +98,7 @@
 		{#if !bunkerActivated}
 			<div class=" mt-6">
 				<div class="custom-focus focus-within:ring-1">
-					<CheckboxWithLabel bind:checked={activateBunker}>
+					<CheckboxWithLabel bind:checked={activateBunker} disabled={bunkerActivating}>
 						I want to save my nsec, split in a pool of remote signers to be used for "bunker"
 						connections
 					</CheckboxWithLabel>
@@ -106,12 +106,8 @@
 			</div>
 			{#if activateBunker}
 				<div class="mt-6">
-					The key will be splitted and shared with these 3 independent signers:<br />
-				</div>
-				<div class="mt-6">
-					signer.server-a.com<br />
-					signer.server-k.com<br />
-					signer.server-z.com<br />
+					The key will be splitted and shared with these 3 independent signers picked randomly.<br
+					/>
 				</div>
 			{/if}
 			{#if bunkerActivating || bunkerActivated}
