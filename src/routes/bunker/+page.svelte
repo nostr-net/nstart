@@ -136,26 +136,26 @@
 		{/if}
 
 		{#if activateBunker && !bunkerActivated}
-			<div class="mt-20 flex justify-end">
+			<div class="mt-16 flex justify-center sm:justify-end">
 				<button
 					on:click={activate}
 					disabled={bunkerActivating}
-					class={`inline-flex items-center rounded px-8 py-3 text-[1.3rem] text-white ${!bunkerActivating ? 'bg-strongpink text-white' : 'cursor-not-allowed bg-neutral-400 text-neutral-100'}`}
+					class={`inline-flex items-center rounded px-8 py-3 text-[1.6rem] text-white sm:text-[1.3rem] ${!bunkerActivating ? 'bg-strongpink text-white' : 'cursor-not-allowed bg-neutral-400 text-neutral-100'}`}
 				>
 					Activate the bunker
-					<img src="/icons/arrow-right.svg" alt="continue" class="ml-4 mr-2 h-5 w-5" />
+					<img src="/icons/arrow-right.svg" alt="continue" class="ml-4 mr-2 h-6 w-6" />
 				</button>
 			</div>
 		{/if}
 
 		{#if bunkerActivated || !activateBunker}
-			<div class="mt-20 flex justify-end">
+			<div class="mt-16 flex justify-center sm:justify-end">
 				<button
 					on:click={navigateContinue}
-					class="inline-flex items-center rounded bg-strongpink px-8 py-3 text-[1.3rem] text-white"
+					class="inline-flex items-center rounded bg-strongpink px-8 py-3 text-[1.6rem] text-white sm:text-[1.3rem]"
 				>
 					{bunkerActivated ? 'Continue' : 'No thanks, continue'}
-					<img src="/icons/arrow-right.svg" alt="continue" class="ml-4 mr-2 h-5 w-5" />
+					<img src="/icons/arrow-right.svg" alt="continue" class="ml-4 mr-2 h-6 w-6" />
 				</button>
 			</div>
 		{/if}

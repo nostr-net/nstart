@@ -191,12 +191,12 @@
 				class="mt-6 w-full rounded border-2 border-neutral-300 px-4 py-2 text-xl focus:border-neutral-700 focus:outline-none"
 			/>
 		</div>
-		<div class="mt-20 flex justify-end">
+		<div class="mt-16 flex justify-center sm:justify-end">
 			<button
 				on:click={navigateContinue}
-				class="inline-flex items-center rounded bg-strongpink px-8 py-3 text-[1.3rem] text-white"
+				class="inline-flex items-center rounded bg-strongpink px-8 py-3 text-[1.6rem] text-white sm:text-[1.3rem]"
 			>
-				Continue <img src="/icons/arrow-right.svg" alt="continue" class="ml-4 mr-2 h-5 w-5" />
+				Continue <img src="/icons/arrow-right.svg" alt="continue" class="ml-4 mr-2 h-6 w-6" />
 			</button>
 		</div>
 	</div>

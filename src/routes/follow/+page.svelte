@@ -73,7 +73,7 @@
 		for (const user of FOLLOWS) {
 			if (selectedUsers.has(user.pubKey)) {
 				ids.push(user.pubKey);
-				trusted.push(["p", user.pubKey])
+				trusted.push(['p', user.pubKey]);
 			}
 		}
 
@@ -86,8 +86,12 @@
 		});
 
 		// Randomize contacts, keep the selected trusted npub, remove duplicates and trucate to 500 contacts
-		const uniqueResult = Array.from(new Map(result.map(item => [item[1], item])).values()).sort(() => 0.5 - Math.random());
-		return Array.from(new Map(trusted.concat(uniqueResult).map(item => [item[1], item])).values()).slice(0, 500);
+		const uniqueResult = Array.from(new Map(result.map((item) => [item[1], item])).values()).sort(
+			() => 0.5 - Math.random()
+		);
+		return Array.from(
+			new Map(trusted.concat(uniqueResult).map((item) => [item[1], item])).values()
+		).slice(0, 500);
 	}
 
 	async function publishFollow() {
@@ -121,7 +125,10 @@
 			</div>
 
 			<div class="leading-5 text-neutral-700 sm:w-[90%]">
-				<p class="">What do you think now of following some interesting profiles? We offer you the possibility to copy the full following list of some Nostr users!</p>
+				<p class="">
+					What do you think now of following some interesting profiles? We offer you the possibility
+					to copy the full following list of some Nostr users!
+				</p>
 				<p class="mt-6">
 					When you will use any Nostr application you will automatically find the profiles you
 					followed and their content.
@@ -141,35 +148,33 @@
 	<div slot="interactive">
 		<div class="sm:mt-20">
 			<!-- list of follows -->
-			<div>
-				See the same things these Nostr users are seeing in their feed:
-			</div>
+			<div>See the same things these Nostr users are seeing in their feed:</div>
 			<div class="mt-4">
-			{#each randomUsers as user}
-				<CheckboxWithLabel
-					checked={selectedUsers.has(user.pubKey)}
-					onClick={() => toggleUserSelection(user)}
-					position="right"
-					alignment="center"
-				>
-					<div class="flex items-center border-b-4 border-neutral-200 pb-4 pt-4">
-						<div
-							class="inline-block h-8 w-8 rounded-full bg-cover bg-center"
-							style="background-image: url('{user.image}');"
-						></div>
-						<div class="ml-2 text-xl">{user.name}</div>
-					</div>
-				</CheckboxWithLabel>
-			{/each}
-		</div>
+				{#each randomUsers as user}
+					<CheckboxWithLabel
+						checked={selectedUsers.has(user.pubKey)}
+						onClick={() => toggleUserSelection(user)}
+						position="right"
+						alignment="center"
+					>
+						<div class="flex items-center border-b-4 border-neutral-200 pb-4 pt-4">
+							<div
+								class="inline-block h-8 w-8 rounded-full bg-cover bg-center"
+								style="background-image: url('{user.image}');"
+							></div>
+							<div class="ml-2 text-xl">{user.name}</div>
+						</div>
+					</CheckboxWithLabel>
+				{/each}
+			</div>
 		</div>
 
-		<div class="mt-10 flex justify-end">
+		<div class="mt-16 flex justify-center sm:justify-end">
 			<button
 				on:click={navigateContinue}
-				class="inline-flex items-center rounded bg-strongpink px-8 py-3 text-[1.3rem] text-white"
+				class="inline-flex items-center rounded bg-strongpink px-8 py-3 text-[1.6rem] text-white sm:text-[1.3rem]"
 			>
-				Finish <img src="/icons/arrow-right.svg" alt="continue" class="ml-4 mr-2 h-5 w-5" />
+				Finish <img src="/icons/arrow-right.svg" alt="continue" class="ml-4 mr-2 h-6 w-6" />
 			</button>
 		</div>
 	</div>

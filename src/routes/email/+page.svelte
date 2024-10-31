@@ -125,23 +125,23 @@
 			>
 		{/if}
 
-		<div class="mt-10 flex justify-end">
+		<div class="mt-16 flex justify-center sm:justify-end">
 			{#if sendEmail && !emailSent}
 				<button
 					on:click={send}
-					class="inline-flex items-center rounded bg-strongpink px-8 py-3 text-[1.3rem] text-white"
+					class="inline-flex items-center rounded bg-strongpink px-8 py-3 text-[1.6rem] text-white sm:text-[1.3rem]"
 				>
-					Send now <img src="/icons/arrow-right.svg" alt="continue" class="ml-4 mr-2 h-5 w-5" />
+					Send now <img src="/icons/arrow-right.svg" alt="continue" class="ml-4 mr-2 h-6 w-6" />
 				</button>
 			{/if}
 
 			{#if emailSent || !sendEmail}
 				<button
 					on:click={navigateContinue}
-					class="inline-flex items-center rounded bg-strongpink px-8 py-3 text-[1.3rem] text-white"
+					class="inline-flex items-center rounded bg-strongpink px-8 py-3 text-[1.6rem] text-white sm:text-[1.3rem]"
 				>
 					{emailSent ? 'Continue' : 'No thanks, continue'}
-					<img src="/icons/arrow-right.svg" alt="continue" class="ml-4 mr-2 h-5 w-5" />
+					<img src="/icons/arrow-right.svg" alt="continue" class="ml-4 mr-2 h-6 w-6" />
 				</button>
 			{/if}
 		</div>

@@ -11,17 +11,15 @@
 			<div class="mx-auto">
 				<!-- content-->
 				<div class="p-8 sm:flex sm:flex-row-reverse sm:p-0">
-					<div
-						class="flex justify-center sm:relative sm:w-[45vw] sm:overflow-hidden"
-					>
+					<div class="flex justify-center sm:relative sm:w-[45vw] sm:overflow-hidden">
 						<img
 							src="/images/relay.png"
-							class="z-0 mb-8 w-60 object-cover sm:absolute sm:w-full sm:object-left sm:-right-[20px] sm:top-10"
+							class="z-0 mb-8 w-60 object-cover sm:absolute sm:-right-[20px] sm:top-10 sm:w-full sm:object-left"
 							alt="Nostr Client"
 						/>
 					</div>
 
-					<div class="z-20 sm:w-[55vw] sm:min-w-[720px] sm:pl-[16vw] sm:py-10">
+					<div class="z-20 sm:w-[55vw] sm:min-w-[720px] sm:py-10 sm:pl-[16vw]">
 						<!-- Welcome title -->
 						<div class="mb-8 border-l-[0.9rem] border-strongpink pl-4 sm:-ml-8">
 							<h1 class="font-bold">
@@ -30,7 +28,8 @@
 									class="break-words text-[3.5rem] leading-[1em] sm:h-auto sm:text-[6rem]"
 									id="tw"
 								>
-									<span class="text-neutral-500">TO</span> <span class="text-strongpink">NOSTR</span>
+									<span class="text-neutral-500">TO</span>
+									<span class="text-strongpink">NOSTR</span>
 								</div>
 							</h1>
 						</div>
@@ -54,7 +53,7 @@
 						</div>
 
 						<!-- Start button -->
-						<div class="my-8 sm:-mr-20 flex justify-center sm:justify-end">
+						<div class="my-8 flex justify-center sm:-mr-20 sm:justify-end">
 							<a
 								class="inline-flex items-center rounded bg-strongpink px-10 py-3 text-[1.6rem] text-white"
 								href="/yourself"
@@ -62,7 +61,7 @@
 								Let's Start <img
 									src="/icons/arrow-right.svg"
 									alt="Icon"
-									class="ml-4 mr-2 h-8 w-8"
+									class="ml-4 mr-2 h-6 w-6"
 								/>
 							</a>
 						</div>
