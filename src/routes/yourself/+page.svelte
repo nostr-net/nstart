@@ -2,6 +2,7 @@
 	import { onMount } from 'svelte';
 	import { goto } from '$app/navigation';
 	import { sk, pk, npub, name, picture, about, website, published } from '$lib/store';
+	import isMobileStore from '$lib/mobile'
 	import { publishProfile } from '$lib/utils';
 	import TwoColumnLayout from '$lib/TwoColumnLayout.svelte';
 	import {
@@ -24,6 +25,8 @@
 			$pk = getPublicKey($sk);
 			$npub = nip19.npubEncode($pk);
 		}
+
+		console.log("isMobileStore", isMobileStore)
 	});
 
 	function triggerFileInput() {
@@ -176,7 +179,7 @@
 				type="text"
 				placeholder="Your name"
 				bind:value={$name}
-				autofocus
+				autofocus={!$isMobileStore}
 				class="mt-6 w-full rounded border-2 border-neutral-300 px-4 py-2 text-xl focus:border-neutral-700 focus:outline-none"
 			/>
 			<textarea

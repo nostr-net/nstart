@@ -2,6 +2,7 @@
 	import { onMount } from 'svelte';
 	import { goto } from '$app/navigation';
 	import { sk, npub, name, password, published } from '$lib/store';
+	import isMobileStore from '$lib/mobile';
 	import { publishProfile } from '$lib/utils';
 	import TwoColumnLayout from '$lib/TwoColumnLayout.svelte';
 	import ClipToCopy from '$lib/ClipToCopy.svelte';
@@ -115,8 +116,8 @@
 					profile and act, for example posting notes. This must clearly be kept absolutely secret.
 				</p>
 				<p class="mt-6">
-					Now please download your nsec as a txt file and save it in a safe place, for example your
-					password manager.
+					Now please download your nsec (is a txt file) and save it in a safe place, for example
+					your password manager.
 				</p>
 			</div>
 		</div>
@@ -160,8 +161,8 @@
 						bind:value={$password}
 						placeholder="Pick a password"
 						required
+						autofocus={!$isMobileStore}
 						class="w-full rounded border-2 border-neutral-300 px-4 py-2 text-xl focus:border-neutral-700 focus:outline-none"
-						autofocus
 					/>
 					<button
 						class="mt-6 inline-flex w-full items-center justify-center rounded bg-strongpink px-8 py-3 text-[1.3rem] text-white"
@@ -182,7 +183,7 @@
 				{/if}
 				<div class="mt-8 text-neutral-600">
 					From your nsec you can generate your npub, so it is the only information you really need
-					to keep safe. But feel free to also copy your npub and keep it at hand.
+					to keep safe.
 				</div>
 			{:else}
 				<div class="flex justify-center">

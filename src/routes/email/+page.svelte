@@ -3,6 +3,7 @@
 	import { onMount } from 'svelte';
 	import { goto } from '$app/navigation';
 	import { sk, npub, password } from '$lib/store';
+	import isMobileStore from '$lib/mobile';
 	import TwoColumnLayout from '$lib/TwoColumnLayout.svelte';
 	import CheckboxWithLabel from '$lib/CheckboxWithLabel.svelte';
 	import * as nip49 from 'nostr-tools/nip49';
@@ -140,7 +141,7 @@ Welcome to Nostr :)`;
 					type="email"
 					placeholder="Your email address"
 					bind:value={email}
-					autofocus
+					autofocus={!$isMobileStore}
 					disabled={!requireEmailBackup}
 					class="mt-6 w-full rounded border-2 border-neutral-300 px-4 py-2 text-xl focus:border-neutral-700 focus:outline-none"
 				/>
