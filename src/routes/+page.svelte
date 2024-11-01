@@ -62,7 +62,7 @@
 							</p>
 							<p class="mt-6">
 								This wizard is one of the many way to bootstrap a Nostr profile that you can use
-								anywhere, we help you to create you key-pair and safely manage it in 3 easy steps.
+								anywhere, we help you to create you key-pair and safely manage it few easy steps.
 								Are you ready?
 							</p>
 						</div>
@@ -70,13 +70,13 @@
 						<!-- Start button -->
 						<div class="my-8 flex justify-center sm:-mr-20 sm:justify-end">
 							<a
-								class="inline-flex items-center rounded bg-strongpink px-10 py-3 text-[1.6rem] text-white"
+								class="inline-flex items-center rounded bg-strongpink px-10 py-4 text-[1.8rem] text-white"
 								href="/yourself"
 							>
 								Let's Start <img
 									src="/icons/arrow-right.svg"
 									alt="Icon"
-									class="ml-4 mr-2 h-6 w-6"
+									class="ml-4 mr-2 h-7 w-7"
 								/>
 							</a>
 						</div>
