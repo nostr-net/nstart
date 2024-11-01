@@ -3,7 +3,7 @@
 @tailwind utilities;
 
 @layer base {
-	:focus, .custom-focus:focus, .custom-focus:focus-within {
+	:focus-visible, .custom-focus:focus, .custom-focus:focus-within {
 		outline: 2px dashed rgb(255, 183, 0); /* Example: neutral-300 */
 		border-radius: 2px;
 	}

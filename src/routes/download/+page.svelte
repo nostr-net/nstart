@@ -202,7 +202,7 @@
 						Finally, copy the file in another safe place as additional backup.
 					{/if}
 				</div>
-				<div class="custom-focus mt-8 focus-within:ring-1">
+				<div class="mt-8">
 					<CheckboxWithLabel bind:checked={backupDone}>
 						{#if ncryptOption}
 							I saved the file and the password in a couple of safe places

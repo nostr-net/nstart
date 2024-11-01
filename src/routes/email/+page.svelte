@@ -124,7 +124,7 @@ Welcome to Nostr :)`;
 	<div slot="interactive">
 		{#if !emailSent}
 			<div class=" mt-6">
-				<div class="custom-focus focus-within:ring-1">
+				<div>
 					<CheckboxWithLabel bind:checked={requireEmailBackup} disabled={emailSending}>
 						{#if !$password}
 							I want to send my encrypted nsec, to the following email address

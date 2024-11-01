@@ -97,7 +97,7 @@
 	<div slot="interactive">
 		{#if !bunkerActivated}
 			<div class=" mt-6">
-				<div class="custom-focus focus-within:ring-1">
+				<div>
 					<CheckboxWithLabel bind:checked={activateBunker} disabled={bunkerActivating}>
 						I want to save my nsec, split in a pool of remote signers to be used for "bunker"
 						connections
