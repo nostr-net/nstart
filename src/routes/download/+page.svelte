@@ -162,7 +162,7 @@
 						placeholder="Pick a password"
 						required
 						autofocus={!$isMobileStore}
-						class="w-full rounded border-2 border-neutral-300 px-4 py-2 text-xl focus:border-neutral-700 focus:outline-none"
+						class="input-hover-enabled w-full rounded border-2 border-neutral-300 px-4 py-2 text-xl focus:border-neutral-700 focus:outline-none"
 					/>
 					<button
 						class="mt-6 inline-flex w-full items-center justify-center rounded bg-strongpink px-8 py-3 text-[1.3rem] text-white"

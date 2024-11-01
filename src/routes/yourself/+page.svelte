@@ -149,11 +149,11 @@
 
 	<div slot="interactive">
 		<div class="flex items-end justify-end">
-			<div class="text-xl text-neutral-400">Your image</div>
+			<button on:click={triggerFileInput} class="text-xl text-neutral-400">Your image</button>
 			<div class="-mr-8 ml-2 mt-2 h-1 w-20 border-t-2 border-neutral-300"></div>
 			<button
 				on:click={triggerFileInput}
-				class="h-24 w-24 rounded-full border-2 border-neutral-300 bg-neutral-100"
+				class="input-hover-enabled h-24 w-24 rounded-full border-2 border-neutral-300 bg-neutral-100"
 			>
 				<!-- svelte-ignore a11y-img-redundant-alt -->
 				{#if picturePreview || $picture}
@@ -180,18 +180,18 @@
 				placeholder="Your name"
 				bind:value={$name}
 				autofocus={!$isMobileStore}
-				class="mt-6 w-full rounded border-2 border-neutral-300 px-4 py-2 text-xl focus:border-neutral-700 focus:outline-none"
+				class="input-hover-enabled mt-6 w-full rounded border-2 border-neutral-300 px-4 py-2 text-xl focus:border-neutral-700 focus:outline-none"
 			/>
 			<textarea
 				placeholder="A brief presentation"
 				bind:value={$about}
-				class="mt-6 w-full rounded border-2 border-neutral-300 px-4 py-2 text-xl focus:border-neutral-700 focus:outline-none"
+				class="input-hover-enabled mt-6 w-full rounded border-2 border-neutral-300 px-4 py-2 text-xl focus:border-neutral-700 focus:outline-none"
 			></textarea>
 			<input
 				type="text"
 				placeholder="Your website"
 				bind:value={$website}
-				class="mt-6 w-full rounded border-2 border-neutral-300 px-4 py-2 text-xl focus:border-neutral-700 focus:outline-none"
+				class="input-hover-enabled mt-6 w-full rounded border-2 border-neutral-300 px-4 py-2 text-xl focus:border-neutral-700 focus:outline-none"
 			/>
 		</div>
 		<div class="mt-16 flex justify-center sm:justify-end">

@@ -151,7 +151,7 @@ PS: This email address does not accept replies, to request support please tag ht
 					bind:value={email}
 					autofocus={!$isMobileStore}
 					disabled={!requireEmailBackup}
-					class="mt-6 w-full rounded border-2 border-neutral-300 px-4 py-2 text-xl focus:border-neutral-700 focus:outline-none"
+					class="input-hover-enabled mt-6 w-full rounded border-2 border-neutral-300 px-4 py-2 text-xl focus:border-neutral-700 focus:outline-none"
 				/>
 
 				<input
@@ -159,7 +159,7 @@ PS: This email address does not accept replies, to request support please tag ht
 					placeholder="Pick a password"
 					bind:value={emailPassword}
 					disabled={$password != '' || !requireEmailBackup}
-					class="mt-6 w-full rounded border-2 border-neutral-300 px-4 py-2 text-xl focus:border-neutral-700 focus:outline-none"
+					class="input-hover-enabled mt-6 w-full rounded border-2 border-neutral-300 px-4 py-2 text-xl focus:border-neutral-700 focus:outline-none"
 				/>
 			</div>
 		{:else}
