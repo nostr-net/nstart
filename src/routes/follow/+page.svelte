@@ -11,32 +11,75 @@
 	const FOLLOWS = [
 		{
 			name: 'daniele',
-			pubKey: '7bdef7be22dd8e59f4600e044aa53a1cf975a9dc7d27df5833bc77db784a5805',
+			pubkey: '7bdef7be22dd8e59f4600e044aa53a1cf975a9dc7d27df5833bc77db784a5805',
 			image: 'https://avatars.githubusercontent.com/u/89577423'
 		},
 		{
 			name: 'fiatjaf',
-			pubKey: '3bf0c63fcb93463407af97a5e5ee64fa883d107ef9e558472c4eb9aaaefa459d',
+			pubkey: '3bf0c63fcb93463407af97a5e5ee64fa883d107ef9e558472c4eb9aaaefa459d',
 			image: 'https://fiatjaf.com/static/favicon.jpg'
 		},
 		{
+			name: 'Rabble',
+			pubkey: '76c71aae3a491f1d9eec47cba17e229cda4113a0bbb6e6ae1776d7643e29cafa',
+			image: 'https://i.nostr.build/ml33v.png'
+		},
+		{
+			name: 'Pablo',
+			pubkey: 'fa984bd7dbb282f07e16e7ae87b26a2a7b9b90b7246a44771f0cf5ae58018f52',
+			image: 'https://m.primal.net/KwlG.jpg'
+		},
+		{
+			name: 'Alex',
+			pubkey: '9ce71f1506ccf4b99f234af49bd6202be883a80f95a155c6e9a1c36fd7e780c7',
+			image: 'https://cdn.nostr.build/p/4LyD.jpg'
+		},
+		{
+			name: 'jb55',
+			pubkey: '32e1827635450ebb3c5a7d12c1f8e7b2b514439ac10a67eef3d9fd9c5c68e245',
+			image: 'https://cdn.jb55.com/img/red-me.jpg'
+		},
+		{
+			name: 'laanwj',
+			pubkey: '0aa39e5aef99a000a7bdb0b499158c92bc4aa20fb65931a52d055b5eb6dff738',
+			image:
+				'https://media.x0f.org/8b444ccaf9b27b36c60fa99956b337b901094fac6a8d4592268214ead0611116.jpeg'
+		},
+		{
+			name: 'Alex Gleason',
+			pubkey: '0461fcbecc4c3374439932d6b8f11269ccdb7cc973ad7a50ae362db135a474dd',
+			image:
+				'https://image.nostr.build/3320e9c4901646a3dd8b648d5414d8a01068e1498eb935a6b415f3a9465cdd3b.jpg'
+		},
+		{
+			name: 'Dawn',
+			pubkey: 'c230edd34ca5c8318bf4592ac056cde37519d395c0904c37ea1c650b8ad4a712',
+			image: 'https://pbs.twimg.com/profile_images/1466845930876022789/weOpD4Ix.jpg'
+		},
+		{
 			name: 'hodlbod',
-			pubKey: '97c70a44366a6535c145b333f973ea86dfdc2d7a99da618c40c64705ad98e322',
+			pubkey: '97c70a44366a6535c145b333f973ea86dfdc2d7a99da618c40c64705ad98e322',
 			image: 'https://i.nostr.build/AZ0L.jpg'
 		},
 		{
 			name: 'Michael Dilger',
-			pubKey: 'ee11a5dff40c19a555f41fe42b48f00e618c91225622ae37b6c2bb67b76c4e49',
+			pubkey: 'ee11a5dff40c19a555f41fe42b48f00e618c91225622ae37b6c2bb67b76c4e49',
 			image: 'https://mikedilger.com/bs.webp'
 		},
 		{
+			name: 'Pam',
+			pubkey: '0b118e40d6f3dfabb17f21a94a647701f140d8b063a9e84fe6e483644edc09cb',
+			image:
+				'https://nostr.build/i/p/nostr.build_15d3f5653f090ca5832c77f1583e9f698831d383862eaf1b535e7a4cb30b29ed.jpeg'
+		},
+		{
 			name: 'Snowden',
-			pubKey: '84dee6e676e5bb67b4ad4e042cf70cbd8681155db535942fcc6a0533858a7240',
+			pubkey: '84dee6e676e5bb67b4ad4e042cf70cbd8681155db535942fcc6a0533858a7240',
 			image: 'https://nostr.build/i/p/6838p.jpeg'
 		},
 		{
 			name: 'jack',
-			pubKey: '82341f882b6eabcd2ba7f1ef90aad961cf074af15b9ef44a09f9d2a8fbfbe6a2',
+			pubkey: '82341f882b6eabcd2ba7f1ef90aad961cf074af15b9ef44a09f9d2a8fbfbe6a2',
 			image:
 				'https://image.nostr.build/26867ce34e4b11f0a1d083114919a9f4eca699f3b007454c396ef48c43628315.jpg'
 		}
@@ -57,11 +100,11 @@
 		randomUsers = shuffled.slice(0, 5);
 	}
 
-	function toggleUserSelection(user: { pubKey: unknown }) {
-		if (selectedUsers.has(user.pubKey)) {
-			selectedUsers.delete(user.pubKey);
+	function toggleUserSelection(user: { pubkey: unknown }) {
+		if (selectedUsers.has(user.pubkey)) {
+			selectedUsers.delete(user.pubkey);
 		} else {
-			selectedUsers.add(user.pubKey);
+			selectedUsers.add(user.pubkey);
 		}
 	}
 
@@ -71,9 +114,9 @@
 		const result: string[][] = [];
 
 		for (const user of FOLLOWS) {
-			if (selectedUsers.has(user.pubKey)) {
-				ids.push(user.pubKey);
-				trusted.push(['p', user.pubKey]);
+			if (selectedUsers.has(user.pubkey)) {
+				ids.push(user.pubkey);
+				trusted.push(['p', user.pubkey]);
 			}
 		}
 
@@ -152,7 +195,7 @@
 			<div class="mt-4">
 				{#each randomUsers as user}
 					<CheckboxWithLabel
-						checked={selectedUsers.has(user.pubKey)}
+						checked={selectedUsers.has(user.pubkey)}
 						onClick={() => toggleUserSelection(user)}
 						position="right"
 						alignment="center"
