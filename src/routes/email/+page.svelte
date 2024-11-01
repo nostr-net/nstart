@@ -13,6 +13,7 @@
 	let emailSent = false;
 	let emailSending = false;
 	let email = '';
+	let emailPassword = '';
 	let emailInput: HTMLInputElement;
 	let backupPrivKey = '';
 	let body = '';
@@ -30,6 +31,9 @@
 	onMount(() => {
 		if ($sk.length === 0) {
 			goto('/');
+		}
+		if ($password) {
+			emailPassword = $password;
 		}
 	});
 
@@ -71,7 +75,7 @@ Remember to save the chosen password in a safe place!
 Welcome to Nostr :)`;
 
 		if (requireEmailBackup) {
-			if (!email || !$password) {
+			if (!email || !emailPassword) {
 				alert('Please enter your email and pick a password');
 				return;
 			}
@@ -81,6 +85,7 @@ Welcome to Nostr :)`;
 				return;
 			}
 		}
+		$password = emailPassword;
 		sendEmail();
 	}
 
@@ -129,8 +134,8 @@ Welcome to Nostr :)`;
 						{#if !$password}
 							I want to send my encrypted nsec, to the following email address
 						{:else}
-							I want to send my encrypted nsec (with the same password already entered), to the
-							following email address
+							I want to send my encrypted nsec (with the same password already entered previously),
+							to the following email address:
 						{/if}
 					</CheckboxWithLabel>
 				</div>
@@ -147,9 +152,9 @@ Welcome to Nostr :)`;
 				/>
 
 				<input
-					type="password"
+					type="text"
 					placeholder="Pick a password"
-					bind:value={$password}
+					bind:value={emailPassword}
 					disabled={$password != '' || !requireEmailBackup}
 					class="mt-6 w-full rounded border-2 border-neutral-300 px-4 py-2 text-xl focus:border-neutral-700 focus:outline-none"
 				/>
