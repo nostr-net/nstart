@@ -72,7 +72,10 @@ ${backupPrivKey}
 
 Remember to save the chosen password in a safe place!
 
-Welcome to Nostr :)`;
+Welcome to Nostr :)
+
+PS: This email address does not accept replies, to request support please tag https://njump.me/dtonon.com or https://njump.me/fiatjaf.com on Nostr
+`;
 
 		if (requireEmailBackup) {
 			if (!email || !emailPassword) {
