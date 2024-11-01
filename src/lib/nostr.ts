@@ -9,7 +9,8 @@ export const signers = [
 	'23a3ff76766f5ffc852fa6f2fc5058c1306ee25927632e0f8e213af11a5b8de5', // fiatjaf 2
 	'aa4f53d8041b88adee44cefb62fb49fdeb85d151d1a346e655850c213508ed2e', // hodlbod
 	'a8ec5e760d8420d774be5d6a6c634071244c4efbae6a94bfe048dfd5c85bd280', // pablo
-	'17da048b868a247beef98160907b2127030dbc718fea9eb5225913576586cb8c' // fiatjaf 1
+	'17da048b868a247beef98160907b2127030dbc718fea9eb5225913576586cb8c', // fiatjaf 1
+	'4be49a6175734b43c7083ceac11e47bf684ffe65bd021c949bea1702409c119a', // daniele
 ];
 
 export const indexRelays = [
