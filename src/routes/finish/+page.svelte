@@ -39,7 +39,17 @@
 				>
 					<img src="/icons/coracle.svg" alt="Coracle" class="h-24" />
 					<div class="mt-2 w-24 text-center">Coracle</div>
-					<div class="mt-2 w-24 text-center text-sm text-neutral-500">Social network</div>
+					<div class="mt-2 w-24 text-center text-sm text-neutral-500">Microblogging</div>
+				</a>
+				<a href="https://habla.news" target="_blank" class="flex flex-col justify-self-center">
+					<img src="/icons/habla.svg" alt="Habla" class="h-24" />
+					<div class="mt-2 w-24 text-center">Habla.news</div>
+					<div class="mt-2 w-24 text-center text-sm text-neutral-500">Articles</div>
+				</a>
+				<a href="https://zap.stream" target="_blank" class="flex w-24 flex-col justify-self-center">
+					<img src="/icons/zap-stream.svg" alt="Zap.stream" class="h-24" />
+					<div class="mt-2 w-24 text-center">Zap.stream</div>
+					<div class="mt-2 w-24 text-center text-sm text-neutral-500">Livestreaming</div>
 				</a>
 				<a
 					href="https://wikistr.com"
@@ -48,17 +58,7 @@
 				>
 					<img src="/icons/wikistr.svg" alt="Wikistr" class="h-24" />
 					<div class="mt-2 w-24 text-center">Wikistr</div>
-					<div class="mt-2 w-24 text-center text-sm text-neutral-500">Free encyclopedia</div>
-				</a>
-				<a href="https://habla.news" target="_blank" class="flex flex-col justify-self-center">
-					<img src="/icons/habla.svg" alt="Habla" class="h-24" />
-					<div class="mt-2 w-24 text-center">Habla.news</div>
-					<div class="mt-2 w-24 text-center text-sm text-neutral-500">Blogging platform</div>
-				</a>
-				<a href="https://zap.stream" target="_blank" class="flex w-24 flex-col justify-self-center">
-					<img src="/icons/zap-stream.svg" alt="Zap.stream" class="h-24" />
-					<div class="mt-2 w-24 text-center">Zap.stream</div>
-					<div class="mt-2 w-24 text-center text-sm text-neutral-500">Streaming platform</div>
+					<div class="mt-2 w-24 text-center text-sm text-neutral-500">Open encyclopedia</div>
 				</a>
 			</div>
 			<p class="mt-8 text-neutral-500">

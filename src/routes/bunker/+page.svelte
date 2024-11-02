@@ -81,14 +81,20 @@
 
 			<div class="leading-5 text-neutral-700 sm:w-[90%]">
 				<p class="">
-					Now you have the possibility to save your nsec, split in part, in a pool of remote
-					signers; this will give you a "bunker" url that you can use to login in many web, mobile
-					and desktop apps without exposing your key.
+					Now you have the possibility to split your <em class="italic">nsec</em> in 3 using a
+					technique called
+					<a href="https://www.youtube.com/watch?v=ReN0kMzDFro" target="_blank">FROST</a> and distribute
+					each shard to an independent trusted remote signer.
 				</p>
 				<p class="mt-6">
-					Technically this is a custodial solution, but since your nsec is splitted and shared
-					between a pool of 3 random signers using a tecquique called FROST, all the server shoulds
-					cooperate to steal your key, and this is unlikely.
+					This will give you a <em class="italic">bunker</em> code that you can use to login in many
+					web, mobile and desktop apps without exposing your
+					<em class="italic">nsec</em>.
+				</p>
+				<p class="mt-6">
+					If you ever lose your <em class="italic">bunker</em> code, if the signers vanish from
+					Earth and it stops working or if it gets stolen by a malware virus you can use your
+					<em class="italic">nsec</em> to create a new and invalidate the old one.
 				</p>
 			</div>
 		</div>
@@ -106,8 +112,7 @@
 			</div>
 			{#if activateBunker}
 				<div class="mt-6">
-					The key will be splitted and shared with these 3 independent signers picked randomly.<br
-					/>
+					The key will be splitted and shared with these 3 independent signers.<br />
 				</div>
 			{/if}
 			{#if bunkerActivating || bunkerActivated}

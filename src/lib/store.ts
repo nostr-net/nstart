@@ -70,4 +70,3 @@ export const picture = createSessionWritable('picture', '');
 export const about = createSessionWritable('about', '');
 export const website = createSessionWritable('website', '');
 export const password = createSessionWritable('password', '');
-export const published = createSessionWritable('published', false);

@@ -1,12 +1,13 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
+	import { SimplePool } from 'nostr-tools/pool';
+
 	import { goto } from '$app/navigation';
 	import { sk } from '$lib/store';
 	import TwoColumnLayout from '$lib/TwoColumnLayout.svelte';
 	import CheckboxWithLabel from '$lib/CheckboxWithLabel.svelte';
-	import { finalizeEvent, type EventTemplate } from 'nostr-tools/pure';
-	import { pool, indexRelays } from '$lib/nostr';
-	import { SimplePool } from 'nostr-tools/pool';
+	import { indexRelays } from '$lib/nostr';
+	import { delayedActions, publishFollows, runActions } from '$lib/actions';
 
 	const FOLLOWS = [
 		{
@@ -109,48 +110,42 @@
 	}
 
 	async function getSelectedUsersArray() {
-		const ids = [];
-		const trusted: string[][] = [];
-		const result: string[][] = [];
+		const sources: string[] = [];
 
 		for (const user of FOLLOWS) {
 			if (selectedUsers.has(user.pubkey)) {
-				ids.push(user.pubkey);
-				trusted.push(['p', user.pubkey]);
+				sources.push(user.pubkey);
 			}
 		}
 
+		const all = new Set<string>();
+
 		const pool = new SimplePool();
-		let events = await pool.querySync(indexRelays, { kinds: [3], authors: ids });
+		let events = await pool.querySync(indexRelays, { kinds: [3], authors: sources });
 		events.forEach((e) => {
 			e.tags.forEach((tag) => {
-				result.push(tag);
+				if (tag[0] === 'p' && tag[1].match(/^[a-f0-9]{64}$/) && !sources.includes(tag[1])) {
+					all.add(tag[1]);
+				}
 			});
 		});
 
-		// Randomize contacts, keep the selected trusted npub, remove duplicates and trucate to 500 contacts
-		const uniqueResult = Array.from(new Map(result.map((item) => [item[1], item])).values()).sort(
-			() => 0.5 - Math.random()
-		);
-		return Array.from(
-			new Map(trusted.concat(uniqueResult).map((item) => [item[1], item])).values()
-		).slice(0, 500);
+		const pubkeys = Array.from(all.values());
+		const follows: string[][] = sources.map((pk) => ['p', pk]);
+		while (follows.length < 500 && pubkeys.length > 0) {
+			const pick = pubkeys.splice(
+				Math.floor(Math.random() * pubkeys.length),
+				Math.round(Math.random() * 15)
+			);
+			follows.push(...pick.map((pk) => ['p', pk]));
+		}
+
+		return follows;
 	}
 
-	async function publishFollow() {
-		let contacts = await getSelectedUsersArray();
-		let eventTemplate: EventTemplate = {
-			kind: 3,
-			created_at: Math.floor(Date.now() / 1000),
-			tags: contacts,
-			content: ''
-		};
-		let signedEvent = finalizeEvent(eventTemplate, $sk);
-		pool.publish(indexRelays, signedEvent);
-	}
-
-	function navigateContinue() {
-		publishFollow();
+	async function navigateContinue() {
+		delayedActions.push([publishFollows, [$sk, getSelectedUsersArray()]]);
+		await runActions();
 		goto('/finish');
 	}
 </script>
@@ -170,19 +165,12 @@
 			<div class="leading-5 text-neutral-700 sm:w-[90%]">
 				<p class="">
 					What do you think now of following some interesting profiles? We offer you the possibility
-					to copy the full following list of some Nostr users!
+					to copy the full following list of some Nostr users, so you can start your Nostr journey
+					with a feed full of posts from already curated individuals.
 				</p>
 				<p class="mt-6">
-					When you will use any Nostr application you will automatically find the profiles you
-					followed and their content.
-				</p>
-				<p class="mt-6">
-					You can later follow more people, or remove previously selected ones as well; with Nostr
-					you control what you want to see, no obscure and deceptive algorithms, no impositions.
-				</p>
-				<p class="mt-6">
-					In some apps you will have also the possibility to create lists, and so organize better
-					who you are following.
+					You can later follow more people, or unfollow some as well; with Nostr you control what
+					you want to see, no obscure and deceptive algorithms, no impositions.
 				</p>
 			</div>
 		</div>

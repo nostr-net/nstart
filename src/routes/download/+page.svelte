@@ -1,16 +1,15 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
+	import * as nip19 from 'nostr-tools/nip19';
+	import * as nip49 from 'nostr-tools/nip49';
+
 	import { goto } from '$app/navigation';
-	import { sk, npub, name, password, published } from '$lib/store';
-	import isMobileStore from '$lib/mobile';
-	import { publishProfile } from '$lib/utils';
+	import { sk, npub, name, password, picture, about, website } from '$lib/store';
+	import { isMobile } from '$lib/mobile';
 	import TwoColumnLayout from '$lib/TwoColumnLayout.svelte';
 	import ClipToCopy from '$lib/ClipToCopy.svelte';
 	import CheckboxWithLabel from '$lib/CheckboxWithLabel.svelte';
-	import { finalizeEvent, type EventTemplate } from 'nostr-tools/pure';
-	import * as nip19 from 'nostr-tools/nip19';
-	import * as nip49 from 'nostr-tools/nip49';
-	import { pool, indexRelays, selectReadRelays, selectWriteRelays } from '$lib/nostr';
+	import { delayedActions, publishRelayList, publishProfile } from '$lib/actions';
 
 	let backupInitialized = false;
 	let backupDone = false;
@@ -54,33 +53,20 @@
 		backupInitialized = true;
 	}
 
-	async function publishRelayList() {
-		let ourInbox: string[] = selectReadRelays();
-		let ourOutbox: string[] = selectWriteRelays();
-
-		const tags: string[][] = [];
-		for (let i = 0; i < ourOutbox.length; i++) {
-			const url = ourOutbox[i];
-			tags.push(['r', url, 'write']);
-		}
-		for (let i = 0; i < ourInbox.length; i++) {
-			const url = ourInbox[i];
-			tags.push(['r', url, 'read']);
-		}
-
-		let eventTemplate: EventTemplate = {
-			kind: 10002,
-			created_at: Math.floor(Date.now() / 1000),
-			tags,
-			content: ''
-		};
-		let signedEvent = finalizeEvent(eventTemplate, $sk);
-		pool.publish(indexRelays, signedEvent);
-	}
-
 	function navigateContinue() {
-		publishProfile();
-		publishRelayList();
+		delayedActions.push([
+			publishProfile,
+			[
+				$sk,
+				{
+					name: $name,
+					picture: $picture,
+					about: $about,
+					webiste: $website
+				}
+			]
+		]);
+		delayedActions.push([publishRelayList, [$sk]]);
 		goto('/email');
 	}
 
@@ -105,18 +91,18 @@
 
 			<div class="leading-5 text-neutral-700 sm:w-[90%]">
 				<p class="">
-					Well done <strong>{$name}</strong>, your Nostr profile is ready, yes it was so easy!
+					Well done, <strong>{$name}</strong>, your Nostr profile is ready, yes it was so easy!
 				</p>
 				<p class="mt-6">
-					On Nostr your public profile is identified by a unique string that start with “npub”, this
-					is the public part you can share with anyone.
+					On Nostr your keypair is identified by a unique string that start with <em class="italic">npub</em>, this is
+					your public profile code you can share with anyone.
 				</p>
 				<p class="mt-6">
-					Then there is the private key, that starts with “nsec”, with wich you can control you
-					profile and act, for example posting notes. This must clearly be kept absolutely secret.
+					Then there is the private key. It starts with <em class="italic">nsec</em>, it is used to control your profile
+					and to publish notes. This must be kept in absolute secret.
 				</p>
 				<p class="mt-6">
-					Now please download your nsec (is a txt file) and save it in a safe place, for example
+					Now please download your <em class="italic">nsec</em> (it's a text file) and save it in a safe place, for example
 					your password manager.
 				</p>
 			</div>
@@ -150,7 +136,7 @@
 					<button
 						on:click={togglePasswordField}
 						class="mt-2 text-center text-sm text-neutral-400 hover:underline"
-						>I want do download the encrypted version</button
+						>I want to download the encrypted version</button
 					>
 				{/if}
 
@@ -161,7 +147,7 @@
 						bind:value={$password}
 						placeholder="Pick a password"
 						required
-						autofocus={!$isMobileStore}
+						autofocus={!$isMobile}
 						class="input-hover-enabled w-full rounded border-2 border-neutral-300 px-4 py-2 text-xl focus:border-neutral-700 focus:outline-none"
 					/>
 					<button
@@ -225,8 +211,8 @@
 		<div class="mt-16 flex justify-center sm:justify-end">
 			<button
 				on:click={navigateContinue}
-				disabled={!backupDone && !$published}
-				class={`inline-flex items-center rounded px-8 py-3 text-[1.6rem] sm:text-[1.3rem] ${backupDone || $published ? 'bg-strongpink text-white' : 'cursor-not-allowed bg-neutral-400 text-neutral-100'}`}
+				disabled={!backupDone}
+				class={`inline-flex items-center rounded px-8 py-3 text-[1.6rem] sm:text-[1.3rem] ${backupDone ? 'bg-strongpink text-white' : 'cursor-not-allowed bg-neutral-400 text-neutral-100'}`}
 			>
 				Continue <img src="/icons/arrow-right.svg" alt="continue" class="ml-4 mr-2 h-6 w-6" />
 			</button>

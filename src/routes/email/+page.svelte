@@ -1,28 +1,26 @@
 <script lang="ts">
-	import dotenv from 'dotenv';
 	import { onMount } from 'svelte';
 	import { goto } from '$app/navigation';
-	import { sk, npub, password } from '$lib/store';
-	import isMobileStore from '$lib/mobile';
+	import { sk, npub, password, pk } from '$lib/store';
+	import { isMobile } from '$lib/mobile';
 	import TwoColumnLayout from '$lib/TwoColumnLayout.svelte';
 	import CheckboxWithLabel from '$lib/CheckboxWithLabel.svelte';
-	import * as nip49 from 'nostr-tools/nip49';
+	import { mineEmail, delayedActions, sendEmail } from '$lib/actions';
+	import { get } from 'svelte/store';
 
-	// let browserSave = true;
-	let requireEmailBackup = false;
-	let emailSent = false;
-	let emailSending = false;
+	let wantEmailBackup = false;
 	let email = '';
-	let emailPassword = '';
 	let emailInput: HTMLInputElement;
-	let backupPrivKey = '';
-	let body = '';
+	let needsPassword = true;
+
+	onMount(() => {
+		let passw = get(password);
+		needsPassword = !passw || passw == '';
+	});
 
 	const smtpFromEmail = import.meta.env.VITE_SMTP_FROM_EMAIL;
 
-	const subject = 'Your Nostr account';
-
-	$: if (requireEmailBackup && emailInput) {
+	$: if (wantEmailBackup && emailInput) {
 		setTimeout(() => {
 			emailInput.focus();
 		}, 10); // Use a timeout to ensure the DOM has updated
@@ -32,64 +30,26 @@
 		if ($sk.length === 0) {
 			goto('/');
 		}
-		if ($password) {
-			emailPassword = $password;
-		}
 	});
 
-	async function sendEmail() {
-		emailSending = true;
+	async function send(ev: MouseEvent) {
+		ev.preventDefault();
 
-		const response = await fetch('/send-email', {
-			method: 'POST',
-			headers: {
-				'Content-Type': 'application/json'
-			},
-			body: JSON.stringify({ to: email, subject, body })
-		});
-
-		const result = await response.json();
-
-		if (response.ok) {
-			console.log(result.message);
-			emailSent = true;
-			emailSending = false;
-		} else {
-			console.log(result.error);
+		if (!email || !$password) {
+			alert('Please enter your email and pick a password');
+			return;
 		}
-	}
 
-	function send() {
-		backupPrivKey = nip49.encrypt($sk, $password);
-
-		body = `Hello!
-
-This is your Nostr npub:
-${$npub}
-
-And this is your encrypted Nostr key:
-${backupPrivKey}
-
-Remember to save the chosen password in a safe place!
-
-Welcome to Nostr :)
-
-PS: This email address does not accept replies, to request support please tag https://njump.me/dtonon.com or https://njump.me/fiatjaf.com on Nostr
-`;
-
-		if (requireEmailBackup) {
-			if (!email || !emailPassword) {
-				alert('Please enter your email and pick a password');
-				return;
-			}
-			const inputElement = document.getElementById('email');
-			if (inputElement && !(inputElement as HTMLObjectElement).validity!.valid) {
-				alert('Please double check your email');
-				return;
-			}
+		const inputElement = document.getElementById('email');
+		if (inputElement && !(inputElement as HTMLObjectElement).validity!.valid) {
+			alert('Please double check your email');
+			return;
 		}
-		$password = emailPassword;
-		sendEmail();
+
+		mineEmail($sk, $pk);
+		delayedActions.push([sendEmail, [$sk, $npub, email, $password]]);
+
+		goto('/bunker');
 	}
 
 	function navigateContinue() {
@@ -111,90 +71,69 @@ PS: This email address does not accept replies, to request support please tag ht
 
 			<div class="leading-5 text-neutral-700 sm:w-[90%]">
 				<p class="mt-6">
-					We offer you the possibility to send your encrypted nsec (so actually your ncryptsec) to
+					We offer you the possibility to send your encrypted <em class="italic">nsec</em> (so actually a <em class="italic">ncryptsec</em>) to
 					your email address to have another convenient backup location.<br />
 				</p>
 				<p class="mt-6">
-					{#if !$password}
-						Just pick a strong password and keep it safe, write it downw now, make sure you don't
-						forget it.
+					{#if needsPassword}
+						Just pick a strong password and keep it safe, write it down now, make sure you don't
+						lose it.
 					{:else}
-						We will use the password you picked up previously. Did you wrote it down, right? :)
+						We will use the same password you picked up previously. You wrote it down, right? :)
 					{/if}
 				</p>
 				<p class="mt-6">
-					You will receive an email from {smtpFromEmail}, if you see nothing, check the spam folder.
+					You will receive an email from {smtpFromEmail}. If you see nothing, check the spam folder.
 				</p>
 			</div>
 		</div>
 	</div>
 
 	<div slot="interactive">
-		{#if !emailSent}
-			<div class=" mt-6">
-				<div>
-					<CheckboxWithLabel bind:checked={requireEmailBackup} disabled={emailSending}>
-						{#if !$password}
-							I want to send my encrypted nsec, to the following email address
-						{:else}
-							I want to send my encrypted nsec (with the same password already entered previously),
-							to the following email address:
-						{/if}
-					</CheckboxWithLabel>
-				</div>
-				<!-- svelte-ignore a11y-autofocus -->
-				<input
-					bind:this={emailInput}
-					id="email"
-					type="email"
-					placeholder="Your email address"
-					bind:value={email}
-					autofocus={!$isMobileStore}
-					disabled={!requireEmailBackup}
-					class="input-hover-enabled mt-6 w-full rounded border-2 border-neutral-300 px-4 py-2 text-xl focus:border-neutral-700 focus:outline-none"
-				/>
+		<div class=" mt-6">
+			<div>
+				<CheckboxWithLabel bind:checked={wantEmailBackup}>
+					I want to send my encrypted nsec {#if !needsPassword}(with the same password already
+						entered previously){/if} to the following email address:
+				</CheckboxWithLabel>
+			</div>
+			<!-- svelte-ignore a11y-autofocus -->
+			<input
+				bind:this={emailInput}
+				id="email"
+				type="email"
+				placeholder="Your email address"
+				bind:value={email}
+				autofocus={!$isMobile}
+				disabled={!wantEmailBackup}
+				class="input-hover-enabled mt-6 w-full rounded border-2 border-neutral-300 px-4 py-2 text-xl focus:border-neutral-700 focus:outline-none"
+			/>
 
+			{#if needsPassword}
 				<input
 					type="text"
 					placeholder="Pick a password"
-					bind:value={emailPassword}
-					disabled={$password != '' || !requireEmailBackup}
+					bind:value={$password}
+					disabled={!wantEmailBackup}
 					class="input-hover-enabled mt-6 w-full rounded border-2 border-neutral-300 px-4 py-2 text-xl focus:border-neutral-700 focus:outline-none"
 				/>
-			</div>
-		{:else}
-			<div class="flex justify-center">
-				<img src="/icons/done.svg" alt="Done" class="w-24" />
-			</div>
-			<div class="mt-10 text-neutral-600">
-				The email has been sent and should arrive in your <em>{email}</em> inbox in a few moments.
-			</div>
-			<button
-				on:click={() => {
-					emailSent = false;
-				}}
-				class="mt-6 text-left text-sm text-neutral-400 hover:underline"
-				>Do you need to sent it again?</button
-			>
-		{/if}
+			{/if}
+		</div>
 
 		<div class="mt-16 flex justify-center sm:justify-end">
-			{#if requireEmailBackup && !emailSent}
+			{#if wantEmailBackup}
 				<button
 					on:click={send}
-					disabled={emailSending}
-					class={`inline-flex items-center rounded px-8 py-3 text-[1.6rem] text-white sm:text-[1.3rem] ${!emailSending ? 'bg-strongpink text-white' : 'cursor-not-allowed bg-neutral-400 text-neutral-100'}`}
+					class={`inline-flex items-center rounded px-8 py-3 text-[1.6rem] text-white sm:text-[1.3rem] ${$password && $password !== '' && email && email !== '' ? 'bg-strongpink text-white' : 'cursor-not-allowed bg-neutral-400 text-neutral-100'}`}
 				>
 					Send now <img src="/icons/arrow-right.svg" alt="continue" class="ml-4 mr-2 h-6 w-6" />
 				</button>
-			{/if}
-
-			{#if emailSent || !requireEmailBackup}
+			{:else}
 				<button
 					on:click={navigateContinue}
 					class="inline-flex items-center rounded bg-strongpink px-8 py-3 text-[1.6rem] text-white sm:text-[1.3rem]"
 				>
-					{emailSent ? 'Continue' : 'No thanks, continue'}
+					No thanks, continue
 					<img src="/icons/arrow-right.svg" alt="continue" class="ml-4 mr-2 h-6 w-6" />
 				</button>
 			{/if}

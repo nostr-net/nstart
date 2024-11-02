@@ -52,18 +52,19 @@
 						<!-- Intro text -->
 						<div class="text-[1.3rem] leading-7 text-neutral-700">
 							<p class="">
-								To join Nostr you need a “profile”, but it is not the usual one that a company
-								generates and manages for you. You manage the protocol, you manage your identity.
+								To join Nostr you need a profile, but it is not the usual one that a company
+								generates and manages for you. You create it yourself, no permissions are required.
 							</p>
 							<p class="mt-6">
-								Nostr is a different and freedom experience from the beginning: it empowers user
-								using cryptographic key-pairs that don’t require a third part; don’t worry about the
-								tech slang, it is just a strong password that you will have to keep safe.
+								Nostr is a different experience from the beginning: because there is no central
+								authority taking care of who is who, each user is identified by a cryptographic
+								keypair; don’t worry about the tech slang, it is just a strong password that you
+								will have to keep safe.
 							</p>
 							<p class="mt-6">
-								This wizard is one of the many way to bootstrap a Nostr profile that you can use
-								anywhere, we help you to create you key-pair and safely manage it few easy steps.
-								Are you ready?
+								This wizard is one of the many ways to bootstrap a Nostr profile that you can later
+								use in other apps. We help you to create you keypair and safely manage it in a few
+								steps. Are you ready?
 							</p>
 						</div>
 
@@ -83,7 +84,7 @@
 
 						<!-- Footer -->
 						<div class="leading-6 text-neutral-500">
-							Would you like to know more about Nostr, first?<br class="hidden sm:inline-block" />
+							Would you like to know more about Nostr first?<br class="hidden sm:inline-block" />
 							<a href="https://njump.me" class="underline">Read a quick introduction</a>
 						</div>
 					</div>

@@ -1,10 +1,5 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
-	import { goto } from '$app/navigation';
-	import { sk, pk, npub, name, picture, about, website, published } from '$lib/store';
-	import isMobileStore from '$lib/mobile';
-	import { publishProfile } from '$lib/utils';
-	import TwoColumnLayout from '$lib/TwoColumnLayout.svelte';
 	import {
 		generateSecretKey,
 		getPublicKey,
@@ -14,8 +9,12 @@
 	import * as nip19 from 'nostr-tools/nip19';
 	import { calculateFileHash } from 'nostr-tools/nip96';
 	import { utf8Encoder } from 'nostr-tools/utils';
-
 	import { base64 } from '@scure/base';
+
+	import { goto } from '$app/navigation';
+	import { sk, pk, npub, name, picture, about, website } from '$lib/store';
+	import { isMobile } from '$lib/mobile';
+	import TwoColumnLayout from '$lib/TwoColumnLayout.svelte';
 
 	let picturePreview: string | null = null;
 
@@ -26,7 +25,7 @@
 			$npub = nip19.npubEncode($pk);
 		}
 
-		console.log('isMobileStore', isMobileStore);
+		console.log('isMobile', isMobile);
 	});
 
 	function triggerFileInput() {
@@ -106,10 +105,6 @@
 			}
 		}
 
-		if ($published) {
-			publishProfile();
-		}
-
 		goto('/download');
 	}
 </script>
@@ -129,19 +124,19 @@
 			<div class="leading-5 text-neutral-700 sm:w-[90%]">
 				<p class="">On Nostr you decide to be whoever you want.</p>
 				<p class="mt-6">
-					A Nostr profile usually include a name, a picture and some additional information. Every
-					data is optional.
+					A Nostr profile usually includes a name, a picture and some additional information, but
+					it's all optional.
 				</p>
 
 				<p class="mt-6">
 					The name is not a unique username, we can have as many Jacks we want! Feel free to use
-					your real name or a nickname; you can change any info whenever you want.<br />
+					your real name or a nickname; you can always change it later.<br />
 					But remember: online privacy matters, don’t share sensitive data.
 				</p>
 
 				<p class="mt-6">
-					And yes, to join Nostr you don’t need to give your email, phone number or other data, it
-					is KYC free.
+					And yes, to join Nostr you don’t need to give your email address, phone number or anything
+					like that, it is KYC free.
 				</p>
 			</div>
 		</div>
@@ -179,7 +174,7 @@
 				type="text"
 				placeholder="Your name"
 				bind:value={$name}
-				autofocus={!$isMobileStore}
+				autofocus={!isMobile}
 				class="input-hover-enabled mt-6 w-full rounded border-2 border-neutral-300 px-4 py-2 text-xl focus:border-neutral-700 focus:outline-none"
 			/>
 			<textarea
