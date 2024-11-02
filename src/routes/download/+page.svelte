@@ -80,7 +80,7 @@
 					name: $name,
 					picture: $picture,
 					about: $about,
-					webiste: $website
+					website: $website.startsWith('http') ? $website : `https://${$website}`
 				}
 			]
 		]);
