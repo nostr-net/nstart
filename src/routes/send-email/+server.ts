@@ -4,6 +4,7 @@ import { getPow } from 'nostr-tools/nip13';
 import { verifyEvent, type NostrEvent } from 'nostr-tools/pure';
 import levelup from 'levelup';
 import leveldown from 'leveldown';
+import {SMTP_HOST, SMTP_PORT, SMTP_SECURE, SMTP_USER, SMTP_PASS, SMTP_FROM_NAME, VITE_SMTP_FROM_EMAIL} from '$env/static/private';
 
 const db = levelup(leveldown('./pubkeys-emailed-db'));
 
@@ -42,18 +43,18 @@ export const POST = async ({ request }: { request: Request }) => {
 
 		// Create a transporter object using the nodemailer library
 		const transporter = (nodemailer as any).createTransport({
-			host: process.env.SMTP_HOST!,
-			port: process.env.SMTP_PORT!,
-			secure: process.env.SMTP_SECURE === 'yes',
+			host: SMTP_HOST!,
+			port: SMTP_PORT!,
+			secure: SMTP_SECURE === 'yes',
 			auth: {
-				user: process.env.SMTP_USER!,
-				pass: process.env.SMTP_PASS!
+				user: SMTP_USER!,
+				pass: SMTP_PASS!
 			}
 		});
 
 		// Set up email data
 		const mail_options = {
-			from: `"${process.env.SMTP_FROM_NAME}" <${process.env.VITE_SMTP_FROM_EMAIL}>`,
+			from: `"${SMTP_FROM_NAME}" <${VITE_SMTP_FROM_EMAIL}>`,
 			to: to,
 			subject: 'Your Nostr account',
 			text: `Hello!
