@@ -6,6 +6,7 @@
 	import { sk } from '$lib/store';
 	import TwoColumnLayout from '$lib/TwoColumnLayout.svelte';
 	import CheckboxWithLabel from '$lib/CheckboxWithLabel.svelte';
+	import LoadingBar from '$lib/LoadingBar.svelte';
 	import { indexRelays } from '$lib/nostr';
 	import { delayedActions, publishFollows, runActions } from '$lib/actions';
 
@@ -88,6 +89,7 @@
 
 	let randomUsers: any[] = [];
 	let selectedUsers = new Set();
+	let activationProgress = 0;
 
 	onMount(() => {
 		if ($sk.length === 0) {
@@ -145,7 +147,14 @@
 
 	async function navigateContinue() {
 		delayedActions.push([publishFollows, [$sk, getSelectedUsersArray()]]);
+
+		let intv = setInterval(() => {
+			if (activationProgress < 95) activationProgress = activationProgress + 5;
+		}, 500);
+
 		await runActions();
+
+		clearInterval(intv);
 		goto('/finish');
 	}
 </script>
@@ -200,12 +209,20 @@
 			</div>
 		</div>
 
+		{#if activationProgress > 0}
+			<div class="mt-6">
+				<LoadingBar progress={activationProgress} />
+			</div>
+		{/if}
+
 		<div class="mt-16 flex justify-center sm:justify-end">
 			<button
 				on:click={navigateContinue}
-				class="inline-flex items-center rounded bg-strongpink px-8 py-3 text-[1.6rem] text-white sm:text-[1.3rem]"
+				disabled={activationProgress > 0}
+				class={`inline-flex items-center rounded px-8 py-3 text-[1.6rem] text-white sm:text-[1.3rem] ${activationProgress == 0 ? 'bg-strongpink text-white' : 'cursor-not-allowed bg-neutral-400 text-neutral-100'}`}
 			>
-				Finish <img src="/icons/arrow-right.svg" alt="continue" class="ml-4 mr-2 h-6 w-6" />
+				{activationProgress > 0 ? 'Finishing...' : 'Finish'}
+				<img src="/icons/arrow-right.svg" alt="continue" class="ml-4 mr-2 h-6 w-6" />
 			</button>
 		</div>
 	</div>
