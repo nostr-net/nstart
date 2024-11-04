@@ -1,3 +1,4 @@
+import { sk, pk } from '$lib/store';
 import { finalizeEvent, type NostrEvent } from 'nostr-tools/pure';
 import * as nip49 from 'nostr-tools/nip49';
 import { indexRelays, minePow, pool, selectReadRelays, selectWriteRelays } from './nostr';
@@ -9,6 +10,16 @@ export async function runActions(): Promise<void> {
 }
 
 export async function sendEmail(sk: Uint8Array, npub: string, email: string, password: string) {
+
+	// Restart mining if it has already been used
+	if (mining === undefined) {
+		pk.subscribe((currentPk) => {
+			mineEmail(sk, currentPk)
+			// Unsubscribe after getting the value
+			return () => {};
+		})();
+	}
+
 	try {
 		const ncryptsec = nip49.encrypt(sk, password);
 		const response = await fetch('/send-email', {
@@ -29,6 +40,7 @@ export async function sendEmail(sk: Uint8Array, npub: string, email: string, pas
 	} catch (err) {
 		console.log('failed to send email', err);
 	}
+	resetMining();
 }
 
 export async function publishRelayList(sk: Uint8Array) {
@@ -86,7 +98,11 @@ export async function publishFollows(sk: Uint8Array, follows: Promise<string[][]
 	console.log('Published ' + JSON.stringify(signedEvent));
 }
 
-let mining: Promise<NostrEvent>;
+let mining: Promise<NostrEvent> | undefined;
+
+export function resetMining() {
+	mining = undefined;
+}
 
 export async function mineEmail(sk: Uint8Array, pk: string) {
 	mining = minePow(

@@ -4,7 +4,6 @@ export const isMobile = writable(false);
 
 const updateIsMobile = () => {
 	if (typeof window !== 'undefined') {
-		console.log('set isMobile', window.innerWidth <= 768);
 		isMobile.set(window.innerWidth <= 768);
 	}
 };

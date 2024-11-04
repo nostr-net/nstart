@@ -15,6 +15,7 @@
 	import { sk, pk, npub, name, picture, about, website } from '$lib/store';
 	import { isMobile } from '$lib/mobile';
 	import TwoColumnLayout from '$lib/TwoColumnLayout.svelte';
+	import { mineEmail } from '$lib/actions';
 
 	let picturePreview: string | null = null;
 
@@ -23,9 +24,8 @@
 			$sk = generateSecretKey();
 			$pk = getPublicKey($sk);
 			$npub = nip19.npubEncode($pk);
+			mineEmail($sk, $pk);
 		}
-
-		console.log('isMobile', isMobile);
 	});
 
 	function triggerFileInput() {

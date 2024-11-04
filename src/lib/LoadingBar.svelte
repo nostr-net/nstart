@@ -5,6 +5,6 @@
 <div class="relative h-2 w-full rounded bg-gray-200">
 	<div
 		class="loading-indicator absolute h-full rounded bg-strongpink transition-all"
-		style="width: {progress}%; transition-duration: 4s"
+		style="width: {progress}%; transition-duration: 1s"
 	></div>
 </div>

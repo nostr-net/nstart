@@ -5,13 +5,15 @@
 	import { isMobile } from '$lib/mobile';
 	import TwoColumnLayout from '$lib/TwoColumnLayout.svelte';
 	import CheckboxWithLabel from '$lib/CheckboxWithLabel.svelte';
-	import { mineEmail, delayedActions, sendEmail } from '$lib/actions';
+	import LoadingBar from '$lib/LoadingBar.svelte';
+	import { sendEmail } from '$lib/actions';
 	import { get } from 'svelte/store';
 
 	let wantEmailBackup = false;
 	let email = '';
 	let emailInput: HTMLInputElement;
 	let needsPassword = true;
+	let activationProgress = 0;
 
 	onMount(() => {
 		let passw = get(password);
@@ -46,8 +48,12 @@
 			return;
 		}
 
-		mineEmail($sk, $pk);
-		delayedActions.push([sendEmail, [$sk, $npub, email, $password]]);
+		let intv = setInterval(() => {
+			if (activationProgress < 95) activationProgress = activationProgress + 5;
+		}, 500);
+
+		await sendEmail($sk, $npub, email, $password);
+		clearInterval(intv);
 
 		goto('/bunker');
 	}
@@ -71,8 +77,9 @@
 
 			<div class="leading-5 text-neutral-700 sm:w-[90%]">
 				<p class="mt-6">
-					We offer you the possibility to send your encrypted <em class="italic">nsec</em> (so actually a <em class="italic">ncryptsec</em>) to
-					your email address to have another convenient backup location.<br />
+					We offer you the possibility to send your encrypted <em class="italic">nsec</em> (so
+					actually a <em class="italic">ncryptsec</em>) to your email address to have another
+					convenient backup location.<br />
 				</p>
 				<p class="mt-6">
 					{#if needsPassword}
@@ -92,7 +99,7 @@
 	<div slot="interactive">
 		<div class=" mt-6">
 			<div>
-				<CheckboxWithLabel bind:checked={wantEmailBackup}>
+				<CheckboxWithLabel bind:checked={wantEmailBackup} disabled={activationProgress > 0}>
 					I want to send my encrypted nsec {#if !needsPassword}(with the same password already
 						entered previously){/if} to the following email address:
 				</CheckboxWithLabel>
@@ -105,7 +112,7 @@
 				placeholder="Your email address"
 				bind:value={email}
 				autofocus={!$isMobile}
-				disabled={!wantEmailBackup}
+				disabled={!wantEmailBackup || activationProgress > 0}
 				class="input-hover-enabled mt-6 w-full rounded border-2 border-neutral-300 px-4 py-2 text-xl focus:border-neutral-700 focus:outline-none"
 			/>
 
@@ -114,9 +121,15 @@
 					type="text"
 					placeholder="Pick a password"
 					bind:value={$password}
-					disabled={!wantEmailBackup}
+					disabled={!wantEmailBackup || activationProgress > 0}
 					class="input-hover-enabled mt-6 w-full rounded border-2 border-neutral-300 px-4 py-2 text-xl focus:border-neutral-700 focus:outline-none"
 				/>
+			{/if}
+
+			{#if activationProgress > 0}
+				<div class="mt-6">
+					<LoadingBar progress={activationProgress} />
+				</div>
 			{/if}
 		</div>
 
@@ -124,9 +137,11 @@
 			{#if wantEmailBackup}
 				<button
 					on:click={send}
-					class={`inline-flex items-center rounded px-8 py-3 text-[1.6rem] text-white sm:text-[1.3rem] ${$password && $password !== '' && email && email !== '' ? 'bg-strongpink text-white' : 'cursor-not-allowed bg-neutral-400 text-neutral-100'}`}
+					disabled={activationProgress > 0}
+					class={`inline-flex items-center rounded px-8 py-3 text-[1.6rem] text-white sm:text-[1.3rem] ${$password && $password !== '' && email && email !== '' && activationProgress == 0 ? 'bg-strongpink text-white' : 'cursor-not-allowed bg-neutral-400 text-neutral-100'}`}
 				>
-					Send now <img src="/icons/arrow-right.svg" alt="continue" class="ml-4 mr-2 h-6 w-6" />
+					{activationProgress > 0 ? 'Sending...' : 'Send now'}
+					<img src="/icons/arrow-right.svg" alt="continue" class="ml-4 mr-2 h-6 w-6" />
 				</button>
 			{:else}
 				<button
