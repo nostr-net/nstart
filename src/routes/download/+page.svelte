@@ -4,7 +4,17 @@
 	import * as nip49 from 'nostr-tools/nip49';
 
 	import { goto } from '$app/navigation';
-	import { sk, npub, ncryptsec, name, password, picture, about, website } from '$lib/store';
+	import {
+		sk,
+		npub,
+		ncryptsec,
+		backupDownloaded,
+		name,
+		password,
+		picture,
+		about,
+		website
+	} from '$lib/store';
 	import { isMobile } from '$lib/mobile';
 	import TwoColumnLayout from '$lib/TwoColumnLayout.svelte';
 	import ClipToCopy from '$lib/ClipToCopy.svelte';
@@ -33,20 +43,21 @@
 	}
 
 	function downloadBackup() {
+		if (ncryptOption && !thisPassword) {
+			alert('Please enter a password before downloading the encrypted backup');
+			return;
+		}
+
 		if (ncryptOption) {
 			// Recreate the ncriptsec only if the password has been changed
 			if (thisPassword != $password) {
 				$password = thisPassword;
 				$ncryptsec = nip49.encrypt($sk, $password);
+				$backupDownloaded = false;
 			}
 			backupPrivKey = $ncryptsec;
 		} else {
 			backupPrivKey = nip19.nsecEncode($sk);
-		}
-
-		if (ncryptOption && !thisPassword) {
-			alert('Please enter a password before downloading the encrypted backup');
-			return;
 		}
 
 		const blob = new Blob([$npub + '\n\n' + backupPrivKey], { type: 'text/plain' });
@@ -74,6 +85,7 @@
 			]
 		]);
 		delayedActions.push([publishRelayList, [$sk]]);
+		$backupDownloaded = true;
 		goto('/email');
 	}
 
@@ -219,8 +231,8 @@
 		<div class="mt-16 flex justify-center sm:justify-end">
 			<button
 				on:click={navigateContinue}
-				disabled={!backupDone}
-				class={`inline-flex items-center rounded px-8 py-3 text-[1.6rem] sm:text-[1.3rem] ${backupDone ? 'bg-strongpink text-white' : 'cursor-not-allowed bg-neutral-400 text-neutral-100'}`}
+				disabled={!backupDone && !$backupDownloaded}
+				class={`inline-flex items-center rounded px-8 py-3 text-[1.6rem] sm:text-[1.3rem] ${backupDone || $backupDownloaded ? 'bg-strongpink text-white' : 'cursor-not-allowed bg-neutral-400 text-neutral-100'}`}
 			>
 				Continue <img src="/icons/arrow-right.svg" alt="continue" class="ml-4 mr-2 h-6 w-6" />
 			</button>
