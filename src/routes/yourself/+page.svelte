@@ -15,9 +15,11 @@
 	import { sk, pk, npub, name, picture, about, website } from '$lib/store';
 	import { isMobile } from '$lib/mobile';
 	import TwoColumnLayout from '$lib/TwoColumnLayout.svelte';
+	import LoadingBar from '$lib/LoadingBar.svelte';
 	import { mineEmail } from '$lib/actions';
 
 	let picturePreview: string | null = null;
+	let activationProgress = 0;
 
 	onMount(() => {
 		if ($sk.length === 0) {
@@ -97,12 +99,17 @@
 		const file = (document.getElementById('image') as HTMLInputElement).files?.[0];
 
 		if (file) {
+			let intv = setInterval(() => {
+				if (activationProgress < 95) activationProgress = activationProgress + 10;
+			}, 500);
+
 			try {
 				let data = await uploadImage(file); // Wait for the upload to complete
 				$picture = data.url;
 			} catch (error) {
 				console.error('Error during upload:', error);
 			}
+			clearInterval(intv);
 		}
 
 		goto('/download');
@@ -188,13 +195,20 @@
 				bind:value={$website}
 				class="input-hover-enabled mt-6 w-full rounded border-2 border-neutral-300 px-4 py-2 text-xl focus:border-neutral-700 focus:outline-none"
 			/>
+			{#if activationProgress > 0}
+				<div class="mt-6">
+					<LoadingBar progress={activationProgress} />
+				</div>
+			{/if}
 		</div>
 		<div class="mt-16 flex justify-center sm:justify-end">
 			<button
 				on:click={navigateContinue}
-				class="inline-flex items-center rounded bg-strongpink px-8 py-3 text-[1.6rem] text-white sm:text-[1.3rem]"
+				disabled={activationProgress > 0}
+				class={`inline-flex items-center rounded px-8 py-3 text-[1.6rem] text-white sm:text-[1.3rem] ${activationProgress == 0 ? 'bg-strongpink text-white' : 'cursor-not-allowed bg-neutral-400 text-neutral-100'}`}
 			>
-				Continue <img src="/icons/arrow-right.svg" alt="continue" class="ml-4 mr-2 h-6 w-6" />
+				{activationProgress > 0 ? 'Uploading...' : 'Continue'}
+				<img src="/icons/arrow-right.svg" alt="continue" class="ml-4 mr-2 h-6 w-6" />
 			</button>
 		</div>
 	</div>
