@@ -2,33 +2,13 @@
 import nodemailer from 'nodemailer';
 import { getPow } from 'nostr-tools/nip13';
 import { verifyEvent, type NostrEvent } from 'nostr-tools/pure';
-import levelup from 'levelup';
 import leveldown from 'leveldown';
 import {SMTP_HOST, SMTP_PORT, SMTP_SECURE, SMTP_USER, SMTP_PASS, SMTP_FROM_NAME, VITE_SMTP_FROM_EMAIL} from '$env/static/private';
 
-const db = levelup(leveldown('./pubkeys-emailed-db'));
 
 export const POST = async ({ request }: { request: Request }) => {
 	try {
 		const evt = JSON.parse(atob(request.headers.get('Authorization')!.substring(6))) as NostrEvent;
-
-		// check if we have already sent an email on behalf of this pubkey
-		// we expect a 'not found' error to proceed
-		try {
-			await db.get(evt.pubkey);
-			// record found, exit here
-			const err: any = new Error(`${evt.pubkey} already sent an email`);
-			err.already = true;
-			throw err;
-		} catch (err: any) {
-			if (err.already) throw err;
-			//
-			// we need an err.notFound
-			if (!err.notFound) {
-				// otherwise something went wrong
-				throw new Error(`failed to check email duplicates: ${err}`);
-			}
-		}
 
 		// check if they have sent enough pow
 		if (!verifyEvent(evt)) {
@@ -75,9 +55,6 @@ PS: This email address does not accept replies, to request support please tag ht
 
 		// Send email
 		const info = await transporter.sendMail(mail_options);
-
-		// store pubkey on db so we don't try to send another email
-		await db.put(evt.pubkey, '1');
 
 		// Return a Response object
 		return new Response(
