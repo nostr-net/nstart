@@ -4,7 +4,7 @@
 	import * as nip49 from 'nostr-tools/nip49';
 
 	import { goto } from '$app/navigation';
-	import { sk, npub, name, password, picture, about, website } from '$lib/store';
+	import { sk, npub, ncryptsec, name, password, picture, about, website } from '$lib/store';
 	import { isMobile } from '$lib/mobile';
 	import TwoColumnLayout from '$lib/TwoColumnLayout.svelte';
 	import ClipToCopy from '$lib/ClipToCopy.svelte';
@@ -15,6 +15,7 @@
 	let backupDone = false;
 	let backupPrivKey = '';
 	let ncryptOption = false;
+	let thisPassword = '';
 
 	onMount(() => {
 		if ($sk.length === 0) {
@@ -23,6 +24,7 @@
 
 		if ($password) {
 			ncryptOption = true;
+			thisPassword = $password;
 		}
 	});
 
@@ -32,12 +34,17 @@
 
 	function downloadBackup() {
 		if (ncryptOption) {
-			backupPrivKey = nip49.encrypt($sk, $password);
+			// Recreate the ncriptsec only if the password has been changed
+			if (thisPassword != $password) {
+				$password = thisPassword;
+				$ncryptsec = nip49.encrypt($sk, $password);
+			}
+			backupPrivKey = $ncryptsec;
 		} else {
 			backupPrivKey = nip19.nsecEncode($sk);
 		}
 
-		if (ncryptOption && !$password) {
+		if (ncryptOption && !thisPassword) {
 			alert('Please enter a password before downloading the encrypted backup');
 			return;
 		}
@@ -145,7 +152,7 @@
 					<!-- svelte-ignore a11y-autofocus -->
 					<input
 						type="text"
-						bind:value={$password}
+						bind:value={thisPassword}
 						placeholder="Pick a password"
 						required
 						autofocus={!$isMobile}

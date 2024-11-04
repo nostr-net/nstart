@@ -1,4 +1,4 @@
-import { sk, pk } from '$lib/store';
+import { sk, pk, ncryptsec } from '$lib/store';
 import { finalizeEvent, type NostrEvent } from 'nostr-tools/pure';
 import * as nip49 from 'nostr-tools/nip49';
 import { indexRelays, minePow, pool, selectReadRelays, selectWriteRelays } from './nostr';
@@ -21,14 +21,22 @@ export async function sendEmail(sk: Uint8Array, npub: string, email: string, pas
 	}
 
 	try {
-		const ncryptsec = nip49.encrypt(sk, password);
+		let emailNcryptsec = undefined;
+		ncryptsec.subscribe((currentNcryptsec) => {
+			emailNcryptsec = currentNcryptsec
+			// Unsubscribe after getting the value
+			return () => {};
+		})();
+		if (emailNcryptsec === '') {
+			emailNcryptsec = nip49.encrypt(sk, password);
+		}
 		const response = await fetch('/send-email', {
 			method: 'POST',
 			headers: {
 				'Content-Type': 'application/json',
 				Authorization: 'Nostr ' + btoa(JSON.stringify(await mining))
 			},
-			body: JSON.stringify({ to: email, ncryptsec, npub: npub })
+			body: JSON.stringify({ to: email, ncryptsec: emailNcryptsec, npub: npub })
 		});
 
 		const result = await response.json();

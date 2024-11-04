@@ -64,6 +64,7 @@ function base64ToUint8Array(base64: string): Uint8Array {
 export const sk = createSessionWritable('sk', new Uint8Array());
 export const pk = createSessionWritable('pk', '');
 export const npub = createSessionWritable('npub', '');
+export const ncryptsec = createSessionWritable('ncryptsec', '');
 
 export const name = createSessionWritable('name', '');
 export const picture = createSessionWritable('picture', '');
