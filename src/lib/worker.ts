@@ -21,8 +21,8 @@ self.onmessage = async function (ev: MessageEvent) {
 		count += step;
 		tag[1] = count.toString();
 
-		if ((count & 0xffff) === 0) {
-			evt.created_at = Math.ceil(Date.now() / 1000);
+		if ((count & 0x5fff) === 0) {
+			evt.created_at = Math.ceil(Date.now() / 1000) + 12;
 		}
 
 		hasher.init();
