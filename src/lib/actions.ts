@@ -1,4 +1,4 @@
-import { sk, pk, ncryptsec } from '$lib/store';
+import { pk, ncryptsec } from '$lib/store';
 import { finalizeEvent, type NostrEvent } from '@nostr/tools/pure';
 import * as nip49 from '@nostr/tools/nip49';
 import { indexRelays, minePow, pool, selectReadRelays, selectWriteRelays } from './nostr';
@@ -10,11 +10,10 @@ export async function runActions(): Promise<void> {
 }
 
 export async function sendEmail(sk: Uint8Array, npub: string, email: string, password: string) {
-
 	// Restart mining if it has already been used
 	if (mining === undefined) {
 		pk.subscribe((currentPk) => {
-			mineEmail(sk, currentPk)
+			mineEmail(sk, currentPk);
 			// Unsubscribe after getting the value
 			return () => {};
 		})();
@@ -23,7 +22,7 @@ export async function sendEmail(sk: Uint8Array, npub: string, email: string, pas
 	try {
 		let emailNcryptsec = undefined;
 		ncryptsec.subscribe((currentNcryptsec) => {
-			emailNcryptsec = currentNcryptsec
+			emailNcryptsec = currentNcryptsec;
 			// Unsubscribe after getting the value
 			return () => {};
 		})();
@@ -121,9 +120,7 @@ export async function mineEmail(sk: Uint8Array, pk: string) {
 			tags: [],
 			content: ''
 		},
-		22,
-		(m) => {
-			console.log('m', m);
-		}
+		20,
+		() => {}
 	).then((uevt) => finalizeEvent(uevt, sk));
 }

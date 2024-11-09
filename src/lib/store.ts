@@ -71,4 +71,5 @@ export const picture = createSessionWritable('picture', '');
 export const about = createSessionWritable('about', '');
 export const website = createSessionWritable('website', '');
 export const password = createSessionWritable('password', '');
+export const email = createSessionWritable('email', '');
 export const backupDownloaded = createSessionWritable('backupDownloaded', false);

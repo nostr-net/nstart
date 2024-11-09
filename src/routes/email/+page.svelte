@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
 	import { goto } from '$app/navigation';
-	import { sk, npub, password, pk } from '$lib/store';
+	import { sk, npub, password, email } from '$lib/store';
 	import { isMobile } from '$lib/mobile';
 	import TwoColumnLayout from '$lib/TwoColumnLayout.svelte';
 	import CheckboxWithLabel from '$lib/CheckboxWithLabel.svelte';
@@ -10,7 +10,6 @@
 	import { get } from 'svelte/store';
 
 	let wantEmailBackup = false;
-	let email = '';
 	let emailInput: HTMLInputElement;
 	let needsPassword = true;
 	let activationProgress = 0;
@@ -37,7 +36,7 @@
 	async function send(ev: MouseEvent) {
 		ev.preventDefault();
 
-		if (!email || !$password) {
+		if (!$email || !$password) {
 			alert('Please enter your email and pick a password');
 			return;
 		}
@@ -52,7 +51,7 @@
 			if (activationProgress < 95) activationProgress = activationProgress + 5;
 		}, 500);
 
-		await sendEmail($sk, $npub, email, $password);
+		await sendEmail($sk, $npub, $email, $password);
 		clearInterval(intv);
 
 		goto('/bunker');
@@ -110,7 +109,7 @@
 				id="email"
 				type="email"
 				placeholder="Your email address"
-				bind:value={email}
+				bind:value={$email}
 				autofocus={!$isMobile}
 				disabled={!wantEmailBackup || activationProgress > 0}
 				class="input-hover-enabled mt-6 w-full rounded border-2 border-neutral-300 px-4 py-2 text-xl focus:border-neutral-700 focus:outline-none"
@@ -138,7 +137,7 @@
 				<button
 					on:click={send}
 					disabled={activationProgress > 0}
-					class={`inline-flex items-center rounded px-8 py-3 text-[1.6rem] text-white sm:text-[1.3rem] ${$password && $password !== '' && email && email !== '' && activationProgress == 0 ? 'bg-strongpink text-white' : 'cursor-not-allowed bg-neutral-400 text-neutral-100'}`}
+					class={`inline-flex items-center rounded px-8 py-3 text-[1.6rem] text-white sm:text-[1.3rem] ${$password && $password !== '' && $email && $email !== '' && activationProgress == 0 ? 'bg-strongpink text-white' : 'cursor-not-allowed bg-neutral-400 text-neutral-100'}`}
 				>
 					{activationProgress > 0 ? 'Sending...' : 'Send now'}
 					<img src="/icons/arrow-right.svg" alt="continue" class="ml-4 mr-2 h-6 w-6" />
