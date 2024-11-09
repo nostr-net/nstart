@@ -38,7 +38,7 @@
 
 		let intv = setInterval(() => {
 			if (activationProgress < 98) activationProgress++;
-		}, 1000);
+		}, 3000);
 
 		try {
 			bunkerURL = await shardGetBunker(
