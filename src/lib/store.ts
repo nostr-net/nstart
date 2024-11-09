@@ -1,4 +1,5 @@
 import { writable, type Writable } from 'svelte/store';
+import { selectReadRelays } from './nostr';
 
 // Utility function to handle sessionStorage
 function createSessionWritable<T>(label: string, initialValue: T): Writable<T> {
@@ -73,3 +74,5 @@ export const website = createSessionWritable('website', '');
 export const password = createSessionWritable('password', '');
 export const email = createSessionWritable('email', '');
 export const backupDownloaded = createSessionWritable('backupDownloaded', false);
+
+export const ourInbox = createSessionWritable('ourInbox', selectReadRelays());

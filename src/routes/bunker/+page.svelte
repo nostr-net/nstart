@@ -3,7 +3,7 @@
 	import { shardGetBunker } from '@fiatjaf/promenade-trusted-dealer';
 	import { goto } from '$app/navigation';
 	import TwoColumnLayout from '$lib/TwoColumnLayout.svelte';
-	import { sk, pk } from '$lib/store';
+	import { sk, pk, ourInbox } from '$lib/store';
 	import ClipToCopy from '$lib/ClipToCopy.svelte';
 	import CheckboxWithLabel from '$lib/CheckboxWithLabel.svelte';
 	import LoadingBar from '$lib/LoadingBar.svelte';
@@ -24,6 +24,11 @@
 
 		getInboxes([$pk, ...signers]).then((res: { [pubkey: string]: string[] }) => {
 			inboxes = res;
+
+			const ourRecentlyFetchedInbox = res[$pk];
+			if (ourRecentlyFetchedInbox) {
+				$ourInbox = ourRecentlyFetchedInbox;
+			}
 		});
 	});
 
@@ -46,7 +51,7 @@
 				'wss://promenade.fiatjaf.com',
 				20,
 				inboxes,
-				inboxes[$pk],
+				$ourInbox,
 				minePow,
 				(p: number) => {
 					activationProgress = p;

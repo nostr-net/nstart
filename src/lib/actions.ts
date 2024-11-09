@@ -1,7 +1,8 @@
-import { pk, ncryptsec } from '$lib/store';
+import { pk, ncryptsec, ourInbox } from '$lib/store';
 import { finalizeEvent, type NostrEvent } from '@nostr/tools/pure';
 import * as nip49 from '@nostr/tools/nip49';
-import { indexRelays, minePow, pool, selectReadRelays, selectWriteRelays } from './nostr';
+import { indexRelays, minePow, pool, selectWriteRelays } from './nostr';
+import { get } from 'svelte/store';
 
 export const delayedActions: [(...args: any) => Promise<void>, any[]][] = [];
 
@@ -51,16 +52,16 @@ export async function sendEmail(sk: Uint8Array, npub: string, email: string, pas
 }
 
 export async function publishRelayList(sk: Uint8Array) {
-	const ourInbox: string[] = selectReadRelays();
-	const ourOutbox: string[] = selectWriteRelays();
+	const outboxRelays: string[] = selectWriteRelays();
+	const inboxRelays: string[] = get(ourInbox);
 
 	const tags: string[][] = [];
-	for (let i = 0; i < ourOutbox.length; i++) {
-		const url = ourOutbox[i];
+	for (let i = 0; i < outboxRelays.length; i++) {
+		const url = outboxRelays[i];
 		tags.push(['r', url, 'write']);
 	}
-	for (let i = 0; i < ourInbox.length; i++) {
-		const url = ourInbox[i];
+	for (let i = 0; i < inboxRelays.length; i++) {
+		const url = inboxRelays[i];
 		tags.push(['r', url, 'read']);
 	}
 
