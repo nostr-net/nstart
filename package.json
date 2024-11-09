@@ -37,7 +37,8 @@
 	},
 	"type": "module",
 	"dependencies": {
-		"@fiatjaf/promenade-trusted-dealer": "npm:@jsr/fiatjaf__promenade-trusted-dealer@^0.1.1",
+		"@fiatjaf/promenade-trusted-dealer": "npm:@jsr/fiatjaf__promenade-trusted-dealer@^0.2.0",
+		"@nostr/tools": "npm:@jsr/nostr__tools@^2.10.1",
 		"hash-wasm": "4.11.0",
 		"leveldown": "6.1.1",
 		"nodemailer": "6.9.16",

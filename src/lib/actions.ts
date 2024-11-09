@@ -1,6 +1,6 @@
 import { sk, pk, ncryptsec } from '$lib/store';
-import { finalizeEvent, type NostrEvent } from 'nostr-tools/pure';
-import * as nip49 from 'nostr-tools/nip49';
+import { finalizeEvent, type NostrEvent } from '@nostr/tools/pure';
+import * as nip49 from '@nostr/tools/nip49';
 import { indexRelays, minePow, pool, selectReadRelays, selectWriteRelays } from './nostr';
 
 export const delayedActions: [(...args: any) => Promise<void>, any[]][] = [];

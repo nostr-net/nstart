@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
-	import * as nip19 from 'nostr-tools/nip19';
-	import * as nip49 from 'nostr-tools/nip49';
+	import * as nip19 from '@nostr/tools/nip19';
+	import * as nip49 from '@nostr/tools/nip49';
 
 	import { goto } from '$app/navigation';
 	import {

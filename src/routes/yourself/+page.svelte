@@ -5,10 +5,10 @@
 		getPublicKey,
 		finalizeEvent,
 		type EventTemplate
-	} from 'nostr-tools/pure';
-	import * as nip19 from 'nostr-tools/nip19';
-	import { calculateFileHash } from 'nostr-tools/nip96';
-	import { utf8Encoder } from 'nostr-tools/utils';
+	} from '@nostr/tools/pure';
+	import * as nip19 from '@nostr/tools/nip19';
+	import { calculateFileHash } from '@nostr/tools/nip96';
+	import { utf8Encoder } from '@nostr/tools/utils';
 	import { base64 } from '@scure/base';
 
 	import { goto } from '$app/navigation';

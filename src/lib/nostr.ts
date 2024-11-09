@@ -1,4 +1,4 @@
-import { SimplePool, type NostrEvent, type UnsignedEvent } from 'nostr-tools';
+import { SimplePool, type NostrEvent, type UnsignedEvent } from '@nostr/tools';
 
 import HashWorker from './worker?worker';
 

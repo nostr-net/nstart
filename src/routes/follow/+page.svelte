@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
-	import { SimplePool } from 'nostr-tools/pool';
+	import { SimplePool } from '@nostr/tools/pool';
 
 	import { goto } from '$app/navigation';
 	import { sk } from '$lib/store';

@@ -1,7 +1,7 @@
 // src/routes/api/send-email/+server.ts
 import nodemailer from 'nodemailer';
-import { getPow } from 'nostr-tools/nip13';
-import { verifyEvent, type NostrEvent } from 'nostr-tools/pure';
+import { getPow } from '@nostr/tools/nip13';
+import { verifyEvent, type NostrEvent } from '@nostr/tools/pure';
 import leveldown from 'leveldown';
 import {SMTP_HOST, SMTP_PORT, SMTP_SECURE, SMTP_USER, SMTP_PASS, SMTP_FROM_NAME, VITE_SMTP_FROM_EMAIL} from '$env/static/private';
 
