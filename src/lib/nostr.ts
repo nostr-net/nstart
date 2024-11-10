@@ -1,8 +1,7 @@
-import { SimplePool, type NostrEvent, type UnsignedEvent } from '@nostr/tools';
+import { type NostrEvent, type UnsignedEvent } from '@nostr/tools';
 
 import HashWorker from './worker?worker';
-
-export const pool = new SimplePool();
+import { loadRelayList } from '@nostr/gadgets/lists';
 
 export const signers = [
 	'ad1c6fa1daca939685d34ab541fc9e7b450ef6295aa273addafee74a579d57fb', // sebastix
@@ -27,7 +26,7 @@ export async function minePow(
 	onBetterHash: (pow: number) => void
 ): Promise<Omit<NostrEvent, 'sig'>> {
 	const workers: Worker[] = [];
-	const nWorkers = 2;
+	const nWorkers = 4;
 	let best = 0;
 	return new Promise((resolve) => {
 		for (let i = 0; i < nWorkers; i++) {
@@ -50,22 +49,16 @@ export async function minePow(
 	});
 }
 
-export async function getInboxes(pubkeys: string[]): Promise<{ [pubkey: string]: string[] }> {
+export const inboxes: Promise<{ [pubkey: string]: string[] }> = Promise.all(
+	signers.map((pk) => loadRelayList(pk).catch(() => null))
+).then((results) => {
 	const inboxes: { [pubkey: string]: string[] } = {};
-	return new Promise((resolve) =>
-		pool.subscribeManyEose(indexRelays, [{ kinds: [10002], authors: pubkeys }], {
-			onevent(evt) {
-				inboxes[evt.pubkey] = evt.tags
-					.filter((tag) => tag[2] !== 'write')
-					.map((tag) => tag[1])
-					.filter((url) => url && url.length);
-			},
-			onclose() {
-				resolve(inboxes);
-			}
-		})
-	);
-}
+	results.forEach((rl, i) => {
+		if (rl === null) return;
+		inboxes[signers[i]] = rl.items.filter((r) => r.read).map((r) => r.url);
+	});
+	return inboxes;
+});
 
 export function selectWriteRelays(): string[] {
 	const writeRelays = [

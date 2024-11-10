@@ -1,31 +1,22 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
-	import {
-		generateSecretKey,
-		getPublicKey,
-		finalizeEvent,
-		type EventTemplate
-	} from '@nostr/tools/pure';
-	import * as nip19 from '@nostr/tools/nip19';
+	import { finalizeEvent, type EventTemplate } from '@nostr/tools/pure';
 	import { calculateFileHash } from '@nostr/tools/nip96';
 	import { utf8Encoder } from '@nostr/tools/utils';
 	import { base64 } from '@scure/base';
 
 	import { goto } from '$app/navigation';
-	import { sk, pk, npub, name, picture, about, website } from '$lib/store';
+	import { sk, pk, name, picture, about, website } from '$lib/store';
 	import { isMobile } from '$lib/mobile';
 	import TwoColumnLayout from '$lib/TwoColumnLayout.svelte';
 	import LoadingBar from '$lib/LoadingBar.svelte';
-	import { mineEmail } from '$lib/actions';
+	import { mineEmail, publishRelayList, publishProfile } from '$lib/actions';
 
 	let picturePreview: string | null = null;
 	let activationProgress = 0;
 
 	onMount(() => {
 		if ($sk.length === 0) {
-			$sk = generateSecretKey();
-			$pk = getPublicKey($sk);
-			$npub = nip19.npubEncode($pk);
 			mineEmail($sk, $pk);
 		}
 	});
@@ -82,6 +73,7 @@
 
 		if (response.ok) {
 			const data = await response.json();
+			activationProgress = 100;
 			console.log('Upload successful:', data);
 			return data;
 		} else {
@@ -112,7 +104,17 @@
 			clearInterval(intv);
 		}
 
-		goto('/download');
+		publishProfile($sk, {
+			name: $name,
+			about: $about,
+			picture: $picture,
+			website: $website.startsWith('http') ? $website : `https://${$website}`
+		});
+		publishRelayList($sk, $pk);
+
+		setTimeout(() => {
+			goto('/download');
+		}, 1000);
 	}
 </script>
 

@@ -1,35 +1,25 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
 	import { shardGetBunker } from '@fiatjaf/promenade-trusted-dealer';
+	import { pool } from '@nostr/gadgets/global';
+
 	import { goto } from '$app/navigation';
 	import TwoColumnLayout from '$lib/TwoColumnLayout.svelte';
-	import { sk, pk, ourInbox } from '$lib/store';
+	import { sk, pk, bunkerURI } from '$lib/store';
 	import ClipToCopy from '$lib/ClipToCopy.svelte';
 	import CheckboxWithLabel from '$lib/CheckboxWithLabel.svelte';
 	import LoadingBar from '$lib/LoadingBar.svelte';
-	import { pool, getInboxes, signers, minePow } from '$lib/nostr';
+	import { signers, minePow, inboxes, selectReadRelays } from '$lib/nostr';
 
 	let activateBunker = false;
 	let bunkerActivating = false;
-	let bunkerActivated = false;
 	let activationProgress = 0;
-	let bunkerURL = '';
-	let inboxes: { [pubkey: string]: string[] } = {};
 
 	onMount(() => {
 		if ($sk.length === 0) {
 			goto('/');
 			return;
 		}
-
-		getInboxes([$pk, ...signers]).then((res: { [pubkey: string]: string[] }) => {
-			inboxes = res;
-
-			const ourRecentlyFetchedInbox = res[$pk];
-			if (ourRecentlyFetchedInbox) {
-				$ourInbox = ourRecentlyFetchedInbox;
-			}
-		});
 	});
 
 	async function activate(event: Event) {
@@ -41,24 +31,23 @@
 		}, 3000);
 
 		try {
-			bunkerURL = await shardGetBunker(
+			$bunkerURI = await shardGetBunker(
 				pool,
 				$sk,
 				$pk,
 				2,
-				3,
+				import.meta.env.DEV ? 2 : 3,
 				signers,
 				'wss://promenade.fiatjaf.com',
 				20,
-				inboxes,
-				$ourInbox,
+				await inboxes,
+				(await inboxes)[$pk] || selectReadRelays(),
 				minePow,
 				(p: number) => {
 					activationProgress = p;
 				}
 			);
 			bunkerActivating = false;
-			bunkerActivated = true;
 		} catch (err) {
 			console.error(err);
 			bunkerActivating = false;
@@ -106,7 +95,7 @@
 	</div>
 
 	<div slot="interactive">
-		{#if !bunkerActivated}
+		{#if $bunkerURI === ''}
 			<div class=" mt-6">
 				<div>
 					<CheckboxWithLabel bind:checked={activateBunker} disabled={bunkerActivating}>
@@ -120,28 +109,29 @@
 					The key will be splitted and shared with these 3 independent signers.<br />
 				</div>
 			{/if}
-			{#if bunkerActivating || bunkerActivated}
+			{#if bunkerActivating || $bunkerURI !== ''}
 				<div class="mt-6">
 					<LoadingBar progress={activationProgress} />
 				</div>
 			{/if}
 		{/if}
 
-		{#if bunkerActivated}
+		{#if $bunkerURI !== ''}
 			<div class="flex justify-center">
 				<img src="/icons/done.svg" alt="Done" class="w-24" />
 			</div>
 			<div class="mt-10 text-neutral-600">
-				All done! your bunker url is ready, copy it and put it in a safe place:
+				All done! your bunker code is ready. You can copy and paste it into Nostr clients to log in
+				without having to use your secret key:
 			</div>
 			<div class="mt-6 text-xl">
 				<div class="break-words">
-					<ClipToCopy textToCopy={bunkerURL} confirmMessage="Copied!" />
+					<ClipToCopy textToCopy={$bunkerURI} confirmMessage="Copied!" />
 				</div>
 			</div>
 		{/if}
 
-		{#if activateBunker && !bunkerActivated}
+		{#if activateBunker && $bunkerURI === ''}
 			<div class="mt-16 flex justify-center sm:justify-end">
 				<button
 					on:click={activate}
@@ -154,13 +144,13 @@
 			</div>
 		{/if}
 
-		{#if bunkerActivated || !activateBunker}
+		{#if $bunkerURI !== '' || !activateBunker}
 			<div class="mt-16 flex justify-center sm:justify-end">
 				<button
 					on:click={navigateContinue}
 					class="inline-flex items-center rounded bg-strongpink px-8 py-3 text-[1.6rem] text-white sm:text-[1.3rem]"
 				>
-					{bunkerActivated ? 'Continue' : 'No thanks, continue'}
+					{$bunkerURI !== '' ? 'Continue' : 'No, thanks, continue'}
 					<img src="/icons/arrow-right.svg" alt="continue" class="ml-4 mr-2 h-6 w-6" />
 				</button>
 			</div>

@@ -6,6 +6,7 @@
 	import { goto } from '$app/navigation';
 	import {
 		sk,
+		pk,
 		npub,
 		ncryptsec,
 		backupDownloaded,
@@ -19,7 +20,6 @@
 	import TwoColumnLayout from '$lib/TwoColumnLayout.svelte';
 	import ClipToCopy from '$lib/ClipToCopy.svelte';
 	import CheckboxWithLabel from '$lib/CheckboxWithLabel.svelte';
-	import { delayedActions, publishRelayList, publishProfile } from '$lib/actions';
 
 	let backupInitialized = false;
 	let backupDone = false;
@@ -72,19 +72,6 @@
 	}
 
 	function navigateContinue() {
-		delayedActions.push([
-			publishProfile,
-			[
-				$sk,
-				{
-					name: $name,
-					picture: $picture,
-					about: $about,
-					website: $website.startsWith('http') ? $website : `https://${$website}`
-				}
-			]
-		]);
-		delayedActions.push([publishRelayList, [$sk]]);
 		$backupDownloaded = true;
 		goto('/email');
 	}

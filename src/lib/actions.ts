@@ -1,42 +1,27 @@
-import { pk, ncryptsec, ourInbox } from '$lib/store';
 import { finalizeEvent, type NostrEvent } from '@nostr/tools/pure';
-import * as nip49 from '@nostr/tools/nip49';
-import { indexRelays, minePow, pool, selectWriteRelays } from './nostr';
-import { get } from 'svelte/store';
+import { inboxes, indexRelays, minePow, selectReadRelays, selectWriteRelays } from './nostr';
+import { pool } from '@nostr/gadgets/global';
 
-export const delayedActions: [(...args: any) => Promise<void>, any[]][] = [];
-
-export async function runActions(): Promise<void> {
-	await Promise.all(delayedActions.map(([action, args]) => action(...args)));
-}
-
-export async function sendEmail(sk: Uint8Array, npub: string, email: string, password: string) {
+export async function sendEmail(
+	sk: Uint8Array,
+	pk: string,
+	npub: string,
+	ncryptsec: string,
+	email: string
+) {
 	// Restart mining if it has already been used
 	if (mining === undefined) {
-		pk.subscribe((currentPk) => {
-			mineEmail(sk, currentPk);
-			// Unsubscribe after getting the value
-			return () => {};
-		})();
+		mineEmail(sk, pk);
 	}
 
 	try {
-		let emailNcryptsec = undefined;
-		ncryptsec.subscribe((currentNcryptsec) => {
-			emailNcryptsec = currentNcryptsec;
-			// Unsubscribe after getting the value
-			return () => {};
-		})();
-		if (emailNcryptsec === '') {
-			emailNcryptsec = nip49.encrypt(sk, password);
-		}
 		const response = await fetch('/send-email', {
 			method: 'POST',
 			headers: {
 				'Content-Type': 'application/json',
 				Authorization: 'Nostr ' + btoa(JSON.stringify(await mining))
 			},
-			body: JSON.stringify({ to: email, ncryptsec: emailNcryptsec, npub: npub })
+			body: JSON.stringify({ to: email, ncryptsec, npub: npub })
 		});
 
 		const result = await response.json();
@@ -51,9 +36,9 @@ export async function sendEmail(sk: Uint8Array, npub: string, email: string, pas
 	resetMining();
 }
 
-export async function publishRelayList(sk: Uint8Array) {
+export async function publishRelayList(sk: Uint8Array, pk: string) {
 	const outboxRelays: string[] = selectWriteRelays();
-	const inboxRelays: string[] = get(ourInbox);
+	const inboxRelays: string[] = (await inboxes)[pk] || selectReadRelays();
 
 	const tags: string[][] = [];
 	for (let i = 0; i < outboxRelays.length; i++) {

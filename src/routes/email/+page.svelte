@@ -1,13 +1,12 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
 	import { goto } from '$app/navigation';
-	import { sk, npub, password, email } from '$lib/store';
+	import { sk, pk, npub, password, email, ncryptsec } from '$lib/store';
 	import { isMobile } from '$lib/mobile';
 	import TwoColumnLayout from '$lib/TwoColumnLayout.svelte';
 	import CheckboxWithLabel from '$lib/CheckboxWithLabel.svelte';
 	import LoadingBar from '$lib/LoadingBar.svelte';
 	import { sendEmail } from '$lib/actions';
-	import { get } from 'svelte/store';
 
 	let wantEmailBackup = false;
 	let emailInput: HTMLInputElement;
@@ -15,8 +14,7 @@
 	let activationProgress = 0;
 
 	onMount(() => {
-		let passw = get(password);
-		needsPassword = !passw || passw == '';
+		needsPassword = !$password || $password == '';
 	});
 
 	const smtpFromEmail = import.meta.env.VITE_SMTP_FROM_EMAIL;
@@ -51,7 +49,7 @@
 			if (activationProgress < 95) activationProgress = activationProgress + 5;
 		}, 500);
 
-		await sendEmail($sk, $npub, $email, $password);
+		await sendEmail($sk, $pk, $npub, $ncryptsec, $email);
 		clearInterval(intv);
 
 		goto('/bunker');
@@ -147,7 +145,7 @@
 					on:click={navigateContinue}
 					class="inline-flex items-center rounded bg-strongpink px-8 py-3 text-[1.6rem] text-white sm:text-[1.3rem]"
 				>
-					No thanks, continue
+					No, thanks, continue
 					<img src="/icons/arrow-right.svg" alt="continue" class="ml-4 mr-2 h-6 w-6" />
 				</button>
 			{/if}

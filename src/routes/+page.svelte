@@ -1,5 +1,4 @@
 <script lang="ts">
-	import BasicLayout from '$lib/BasicLayout.svelte';
 	const baseUrl = import.meta.env.VITE_BASE_URL;
 </script>
 

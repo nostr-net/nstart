@@ -9,6 +9,7 @@ self.onmessage = async function (ev: MessageEvent) {
 	const { evt, difficulty, start, step } = ev.data;
 
 	let count = start;
+    let i = 0
 
 	const tag = ['nonce', count.toString(), difficulty.toString()];
 
@@ -18,10 +19,11 @@ self.onmessage = async function (ev: MessageEvent) {
 	let prev = 0;
 
 	while (true) {
+        i++
 		count += step;
 		tag[1] = count.toString();
 
-		if ((count & 0x5fff) === 0) {
+		if ((i & 0xffff) === 0) {
 			evt.created_at = Math.ceil(Date.now() / 1000) + 12;
 		}
 

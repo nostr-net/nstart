@@ -1,6 +1,5 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
-	import { SimplePool } from '@nostr/tools/pool';
 
 	import { goto } from '$app/navigation';
 	import { sk } from '$lib/store';
@@ -8,7 +7,8 @@
 	import CheckboxWithLabel from '$lib/CheckboxWithLabel.svelte';
 	import LoadingBar from '$lib/LoadingBar.svelte';
 	import { indexRelays } from '$lib/nostr';
-	import { delayedActions, publishFollows, runActions } from '$lib/actions';
+	import { publishFollows } from '$lib/actions';
+	import { pool } from '@nostr/gadgets/global';
 
 	const FOLLOWS = [
 		{
@@ -122,7 +122,6 @@
 
 		const all = new Set<string>();
 
-		const pool = new SimplePool();
 		let events = await pool.querySync(indexRelays, { kinds: [3], authors: sources });
 		events.forEach((e) => {
 			e.tags.forEach((tag) => {
@@ -146,16 +145,18 @@
 	}
 
 	async function navigateContinue() {
-		delayedActions.push([publishFollows, [$sk, getSelectedUsersArray()]]);
-
 		let intv = setInterval(() => {
 			if (activationProgress < 95) activationProgress = activationProgress + 5;
 		}, 500);
 
-		await runActions();
+		await publishFollows($sk, getSelectedUsersArray());
 
+		activationProgress = 100;
 		clearInterval(intv);
-		goto('/finish');
+
+		setTimeout(() => {
+			goto('/finish');
+		}, 1000);
 	}
 </script>
 

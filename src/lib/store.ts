@@ -1,5 +1,7 @@
-import { writable, type Writable } from 'svelte/store';
-import { selectReadRelays } from './nostr';
+import { derived, writable, type Readable, type Writable } from 'svelte/store';
+import { generateSecretKey, getPublicKey } from '@nostr/tools/pure';
+import { npubEncode } from '@nostr/tools/nip19';
+import * as nip49 from '@nostr/tools/nip49';
 
 // Utility function to handle sessionStorage
 function createSessionWritable<T>(label: string, initialValue: T): Writable<T> {
@@ -62,17 +64,16 @@ function base64ToUint8Array(base64: string): Uint8Array {
 }
 
 // Create your stores with session persistence
-export const sk = createSessionWritable('sk', new Uint8Array());
-export const pk = createSessionWritable('pk', '');
-export const npub = createSessionWritable('npub', '');
-export const ncryptsec = createSessionWritable('ncryptsec', '');
-
+export const sk = createSessionWritable<Uint8Array>('sk', generateSecretKey());
 export const name = createSessionWritable('name', '');
-export const picture = createSessionWritable('picture', '');
 export const about = createSessionWritable('about', '');
+export const email = createSessionWritable('email', '');
+export const picture = createSessionWritable('picture', '');
 export const website = createSessionWritable('website', '');
 export const password = createSessionWritable('password', '');
-export const email = createSessionWritable('email', '');
+export const bunkerURI = createSessionWritable('bunker', '');
 export const backupDownloaded = createSessionWritable('backupDownloaded', false);
 
-export const ourInbox = createSessionWritable('ourInbox', selectReadRelays());
+export const pk = derived<Readable<Uint8Array>, string>(sk, getPublicKey);
+export const npub = derived(pk, npubEncode);
+export const ncryptsec = derived([sk, password], ([sk, password]) => nip49.encrypt(sk, password));
