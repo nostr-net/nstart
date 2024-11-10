@@ -86,10 +86,10 @@ export function selectReadRelays(): string[] {
 		'wss://wot.sandwich.farm'
 	];
 
-	const safeRelays = ['wss://pyramid.fiatjaf.com', 'wss://nostr.land'];
+	const safeRelays = ['wss://promenade.fiatjaf.com', 'wss://relay.damus.io'];
 
 	const urls = [];
-	urls.push('wss://nostr.wine');
+	urls.push('wss://relay.nsecbunker.com');
 	urls.push(pick(wotRelays));
 	urls.push(pick(wotRelays));
 	urls.push(pick(safeRelays));
