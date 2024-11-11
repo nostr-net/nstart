@@ -5,7 +5,7 @@
 
 	import { goto } from '$app/navigation';
 	import TwoColumnLayout from '$lib/TwoColumnLayout.svelte';
-	import { sk, pk, bunkerURI } from '$lib/store';
+	import { sk, name, pk, bunkerURI } from '$lib/store';
 	import ClipToCopy from '$lib/ClipToCopy.svelte';
 	import CheckboxWithLabel from '$lib/CheckboxWithLabel.svelte';
 	import LoadingBar from '$lib/LoadingBar.svelte';
@@ -16,7 +16,7 @@
 	let activationProgress = 0;
 
 	onMount(() => {
-		if ($sk.length === 0) {
+		if ($name.length === 0) {
 			goto('/');
 			return;
 		}

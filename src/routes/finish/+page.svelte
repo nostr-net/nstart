@@ -6,7 +6,7 @@
 	import { name, npub } from '$lib/store';
 
 	onMount(() => {
-		if ($sk.length === 0) {
+		if ($name.length === 0) {
 			goto('/');
 		}
 	});
