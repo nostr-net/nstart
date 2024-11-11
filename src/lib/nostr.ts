@@ -1,13 +1,12 @@
 import { type NostrEvent, type UnsignedEvent } from '@nostr/tools';
 
 import HashWorker from './worker?worker';
-import { loadRelayList } from '@nostr/gadgets/lists';
 
 export const signers = [
 	'ad1c6fa1daca939685d34ab541fc9e7b450ef6295aa273addafee74a579d57fb', // sebastix
 	'23a3ff76766f5ffc852fa6f2fc5058c1306ee25927632e0f8e213af11a5b8de5', // fiatjaf 2
-	'aa4f53d8041b88adee44cefb62fb49fdeb85d151d1a346e655850c213508ed2e', // hodlbod
-	'a8ec5e760d8420d774be5d6a6c634071244c4efbae6a94bfe048dfd5c85bd280', // pablo
+	// 'aa4f53d8041b88adee44cefb62fb49fdeb85d151d1a346e655850c213508ed2e', // hodlbod
+	'0a7c2da051f9f215c4c97f6cdc3dd444e73ea00c10647fa5e552cfc78a506e94', // pablo
 	'4be49a6175734b43c7083ceac11e47bf684ffe65bd021c949bea1702409c119a', // daniele
 	'17da048b868a247beef98160907b2127030dbc718fea9eb5225913576586cb8c' // fiatjaf 1
 ];
@@ -48,17 +47,6 @@ export async function minePow(
 		}
 	});
 }
-
-export const inboxes: Promise<{ [pubkey: string]: string[] }> = Promise.all(
-	signers.map((pk) => loadRelayList(pk).catch(() => null))
-).then((results) => {
-	const inboxes: { [pubkey: string]: string[] } = {};
-	results.forEach((rl, i) => {
-		if (rl === null) return;
-		inboxes[signers[i]] = rl.items.filter((r) => r.read).map((r) => r.url);
-	});
-	return inboxes;
-});
 
 export function selectWriteRelays(): string[] {
 	const writeRelays = [

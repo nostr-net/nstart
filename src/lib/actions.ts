@@ -1,6 +1,8 @@
 import { finalizeEvent, type NostrEvent } from '@nostr/tools/pure';
-import { inboxes, indexRelays, minePow, selectReadRelays, selectWriteRelays } from './nostr';
+import { indexRelays, minePow, selectReadRelays, selectWriteRelays } from './nostr';
 import { pool } from '@nostr/gadgets/global';
+import { inboxes } from './store';
+import { get } from 'svelte/store';
 
 export async function sendEmail(
 	sk: Uint8Array,
@@ -38,7 +40,7 @@ export async function sendEmail(
 
 export async function publishRelayList(sk: Uint8Array, pk: string) {
 	const outboxRelays: string[] = selectWriteRelays();
-	const inboxRelays: string[] = (await inboxes)[pk] || selectReadRelays();
+	const inboxRelays: string[] = (get(inboxes))[pk] || selectReadRelays();
 
 	const tags: string[][] = [];
 	for (let i = 0; i < outboxRelays.length; i++) {

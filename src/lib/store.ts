@@ -1,7 +1,9 @@
-import { derived, writable, type Readable, type Writable } from 'svelte/store';
+import { derived, readable, writable, type Readable, type Writable } from 'svelte/store';
 import { generateSecretKey, getPublicKey } from '@nostr/tools/pure';
 import { npubEncode } from '@nostr/tools/nip19';
 import * as nip49 from '@nostr/tools/nip49';
+import { signers } from './nostr';
+import { loadRelayList } from '@nostr/gadgets/lists';
 
 // Utility function to handle sessionStorage
 function createSessionWritable<T>(label: string, initialValue: T): Writable<T> {
@@ -63,7 +65,7 @@ function base64ToUint8Array(base64: string): Uint8Array {
 	return bytes;
 }
 
-// Create your stores with session persistence
+// Stores with session persistence
 export const sk = createSessionWritable<Uint8Array>('sk', generateSecretKey());
 export const name = createSessionWritable('name', '');
 export const about = createSessionWritable('about', '');
@@ -74,6 +76,42 @@ export const password = createSessionWritable('password', '');
 export const bunkerURI = createSessionWritable('bunker', '');
 export const backupDownloaded = createSessionWritable('backupDownloaded', false);
 
+// Runtime stores
+export const inboxes = readable<{ [pubkey: string]: string[] }>({}, (set) => {
+	const inboxes: { [pubkey: string]: string[] } = {};
+	Promise.all(
+		signers.map(async (pk) => {
+			try {
+				const rl = await loadRelayList(pk);
+				inboxes[pk] = rl.items.filter((r) => r.read).map((r) => r.url);
+			} catch (err) {
+				console.error('failed to load inbox relays for', pk, err);
+			}
+		})
+	).then(() => {
+		set(inboxes);
+	});
+});
+
+// Derived stores
 export const pk = derived<Readable<Uint8Array>, string>(sk, getPublicKey);
 export const npub = derived(pk, npubEncode);
-export const ncryptsec = derived([sk, password], ([sk, password]) => nip49.encrypt(sk, password));
+
+let ncryptsecTimeoutId: NodeJS.Timeout;
+export const ncryptsec = derived<[Readable<Uint8Array>, Readable<string>], string>(
+	[sk, password],
+	([sk, password], set) => {
+		if (ncryptsecTimeoutId) {
+			clearTimeout(ncryptsecTimeoutId);
+		}
+
+		if (password === '') {
+			set('');
+			return;
+		}
+
+		ncryptsecTimeoutId = setTimeout(() => {
+			set(nip49.encrypt(sk, password));
+		}, 1000);
+	}
+);

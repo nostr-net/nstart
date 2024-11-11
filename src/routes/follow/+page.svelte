@@ -2,7 +2,7 @@
 	import { onMount } from 'svelte';
 
 	import { goto } from '$app/navigation';
-	import { sk } from '$lib/store';
+	import { sk, name } from '$lib/store';
 	import TwoColumnLayout from '$lib/TwoColumnLayout.svelte';
 	import CheckboxWithLabel from '$lib/CheckboxWithLabel.svelte';
 	import LoadingBar from '$lib/LoadingBar.svelte';

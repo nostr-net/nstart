@@ -4,18 +4,7 @@
 	import * as nip49 from '@nostr/tools/nip49';
 
 	import { goto } from '$app/navigation';
-	import {
-		sk,
-		pk,
-		npub,
-		ncryptsec,
-		backupDownloaded,
-		name,
-		password,
-		picture,
-		about,
-		website
-	} from '$lib/store';
+	import { sk, npub, ncryptsec, backupDownloaded, name, password } from '$lib/store';
 	import { isMobile } from '$lib/mobile';
 	import TwoColumnLayout from '$lib/TwoColumnLayout.svelte';
 	import ClipToCopy from '$lib/ClipToCopy.svelte';
@@ -24,8 +13,7 @@
 	let backupInitialized = false;
 	let backupDone = false;
 	let backupPrivKey = '';
-	let ncryptOption = false;
-	let thisPassword = '';
+	let encrypt = false;
 
 	onMount(() => {
 		if ($name.length === 0) {
@@ -33,34 +21,14 @@
 		}
 
 		if ($password) {
-			ncryptOption = true;
-			thisPassword = $password;
+			encrypt = true;
 		}
 	});
 
-	function togglePasswordField() {
-		ncryptOption = !ncryptOption;
-	}
-
 	function downloadBackup() {
-		if (ncryptOption && !thisPassword) {
-			alert('Please enter a password before downloading the encrypted backup');
-			return;
-		}
-
-		if (ncryptOption) {
-			// Recreate the ncriptsec only if the password has been changed
-			if (thisPassword != $password) {
-				$password = thisPassword;
-				$ncryptsec = nip49.encrypt($sk, $password);
-				$backupDownloaded = false;
-			}
-			backupPrivKey = $ncryptsec;
-		} else {
-			backupPrivKey = nip19.nsecEncode($sk);
-		}
-
-		const blob = new Blob([$npub + '\n\n' + backupPrivKey], { type: 'text/plain' });
+		const blob = new Blob([$npub + '\n\n' + $ncryptsec || nip19.nsecEncode($sk)], {
+			type: 'text/plain'
+		});
 		const link = document.createElement('a');
 		link.href = URL.createObjectURL(blob);
 		link.download = 'nostr-private-key.txt';
@@ -128,7 +96,7 @@
 
 		<div class="mt-10 flex flex-col justify-end">
 			{#if !backupInitialized}
-				{#if !ncryptOption}
+				{#if !encrypt}
 					<button
 						on:click={downloadBackup}
 						class="inline-flex w-full items-center justify-center rounded bg-strongpink px-8 py-3 text-[1.3rem] text-white"
@@ -141,17 +109,19 @@
 					</button>
 
 					<button
-						on:click={togglePasswordField}
+						on:click={() => {
+							encrypt = true;
+						}}
 						class="mt-2 text-center text-sm text-neutral-400 hover:underline"
 						>I want to download the encrypted version</button
 					>
 				{/if}
 
-				{#if ncryptOption}
+				{#if encrypt}
 					<!-- svelte-ignore a11y-autofocus -->
 					<input
 						type="text"
-						bind:value={thisPassword}
+						bind:value={$password}
 						placeholder="Pick a password"
 						required
 						autofocus={!$isMobile}
@@ -159,6 +129,7 @@
 					/>
 					<button
 						class="mt-6 inline-flex w-full items-center justify-center rounded bg-strongpink px-8 py-3 text-[1.3rem] text-white"
+						disabled={$ncryptsec === ''}
 						on:click={downloadBackup}
 					>
 						Save my ncryptsec <img
@@ -169,9 +140,12 @@
 					</button>
 
 					<button
-						on:click={togglePasswordField}
+						on:click={() => {
+							encrypt = false;
+							$password = '';
+						}}
 						class="mt-2 text-center text-sm text-neutral-400 hover:underline"
-						>Never mind, I want do download the plain nsec</button
+						>Nevermind, I want do download the plain nsec</button
 					>
 				{/if}
 				<div class="mt-8 text-neutral-600">
@@ -188,7 +162,7 @@
 					<div class="my-4 rounded bg-yellow-100 px-6 py-4">
 						{previewDownloadKey(backupPrivKey)}
 					</div>
-					{#if ncryptOption}
+					{#if encrypt}
 						Finally, copy the file in another safe place as additional backup and separately save
 						the chosen password (<strong>{$password}</strong>).
 					{:else}
@@ -197,7 +171,7 @@
 				</div>
 				<div class="mt-8">
 					<CheckboxWithLabel bind:checked={backupDone}>
-						{#if ncryptOption}
+						{#if encrypt}
 							I saved the file and the password in a couple of safe places
 						{:else}
 							I saved the file in a couple of safe places

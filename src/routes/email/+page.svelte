@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
 	import { goto } from '$app/navigation';
-	import { sk, pk, npub, password, email, ncryptsec } from '$lib/store';
+	import { sk, pk, npub, password, email, name, ncryptsec } from '$lib/store';
 	import { isMobile } from '$lib/mobile';
 	import TwoColumnLayout from '$lib/TwoColumnLayout.svelte';
 	import CheckboxWithLabel from '$lib/CheckboxWithLabel.svelte';
@@ -51,8 +51,11 @@
 
 		await sendEmail($sk, $pk, $npub, $ncryptsec, $email);
 		clearInterval(intv);
+		activationProgress = 100;
 
-		goto('/bunker');
+		setTimeout(() => {
+			goto('/bunker');
+		}, 1000);
 	}
 
 	function navigateContinue() {
@@ -134,7 +137,7 @@
 			{#if wantEmailBackup}
 				<button
 					on:click={send}
-					disabled={activationProgress > 0}
+					disabled={$ncryptsec === '' || activationProgress > 0}
 					class={`inline-flex items-center rounded px-8 py-3 text-[1.6rem] text-white sm:text-[1.3rem] ${$password && $password !== '' && $email && $email !== '' && activationProgress == 0 ? 'bg-strongpink text-white' : 'cursor-not-allowed bg-neutral-400 text-neutral-100'}`}
 				>
 					{activationProgress > 0 ? 'Sending...' : 'Send now'}

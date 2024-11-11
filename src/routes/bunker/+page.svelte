@@ -5,11 +5,11 @@
 
 	import { goto } from '$app/navigation';
 	import TwoColumnLayout from '$lib/TwoColumnLayout.svelte';
-	import { sk, name, pk, bunkerURI } from '$lib/store';
+	import { sk, name, pk, inboxes, bunkerURI } from '$lib/store';
 	import ClipToCopy from '$lib/ClipToCopy.svelte';
 	import CheckboxWithLabel from '$lib/CheckboxWithLabel.svelte';
 	import LoadingBar from '$lib/LoadingBar.svelte';
-	import { signers, minePow, inboxes, selectReadRelays } from '$lib/nostr';
+	import { signers, minePow, selectReadRelays } from '$lib/nostr';
 
 	let activateBunker = false;
 	let bunkerActivating = false;
@@ -40,8 +40,8 @@
 				signers,
 				'wss://promenade.fiatjaf.com',
 				20,
-				await inboxes,
-				(await inboxes)[$pk] || selectReadRelays(),
+				$inboxes,
+				$inboxes[$pk] || selectReadRelays(),
 				minePow,
 				(p: number) => {
 					activationProgress = p;
