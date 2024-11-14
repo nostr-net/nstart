@@ -26,6 +26,7 @@
 	});
 
 	function downloadBackup() {
+		backupPrivKey = $ncryptsec || nip19.nsecEncode($sk);
 		const blob = new Blob([$npub + '\n\n' + $ncryptsec || nip19.nsecEncode($sk)], {
 			type: 'text/plain'
 		});
