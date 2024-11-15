@@ -39,17 +39,17 @@
 				>
 					<img src="/icons/coracle.svg" alt="Coracle" class="h-24" />
 					<div class="mt-2 w-24 text-center">Coracle</div>
-					<div class="mt-2 w-24 text-center text-sm text-neutral-500">Microblogging</div>
+					<div class="mt-2 w-24 text-center text-sm text-neutral-500">Micro blogging</div>
 				</a>
 				<a href="https://habla.news" target="_blank" class="flex flex-col justify-self-center">
 					<img src="/icons/habla.svg" alt="Habla" class="h-24" />
 					<div class="mt-2 w-24 text-center">Habla.news</div>
-					<div class="mt-2 w-24 text-center text-sm text-neutral-500">Articles</div>
+					<div class="mt-2 w-24 text-center text-sm text-neutral-500">Articles and blogging</div>
 				</a>
-				<a href="https://zap.stream" target="_blank" class="flex w-24 flex-col justify-self-center">
-					<img src="/icons/zap-stream.svg" alt="Zap.stream" class="h-24" />
-					<div class="mt-2 w-24 text-center">Zap.stream</div>
-					<div class="mt-2 w-24 text-center text-sm text-neutral-500">Livestreaming</div>
+				<a href="https://cachi.chat" target="_blank" class="flex w-24 flex-col justify-self-center">
+					<img src="/icons/cachi.svg" alt="Cachi" class="h-24" />
+					<div class="mt-2 w-24 text-center">Cachi</div>
+					<div class="mt-2 w-24 text-center text-sm text-neutral-500">Group conversations</div>
 				</a>
 				<a
 					href="https://wikistr.com"
