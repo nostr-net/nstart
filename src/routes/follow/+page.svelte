@@ -1,12 +1,11 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
-
 	import { goto } from '$app/navigation';
-	import { sk, name } from '$lib/store';
+	import { sk, name, followerSuggestions } from '$lib/store';
 	import TwoColumnLayout from '$lib/TwoColumnLayout.svelte';
 	import CheckboxWithLabel from '$lib/CheckboxWithLabel.svelte';
 	import LoadingBar from '$lib/LoadingBar.svelte';
-	import { indexRelays } from '$lib/nostr';
+	import { indexRelays, getProfile } from '$lib/nostr';
 	import { publishFollows } from '$lib/actions';
 	import { pool } from '@nostr/gadgets/global';
 
@@ -87,20 +86,43 @@
 		}
 	];
 
-	let randomUsers: any[] = [];
+	let suggestedUsers: any[] = [];
 	let selectedUsers = new Set();
 	let activationProgress = 0;
 
 	onMount(() => {
 		if ($name.length === 0) {
 			goto('/');
+			return; // Exit early if redirecting
 		}
-		pickRandomUsers();
+		buildSuggestionList();
 	});
 
-	function pickRandomUsers() {
+	async function buildSuggestionList(): string[] {
+		const users = [];
+		for (const suggestion of $followerSuggestions) {
+			let profile = await getProfile(suggestion);
+			if (profile) {
+				const parsedContent = JSON.parse(profile.content);
+				let name = parsedContent.name || null;
+				let image = parsedContent.picture || null;
+				users.push({ name: name, pubkey: profile.pubkey, image: image });
+				toggleUserSelection({ pubkey: profile.pubkey });
+			}
+		}
+
 		const shuffled = FOLLOWS.sort(() => 0.5 - Math.random());
-		randomUsers = shuffled.slice(0, 5);
+		for (const random of shuffled) {
+			const exists = users.some((user) => user.pubkey === random.pubkey);
+			if (!exists) {
+				users.push(random);
+			}
+			if (users.length >= 5) {
+				break;
+			}
+		}
+
+		suggestedUsers = users;
 	}
 
 	function toggleUserSelection(user: { pubkey: unknown }) {
@@ -191,7 +213,7 @@
 			<!-- list of follows -->
 			<div>See the same things these Nostr users are seeing in their feed:</div>
 			<div class="mt-4">
-				{#each randomUsers as user}
+				{#each suggestedUsers as user}
 					<CheckboxWithLabel
 						checked={selectedUsers.has(user.pubkey)}
 						onClick={() => toggleUserSelection(user)}

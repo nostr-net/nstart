@@ -35,6 +35,8 @@ function createSessionWritable<T>(label: string, initialValue: T): Writable<T> {
 			if (value instanceof Uint8Array) {
 				const base64String = uint8ArrayToBase64(value);
 				storageValue = JSON.stringify({ type: 'Uint8Array', value: base64String });
+			} else if (value instanceof Array) {
+				storageValue = JSON.stringify({ type: 'array', value: value });
 			} else {
 				storageValue = JSON.stringify({ type: 'string', value: value });
 			}
@@ -75,6 +77,7 @@ export const website = createSessionWritable('website', '');
 export const password = createSessionWritable('password', '');
 export const bunkerURI = createSessionWritable('bunker', '');
 export const backupDownloaded = createSessionWritable('backupDownloaded', false);
+export const followerSuggestions = createSessionWritable('followerSuggestions', []);
 
 // Runtime stores
 export const inboxes = readable<{ [pubkey: string]: string[] }>({}, (set) => {

@@ -1,5 +1,14 @@
 <script lang="ts">
+	import { onMount } from 'svelte';
+	import { followerSuggestions } from '$lib/store';
+
 	const baseUrl = import.meta.env.VITE_BASE_URL;
+
+	onMount(() => {
+		const params = new URLSearchParams(window.location.search);
+		const itemsParam = params.get('s');
+		$followerSuggestions = itemsParam ? itemsParam.split(',') : [];
+	});
 </script>
 
 <svelte:head>

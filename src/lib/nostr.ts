@@ -1,4 +1,6 @@
 import { type NostrEvent, type UnsignedEvent } from '@nostr/tools';
+import { SimplePool } from 'nostr-tools/pool'
+import { nip19 } from '@nostr/tools';
 
 import HashWorker from './worker?worker';
 
@@ -89,4 +91,52 @@ function pick<A>(options: A[]): A {
 	const sel = options[idx];
 	options.splice(idx, 1);
 	return sel;
+}
+
+export async function getProfile(code) {
+  let publicKey;
+  if (/^(nprofile|npub)/.test(code)) {
+    try {
+      const { type, data } = nip19.decode(code);
+      if (type === 'npub') {
+        publicKey = data;
+      } else if (type === 'nprofile') {
+        publicKey = data.pubkey;
+      }
+    } catch (error) {
+      console.error('Failed to decode npub:', error);
+      return null;
+    }
+  } else if (code.length === 64) {
+    publicKey = code;
+  } else {
+    console.error('Invalid code format');
+    return null;
+  }
+
+	const pool = new SimplePool()
+
+  return new Promise((resolve, reject) => {
+    let subscription = pool.subscribeMany(
+      indexRelays,
+      [
+        {
+          kinds: [0],
+          authors: [publicKey],
+          limit: 1,
+        }
+      ],
+      {
+        onevent(event) {
+          subscription.close();
+          resolve(event);
+        },
+        onerror(error) {
+          console.error(`Subscription error: ${error}`);
+          subscription.close();
+          reject(error);
+        }
+      }
+    );
+  });
 }
