@@ -2,12 +2,10 @@
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
 <svg width="100%" height="100%" viewBox="0 0 100 100" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve" xmlns:serif="http://www.serif.com/" style="fill-rule:evenodd;clip-rule:evenodd;stroke-linejoin:round;stroke-miterlimit:2;">
     <circle cx="50" cy="50" r="50" style="fill:url(#_Linear1);"/>
-    <g transform="matrix(3.61352,0,0,3.61352,-66.0465,-102.337)">
-        <g transform="matrix(16,0,0,16,40.3472,48.7897)">
-        </g>
-        <text x="23.819px" y="48.79px" style="font-family:'HiraMaruProN-W4', 'Hiragino Maru Gothic ProN', sans-serif;font-size:16px;">W</text>
+    <g transform="matrix(0.0837618,0,0,0.0837618,16.4953,16.4953)">
+        <path d="M633.333,766.667L233.333,766.667C142.501,766.667 66.667,690.183 66.667,600L66.667,200C66.667,107.953 141.286,33.333 233.333,33.333L633.333,33.333C688.563,33.333 733.333,78.105 733.333,133.333L733.333,666.667C733.333,721.897 688.563,766.667 633.333,766.667ZM233.333,100C178.105,100 133.333,144.772 133.333,200L133.333,499.987C161.189,479.063 195.813,466.667 233.333,466.667L633.333,466.667C645.02,466.667 656.24,468.673 666.667,472.357L666.667,133.333C666.667,114.924 651.743,100 633.333,100L600,100L600,300C600,312.293 593.233,323.588 582.397,329.389C571.557,335.19 558.407,334.553 548.177,327.735L466.667,273.395L385.157,327.735C374.927,334.553 361.777,335.19 350.937,329.389C340.1,323.588 333.333,312.293 333.333,300L333.333,100L233.333,100ZM400,100L533.333,100L533.333,237.716L485.157,205.598C473.96,198.134 459.373,198.134 448.177,205.598L400,237.716L400,100ZM633.333,533.333C651.743,533.333 666.667,548.257 666.667,566.667L666.667,666.667C666.667,685.077 651.743,700 633.333,700L233.333,700C183.783,700 134.716,663.873 134.716,616.667C134.716,568.44 183.783,533.333 233.333,533.333L633.333,533.333Z" style="fill:white;"/>
     </g>
     <defs>
-        <linearGradient id="_Linear1" x1="0" y1="0" x2="1" y2="0" gradientUnits="userSpaceOnUse" gradientTransform="matrix(100,0,-0,100,0,50)"><stop offset="0" style="stop-color:rgb(169,242,188);stop-opacity:1"/><stop offset="1" style="stop-color:rgb(239,170,147);stop-opacity:1"/></linearGradient>
+        <linearGradient id="_Linear1" x1="0" y1="0" x2="1" y2="0" gradientUnits="userSpaceOnUse" gradientTransform="matrix(68.7918,72.5243,-72.5243,68.7918,14.8718,14.4327)"><stop offset="0" style="stop-color:rgb(40,111,42);stop-opacity:1"/><stop offset="1" style="stop-color:rgb(128,208,125);stop-opacity:1"/></linearGradient>
     </defs>
 </svg>
