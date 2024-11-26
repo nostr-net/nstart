@@ -61,9 +61,9 @@
 					<div class="mt-2 w-24 text-center text-sm text-neutral-500">Articles and blogging</div>
 					<div class="mt-2 w-24 text-center text-sm text-strongpink">Web app</div>
 				</a>
-				<a href="https://cachi.chat" target="_blank" class="flex w-24 flex-col justify-self-center">
-					<img src="/icons/cachi.svg" alt="Cachi" class="h-24" />
-					<div class="mt-2 w-24 text-center">Cachi</div>
+				<a href="https://chachi.chat" target="_blank" class="flex w-24 flex-col justify-self-center">
+					<img src="/icons/chachi.svg" alt="Chachi" class="h-24" />
+					<div class="mt-2 w-24 text-center">Chachi</div>
 					<div class="mt-2 w-24 text-center text-sm text-neutral-500">Group conversations</div>
 					<div class="mt-2 w-24 text-center text-sm text-strongpink">Web app</div>
 				</a>
