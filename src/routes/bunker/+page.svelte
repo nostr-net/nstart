@@ -56,6 +56,19 @@
 		clearInterval(intv);
 	}
 
+	function downloadBunker() {
+		const blob = new Blob(['Your bunker (Nostr connect) URL:\n\n' + $bunkerURI], {
+			type: 'text/plain'
+		});
+		const link = document.createElement('a');
+		link.href = URL.createObjectURL(blob);
+		link.download = 'nostr-bunker-url.txt';
+		link.style.display = 'none';
+		document.body.appendChild(link);
+		link.click();
+		document.body.removeChild(link);
+	}
+
 	function navigateContinue() {
 		goto('/follow');
 	}
@@ -121,7 +134,7 @@
 				<img src="/icons/done.svg" alt="Done" class="w-24" />
 			</div>
 			<div class="mt-10 text-neutral-600">
-				All done! your bunker code is ready. You can copy and paste it into Nostr clients to log in
+				All done! your bunker code is ready. Save it, your could paste it into Nostr clients to log in
 				without having to use your secret key:
 			</div>
 			<div class="mt-6 text-xl">
@@ -129,6 +142,16 @@
 					<ClipToCopy textToCopy={$bunkerURI} confirmMessage="Copied!" />
 				</div>
 			</div>
+			<button
+						on:click={downloadBunker}
+						class="mt-4 inline-flex w-full items-center justify-center rounded bg-neutral-600 px-8 py-3 text-[1.3rem] text-white"
+					>
+						Save my bunker <img
+							src="/icons/arrow-right.svg"
+							alt="continue"
+							class="ml-4 mr-2 h-5 w-5 rotate-90"
+						/>
+					</button>
 		{/if}
 
 		{#if activateBunker && $bunkerURI === ''}
