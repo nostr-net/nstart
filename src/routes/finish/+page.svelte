@@ -77,6 +77,16 @@
 					<div class="mt-2 w-24 text-center text-sm text-neutral-500">Open encyclopedia</div>
 					<div class="mt-2 w-24 text-center text-sm text-strongpink">Web app</div>
 				</a>
+				<a
+					href="https://olas.app"
+					target="_blank"
+					class="flex w-24 flex-col justify-self-center"
+				>
+					<img src="/icons/olas.svg" alt="Olas" class="h-24" />
+					<div class="mt-2 w-24 text-center">Olas</div>
+					<div class="mt-2 w-24 text-center text-sm text-neutral-500">Photo & video social</div>
+					<div class="mt-2 w-24 text-center text-sm text-strongpink">Android / IOS</div>
+				</a>
 			</div>
 			<p class="mt-8 text-neutral-500 sm:w-[80%]">
 				This is only a quick selection of the 80+ applications that have already been built on
