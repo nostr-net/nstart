@@ -8,5 +8,5 @@ build:
 
 deploy target: build
   rsync -av --delete --progress build package.json package-lock.json {{target}}:~/nstart/
-  ssh njump 'cd nstart; nvm use; npm ci --omit dev'
-  ssh njump 'systemctl restart nstart'
+  ssh {{target}} 'cd nstart; nvm use; npm ci --omit dev'
+  ssh {{target}} 'systemctl restart nstart'
