@@ -112,9 +112,7 @@
 		});
 		publishRelayList($sk, $pk);
 
-		setTimeout(() => {
-			goto('/download');
-		}, 1000);
+		goto('/download');
 	}
 </script>
 
