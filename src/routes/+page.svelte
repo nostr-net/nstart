@@ -35,7 +35,7 @@
 				<!-- content-->
 				<div class="p-8 sm:flex sm:flex-row-reverse sm:items-center sm:p-0">
 					<div
-						class="flex justify-center sm:relative sm:h-screen sm:basis-[45vw] sm:overflow-hidden"
+						class="flex animate-fade2down justify-center sm:relative sm:h-screen sm:basis-[45vw] sm:overflow-hidden"
 					>
 						<img
 							src="/images/relay.png"
@@ -46,7 +46,10 @@
 
 					<div class="z-20 basis-[55%] sm:py-10 sm:pl-[16vw]">
 						<!-- Welcome title -->
-						<div class="mb-8 border-l-[0.9rem] border-strongpink pl-4 sm:-ml-8">
+						<div
+							class="mb-8 animate-fade2 border-l-[0.9rem] border-strongpink pl-4 opacity-0 sm:-ml-8"
+							style="animation-delay: 0.2s;"
+						>
 							<h1 class="font-bold">
 								<div class="text-[3rem] leading-[1em] sm:text-[5rem]">WELCOME</div>
 								<div
@@ -60,7 +63,10 @@
 						</div>
 
 						<!-- Intro text -->
-						<div class="text-[1.3rem] leading-7 text-neutral-700">
+						<div
+							class="animate-fade1 text-[1.3rem] leading-7 text-neutral-700 opacity-0"
+							style="animation-delay: 0.5s;"
+						>
 							<p class="">
 								To join Nostr you need a profile, but it is not the usual one that a company
 								generates and manages for you. You create it yourself, no permissions are required.
@@ -79,7 +85,10 @@
 						</div>
 
 						<!-- Start button -->
-						<div class="my-8 flex justify-center sm:-mr-20 sm:justify-end">
+						<div
+							class="my-8 flex animate-fade1 justify-center opacity-0 sm:-mr-20 sm:justify-end"
+							style="animation-delay: 0.7s;"
+						>
 							<a
 								class="inline-flex items-center rounded bg-strongpink px-10 py-4 text-[1.8rem] text-white"
 								href="/yourself"
@@ -93,7 +102,10 @@
 						</div>
 
 						<!-- Footer -->
-						<div class="leading-6 text-neutral-500">
+						<div
+							class="animate-fade1 leading-6 text-neutral-500 opacity-0"
+							style="animation-delay: 1s;"
+						>
 							Would you like to know more about Nostr first?<br class="hidden sm:inline-block" />
 							<a href="https://njump.me" class="underline">Read a quick introduction</a>
 						</div>

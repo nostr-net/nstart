@@ -14,7 +14,23 @@ export default {
 				strongpink: '#e32a6d',
 				crimson: '#bc1150',
 				garnet: '#42091e'
-			}
+			},
+			animation: {
+				fade1: 'fadeIn 0.5s ease-in-out forwards',
+				fade2: 'fadeIn 1s ease-in-out forwards',
+				down: 'down 1s ease-in-out forwards',
+				fade2down: 'fadeIn 1s ease-in-out, down 1s ease-in-out forwards',
+			},
+			keyframes: {
+				fadeIn: {
+					'0%': { opacity: 0 },
+					'100%': { opacity: 1 },
+				},
+				down: {
+					'0%': { transform: 'translateY(-100px)' },
+					'100%': { transform: 'translateY(0px)' },
+				},
+			},
 		}
 	},
 	plugins: []

@@ -14,7 +14,7 @@
 </script>
 
 <BasicLayout>
-	<div slot="content">
+	<div slot="content" class="animate-fade1">
 		<!-- Welcome title -->
 		<div class="relative mb-8 border-l-[0.9rem] border-strongpink pl-4 sm:-ml-8">
 			<h1 class="font-bold">
@@ -24,14 +24,14 @@
 				</div>
 			</h1>
 			{#if $bunkerURI}
-			<div
-				class="absolute right-0 top-8 hidden w-48 rotate-6 flex-col items-center text-center sm:flex"
-			>
-				<QrCode className="" data={$bunkerURI} />
-				<span class="mt-4 text-sm text-strongpink"
-					>Scan the QrCode for quick login from mobile!</span
+				<div
+					class="absolute right-0 top-8 hidden w-48 rotate-6 flex-col items-center text-center sm:flex"
 				>
-			</div>
+					<QrCode className="" data={$bunkerURI} />
+					<span class="mt-4 text-sm text-strongpink"
+						>Scan the QrCode for quick login from mobile!</span
+					>
+				</div>
 			{/if}
 		</div>
 
@@ -61,7 +61,11 @@
 					<div class="mt-2 w-24 text-center text-sm text-neutral-500">Articles and blogging</div>
 					<div class="mt-2 w-24 text-center text-sm text-strongpink">Web app</div>
 				</a>
-				<a href="https://chachi.chat" target="_blank" class="flex w-24 flex-col justify-self-center">
+				<a
+					href="https://chachi.chat"
+					target="_blank"
+					class="flex w-24 flex-col justify-self-center"
+				>
 					<img src="/icons/chachi.svg" alt="Chachi" class="h-24" />
 					<div class="mt-2 w-24 text-center">Chachi</div>
 					<div class="mt-2 w-24 text-center text-sm text-neutral-500">Group conversations</div>
@@ -77,11 +81,7 @@
 					<div class="mt-2 w-24 text-center text-sm text-neutral-500">Open encyclopedia</div>
 					<div class="mt-2 w-24 text-center text-sm text-strongpink">Web app</div>
 				</a>
-				<a
-					href="https://olas.app"
-					target="_blank"
-					class="flex w-24 flex-col justify-self-center"
-				>
+				<a href="https://olas.app" target="_blank" class="flex w-24 flex-col justify-self-center">
 					<img src="/icons/olas.svg" alt="Olas" class="h-24" />
 					<div class="mt-2 w-24 text-center">Olas</div>
 					<div class="mt-2 w-24 text-center text-sm text-neutral-500">Photo & video social</div>
