@@ -11,7 +11,7 @@
 	import LoadingBar from '$lib/LoadingBar.svelte';
 	import { signers, minePow, selectReadRelays } from '$lib/nostr';
 
-	let activateBunker = false;
+	let activateBunker = true;
 	let bunkerActivating = false;
 	let activationProgress = 0;
 
