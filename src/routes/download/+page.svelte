@@ -46,7 +46,11 @@
 	}
 
 	function previewDownloadKey(str: string): string {
-		const firstPart = str.slice(0, 10);
+		let startCount = 10;
+		if (str.startsWith('ncryptsec1')) {
+			startCount = 15;
+		}
+		const firstPart = str.slice(0, startCount);
 		const lastPart = str.slice(-8);
 		return `${firstPart} ... ${lastPart}`;
 	}
