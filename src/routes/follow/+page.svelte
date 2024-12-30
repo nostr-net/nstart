@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
 	import { goto } from '$app/navigation';
-	import { sk, name, followerSuggestions } from '$lib/store';
+	import { sk, name, followerSuggestions, callingAppCode } from '$lib/store';
 	import TwoColumnLayout from '$lib/TwoColumnLayout.svelte';
 	import CheckboxWithLabel from '$lib/CheckboxWithLabel.svelte';
 	import LoadingBar from '$lib/LoadingBar.svelte';
@@ -177,7 +177,11 @@
 		clearInterval(intv);
 
 		setTimeout(() => {
-			goto('/finish');
+			if ($callingAppCode.length > 0) {
+				goto('/back');
+			} else {
+				goto('/finish');
+			}
 		}, 1000);
 	}
 </script>

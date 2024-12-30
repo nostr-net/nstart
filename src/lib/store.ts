@@ -78,6 +78,9 @@ export const password = createSessionWritable('password', '');
 export const bunkerURI = createSessionWritable('bunker', '');
 export const backupDownloaded = createSessionWritable('backupDownloaded', false);
 export const followerSuggestions = createSessionWritable('followerSuggestions', []);
+export const callingAppName = createSessionWritable('callingAppName', '');
+export const callingAppType = createSessionWritable('callingAppType', '');
+export const callingAppCode = createSessionWritable('callingAppCode', '');
 
 // Runtime stores
 export const inboxes = readable<{ [pubkey: string]: string[] }>({}, (set) => {

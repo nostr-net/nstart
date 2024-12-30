@@ -1,13 +1,30 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
-	import { followerSuggestions } from '$lib/store';
+	import { followerSuggestions, callingAppName, callingAppType, callingAppCode } from '$lib/store';
 
 	const baseUrl = import.meta.env.VITE_BASE_URL;
 
 	onMount(() => {
 		const params = new URLSearchParams(window.location.search);
+
+		// Manage suggested profiles
 		const itemsParam = params.get('s');
 		$followerSuggestions = itemsParam ? itemsParam.split(',') : [];
+
+		// Manage return back auto-login
+		const callingAppName = params.get('an');
+		$callingAppName = callingAppName;
+		const callingAppType = params.get('at');
+		$callingAppType = callingAppType;
+		const callingAppCode = params.get('ac');
+		$callingAppCode = callingAppCode;
+
+		// If a param is missing, reset all
+		if ($callingAppName.length == 0 || $callingAppType.length == 0 || $callingAppCode.length == 0) {
+			$callingAppName = '';
+			$callingAppType = '';
+			$callingAppCode = '';
+		}
 	});
 </script>
 
@@ -78,9 +95,14 @@
 								will have to keep safe.
 							</p>
 							<p class="mt-6">
-								This wizard is one of the many ways to bootstrap a Nostr profile that you can later
-								use in other apps. We help you to create you keypair and safely manage it in a few
-								steps. Are you ready?
+								{#if $callingAppName}
+									This wizard is used by <strong>{$callingAppName}</strong> to let you create your new
+									profile and safely manage it, in a few steps. Are you ready?
+								{:else}
+									This wizard is one of the many ways to bootstrap a Nostr profile that you can
+									later use in other apps. We help you to create you keypair and safely manage it in
+									a few steps. Are you ready?
+								{/if}
 							</p>
 						</div>
 
