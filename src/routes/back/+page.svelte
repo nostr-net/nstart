@@ -41,29 +41,6 @@
 				break;
 		}
 	});
-
-	async function postToLogin(event) {
-		event.preventDefault();
-
-		try {
-			const response = await fetch(actionURL, {
-				method: 'POST',
-				headers: {
-					'Content-Type': 'application/json'
-				},
-				body: JSON.stringify({ token: loginToken })
-			});
-
-			if (!response.ok) {
-				throw new Error('Network error');
-			}
-
-			const _ = await response.json();
-			window.location.href = actionURL;
-		} catch (error) {
-			console.error('Error:', error);
-		}
-	}
 </script>
 
 <BasicLayout>
@@ -85,17 +62,23 @@
 				below to go back to <strong>{$callingAppName}</strong>:
 			</p>
 			<div class="mt-8">
-				<a
-					class="inline-flex items-center rounded bg-strongpink px-6 py-4 text-[1.8rem] text-white sm:px-10"
-					href={$callingAppType === 'web' ? '#' : actionURL}
-					on:click={$callingAppType === 'web' ? postToLogin : void 0}
-				>
-					Start using Nostr <img
-						src="/icons/arrow-right.svg"
-						alt="Icon"
-						class="ml-4 mr-2 h-7 w-7"
-					/>
-				</a>
+				{#if $callingAppType === 'web'}
+					<form method="POST" action={actionURL}>
+						<input type="hidden" name="token" value={loginToken}>
+						<button type="submit" class="inline-flex items-center rounded bg-strongpink px-6 py-4 text-[1.8rem] text-white sm:px-10">
+							Start using Nostr 
+							<img src="/icons/arrow-right.svg" alt="Icon" class="ml-4 mr-2 h-7 w-7" />
+						</button>
+					</form>
+				{:else}
+					<a
+						href={actionURL}
+						class="inline-flex items-center rounded bg-strongpink px-6 py-4 text-[1.8rem] text-white sm:px-10"
+					>
+						Start using Nostr 
+						<img src="/icons/arrow-right.svg" alt="Icon" class="ml-4 mr-2 h-7 w-7" />
+					</a>
+				{/if}
 			</div>
 			<p class="mt-8 text-neutral-500 sm:w-[80%]">
 				{$callingAppName} is only one of the 80+ applications that have already been built on Nostr,
