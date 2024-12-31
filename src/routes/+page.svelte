@@ -1,6 +1,12 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
-	import { followerSuggestions, callingAppName, callingAppType, callingAppCode } from '$lib/store';
+	import {
+		followerSuggestions,
+		callingAppName,
+		callingAppType,
+		callingAppCode,
+		skipBunker
+	} from '$lib/store';
 
 	const baseUrl = import.meta.env.VITE_BASE_URL;
 
@@ -24,6 +30,12 @@
 			$callingAppName = '';
 			$callingAppType = '';
 			$callingAppCode = '';
+		}
+
+		// Manage skipBunker param
+		const skipBunker = params.get('skipBunker');
+		if (skipBunker) {
+			$skipBunker = true;
 		}
 	});
 </script>

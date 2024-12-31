@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
 	import { goto } from '$app/navigation';
-	import { sk, pk, npub, password, email, name, ncryptsec } from '$lib/store';
+	import { sk, pk, npub, password, email, name, ncryptsec, skipBunker } from '$lib/store';
 	import { isMobile } from '$lib/mobile';
 	import TwoColumnLayout from '$lib/TwoColumnLayout.svelte';
 	import CheckboxWithLabel from '$lib/CheckboxWithLabel.svelte';
@@ -59,7 +59,11 @@
 	}
 
 	function navigateContinue() {
-		goto('/bunker');
+		if ($skipBunker) {
+			goto('/follow');
+		} else {
+			goto('/bunker');
+		}
 	}
 </script>
 
@@ -90,7 +94,8 @@
 					{/if}
 				</p>
 				<p class="mt-6">
-					You will receive an email from {smtpFromEmail}. If you see nothing, check your spam folder.
+					You will receive an email from {smtpFromEmail}. If you see nothing, check your spam
+					folder.
 				</p>
 			</div>
 		</div>

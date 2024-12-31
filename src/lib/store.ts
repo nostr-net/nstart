@@ -81,6 +81,7 @@ export const followerSuggestions = createSessionWritable('followerSuggestions', 
 export const callingAppName = createSessionWritable('callingAppName', '');
 export const callingAppType = createSessionWritable('callingAppType', '');
 export const callingAppCode = createSessionWritable('callingAppCode', '');
+export const skipBunker = createSessionWritable('skipBunker', false);
 
 // Runtime stores
 export const inboxes = readable<{ [pubkey: string]: string[] }>({}, (set) => {

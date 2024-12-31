@@ -177,7 +177,7 @@
 		clearInterval(intv);
 
 		setTimeout(() => {
-			if ($callingAppCode.length > 0) {
+			if ($callingAppCode && $callingAppCode.length > 0) {
 				goto('/back');
 			} else {
 				goto('/finish');
