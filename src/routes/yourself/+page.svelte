@@ -108,7 +108,8 @@
 			name: $name,
 			about: $about,
 			picture: $picture,
-			website: $website.startsWith('http') ? $website : `https://${$website}`
+			website:
+				$website.trim() === '' ? '' : $website.startsWith('http') ? $website : `https://${$website}`
 		});
 		publishRelayList($sk, $pk);
 
