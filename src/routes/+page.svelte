@@ -26,7 +26,7 @@
 		$callingAppCode = callingAppCode;
 
 		// If a param is missing, reset all
-		if ($callingAppName.length == 0 || $callingAppType.length == 0 || $callingAppCode.length == 0) {
+		if (!$callingAppName || !$callingAppType || !$callingAppCode) {
 			$callingAppName = '';
 			$callingAppType = '';
 			$callingAppCode = '';
