@@ -112,7 +112,7 @@
 									profile and safely manage it, in a few steps. Are you ready?
 								{:else}
 									This wizard is one of the many ways to bootstrap a Nostr profile that you can
-									later use in other apps. We help you to create you keypair and safely manage it in
+									later use in other apps. We help you to create your keypair and safely manage it in
 									a few steps. Are you ready?
 								{/if}
 							</p>
