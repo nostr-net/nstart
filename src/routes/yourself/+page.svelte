@@ -151,7 +151,7 @@
 	</div>
 
 	<div slot="interactive">
-		<div class="flex items-end justify-end">
+		<div class="mb-6 flex items-end justify-end">
 			<button on:click={triggerFileInput} class="text-xl text-neutral-400">Your image</button>
 			<div class="-mr-8 ml-2 mt-2 h-1 w-20 border-t-2 border-neutral-300"></div>
 			<button
@@ -178,23 +178,43 @@
 			<!-- File input for image upload -->
 			<input type="file" id="image" accept="image/*" on:change={previewImage} class="hidden" />
 			<!-- svelte-ignore a11y-autofocus -->
+			<div class="mb-1 flex items-end justify-between">
+				{#if $name != ''}<label for="name" class="ml-4 text-xs uppercase text-neutral-700"
+						>Your (nick)name</label
+					>{:else}<div></div>{/if}
+				<div class="mr-4 text-right text-xs uppercase text-neutral-500">required</div>
+			</div>
 			<input
+				id="name"
 				type="text"
-				placeholder="Your name"
+				placeholder="Your (nick)name"
 				bind:value={$name}
 				autofocus={!isMobile}
-				class="input-hover-enabled mt-6 w-full rounded border-2 border-neutral-300 px-4 py-2 text-xl focus:border-neutral-700 focus:outline-none"
+				class="input-hover-enabled mb-4 w-full rounded border-2 border-neutral-300 px-4 py-2 text-xl focus:border-neutral-700 focus:outline-none"
 			/>
+			<div class="mb-1 flex items-end justify-between">
+				{#if $about != ''}<label for="about" class="ml-4 text-xs uppercase text-neutral-700"
+						>Something about you</label
+					>{:else}<div></div>{/if}
+				<div class="mr-4 text-right text-xs uppercase text-neutral-400">optional</div>
+			</div>
 			<textarea
-				placeholder="A brief presentation"
+				id="about"
+				placeholder="Something about you"
 				bind:value={$about}
-				class="input-hover-enabled mt-6 w-full rounded border-2 border-neutral-300 px-4 py-2 text-xl focus:border-neutral-700 focus:outline-none"
+				class="input-hover-enabled mb-4 w-full rounded border-2 border-neutral-300 px-4 py-2 text-xl focus:border-neutral-700 focus:outline-none"
 			></textarea>
+			<div class="mb-1 flex items-end justify-between">
+				{#if $website != ''}<label for="about" class="ml-4 text-xs uppercase text-neutral-700"
+						>Your website</label
+					>{:else}<div></div>{/if}
+				<div class="mr-4 text-right text-xs uppercase text-neutral-400">optional</div>
+			</div>
 			<input
 				type="text"
 				placeholder="Your website"
 				bind:value={$website}
-				class="input-hover-enabled mt-6 w-full rounded border-2 border-neutral-300 px-4 py-2 text-xl focus:border-neutral-700 focus:outline-none"
+				class="input-hover-enabled w-full rounded border-2 border-neutral-300 px-4 py-2 text-xl focus:border-neutral-700 focus:outline-none"
 			/>
 			{#if activationProgress > 0}
 				<div class="mt-6">
@@ -205,8 +225,8 @@
 		<div class="mt-16 flex justify-center sm:justify-end">
 			<button
 				on:click={navigateContinue}
-				disabled={activationProgress > 0}
-				class={`inline-flex items-center rounded px-8 py-3 text-[1.6rem] text-white sm:text-[1.3rem] ${activationProgress == 0 ? 'bg-strongpink text-white' : 'cursor-not-allowed bg-neutral-400 text-neutral-100'}`}
+				disabled={activationProgress > 0 || !$name}
+				class={`inline-flex items-center rounded px-8 py-3 text-[1.6rem] text-white sm:text-[1.3rem] ${activationProgress == 0 && $name ? 'bg-strongpink text-white' : 'cursor-not-allowed bg-neutral-400 text-neutral-100'}`}
 			>
 				{activationProgress > 0 ? 'Uploading...' : 'Continue'}
 				<img src="/icons/arrow-right.svg" alt="continue" class="ml-4 mr-2 h-6 w-6" />
