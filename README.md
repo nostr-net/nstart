@@ -10,7 +10,7 @@ Nstart aims to guide new users to [Nostr](https://njump.me) offering a easy and 
 
 Check it now at https://start.njump.me
 
-[![screenshot](/static/images/screenshot.jpg)](https://start.njump.me)
+https://github.com/user-attachments/assets/23dfe2a0-bdb8-4c70-83e0-912f67c41b0c
 
 ## How to use
 
