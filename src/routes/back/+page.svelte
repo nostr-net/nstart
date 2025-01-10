@@ -31,7 +31,8 @@
 
 		switch ($callingAppType) {
 			case 'web':
-				actionURL = `${$callingAppCode}/auto-login`;
+			case 'popup':
+				actionURL = `${$callingAppCode}#nostr-login=${loginToken}`;
 				break;
 			case 'android':
 				actionURL = `intent:${loginToken}#Intent;scheme=nostr-login;package=${$callingAppCode};end;`;
@@ -41,6 +42,11 @@
 				break;
 		}
 	});
+
+	function redirectAndClose() {
+		window.opener.location.href = actionURL;
+		window.close();
+	}
 </script>
 
 <BasicLayout>
@@ -58,32 +64,35 @@
 		<!-- Intro text -->
 		<div class="text-neutral-700 sm:w-[90%]">
 			<p class="text-xl sm:w-[80%]">
-				We're done, <strong>{$name}</strong>! Now you can start exploring Nostr — just click
-				below to go back to <strong>{$callingAppName}</strong>:
+				We're done, <strong>{$name}</strong>! Now you can start exploring Nostr — just click below
+				to go back to <strong>{$callingAppName}</strong>:
 			</p>
 			<div class="mt-8">
-				{#if $callingAppType === 'web'}
-					<form method="POST" action={actionURL}>
-						<input type="hidden" name="token" value={loginToken}>
-						<button type="submit" class="inline-flex items-center rounded bg-strongpink px-6 py-4 text-[1.8rem] text-white sm:px-10">
-							Start using Nostr 
-							<img src="/icons/arrow-right.svg" alt="Icon" class="ml-4 mr-2 h-7 w-7" />
-						</button>
-					</form>
+				{#if $callingAppType === 'popup'}
+					<button
+						on:click={redirectAndClose}
+						type="submit"
+						class="inline-flex items-center rounded bg-strongpink px-6 py-4 text-[1.8rem] text-white sm:px-10"
+					>
+						Start using Nostr
+						<img src="/icons/arrow-right.svg" alt="Icon" class="ml-4 mr-2 h-7 w-7" />
+					</button>
 				{:else}
 					<a
 						href={actionURL}
 						class="inline-flex items-center rounded bg-strongpink px-6 py-4 text-[1.8rem] text-white sm:px-10"
 					>
-						Start using Nostr 
+						Start using Nostr
 						<img src="/icons/arrow-right.svg" alt="Icon" class="ml-4 mr-2 h-7 w-7" />
 					</a>
 				{/if}
 			</div>
-			<p class="mt-8 text-neutral-500 sm:w-[80%]">
-				{$callingAppName} is only one of the 80+ applications that have already been built on Nostr,
-				<a href="https://nostrapps.com" target="_blank" class="underline">discover them all</a>!
-			</p>
+			{#if $callingAppType != 'popup'}
+				<p class="mt-8 text-neutral-500 sm:w-[80%]">
+					{$callingAppName} is only one of the 80+ applications that have already been built on Nostr,
+					<a href="https://nostrapps.com" target="_blank" class="underline">discover them all</a>!
+				</p>
+			{/if}
 			<p class="mt-6 sm:w-[80%]">
 				This is your web profile, you can share it anywhere and with anyone:<br />
 				<a href="https://njump.me/{$npub}" target="_blank" class="break-all underline"
