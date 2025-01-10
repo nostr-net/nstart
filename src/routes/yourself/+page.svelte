@@ -74,7 +74,6 @@
 		if (response.ok) {
 			const data = await response.json();
 			activationProgress = 100;
-			console.log('Upload successful:', data);
 			return data;
 		} else {
 			console.error('Upload failed:', response.statusText);

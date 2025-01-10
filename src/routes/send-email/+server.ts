@@ -25,7 +25,6 @@ export const POST = async ({ request }: { request: Request }) => {
 		}
 
 		const { to, ncryptsec, npub } = await request.json();
-		console.log(`sending email for key ${evt.pubkey} to ${to}`);
 
 		// Create a transporter object using the nodemailer library
 		const transporter = (nodemailer as any).createTransport({

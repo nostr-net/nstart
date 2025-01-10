@@ -28,7 +28,6 @@ export async function sendEmail(
 
 		const result = await response.json();
 		if (response.ok) {
-			console.log('email sent', result.message);
 		} else {
 			throw result.error;
 		}
