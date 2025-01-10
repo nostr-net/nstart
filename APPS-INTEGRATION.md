@@ -40,7 +40,7 @@ For web apps this happens appending "#nostr-login:\<credentials\> to the URL def
 https://coracle.social#nostr-login=bunker://xxxxxxxxxx...
 ```
 
-And Android app is opened passing an intent using the `nostr-login` scheme:
+An Android app is opened passing an intent using the `nostr-login` scheme:
 
 ```
 intent:bunker://xxxxxxxxxx...#Intent;scheme=nostr-login;package=com.fiatjaf.com;end;
@@ -53,6 +53,18 @@ damus://bunker://xxxxxxxxxx...
 ```
 
 The caller app has the responsibility to correctly manage the returning credentials.
+
+## Mandatory note for web application security
+
+The use of `#nostr-login` hash in the url allows the use of a simple GET request while manteining a good security, since the hash is not passed to the server (and so not logged). Nevertheless, the app MUST remove the credentials from the url as soon as possibile so that they cannot remain saved, for example in browser history.  
+The following is a Javascript code that achieves this goal:
+
+```
+if (window.location.hash && window.location.hash.startsWith('#nostr-login')) {
+    const urlWithoutHash = window.location.href.split('#')[0];
+    history.replaceState(null, '', urlWithoutHash);
+}
+```
 
 ## Popup option
 
