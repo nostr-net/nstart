@@ -5,7 +5,8 @@
 		callingAppName,
 		callingAppType,
 		callingAppCode,
-		skipBunker
+		skipBunker,
+		avoidNsec
 	} from '$lib/store';
 
 	const baseUrl = import.meta.env.VITE_BASE_URL;
@@ -36,6 +37,12 @@
 		const skipBunker = params.get('skipBunker');
 		if (skipBunker) {
 			$skipBunker = true;
+		}
+
+		// Manage avoidNsec param
+		const avoidNsec = params.get('avoidNsec');
+		if (skipBunker) {
+			$avoidNsec = true;
 		}
 	});
 </script>

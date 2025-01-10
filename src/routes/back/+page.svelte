@@ -8,7 +8,8 @@
 		ncryptsec,
 		callingAppName,
 		callingAppType,
-		callingAppCode
+		callingAppCode,
+		avoidNsec
 	} from '$lib/store';
 	import BasicLayout from '$lib/BasicLayout.svelte';
 	import { name, npub } from '$lib/store';
@@ -21,7 +22,9 @@
 			goto('/');
 		}
 
-		if ($bunkerURI.length > 0) {
+		if (avoidNsec) {
+			loginToken = 'null'
+		} else if ($bunkerURI.length > 0) {
 			loginToken = $bunkerURI;
 		} else if ($ncryptsec.length > 0) {
 			loginToken = $ncryptsec;
