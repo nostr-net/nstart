@@ -71,6 +71,14 @@ if (window.location.hash && window.location.hash.startsWith('#nostr-login')) {
 Web applications have the option to open a popup instead of redirecting; this permits to keep the app state (e.g. when posting a first comment), let the user sign-up, and then resume the flow.
 To do that instead of "web" use `at=popup` when opening the popup.
 
+## Custom relays
+
+While Nstart creates a 10002 event with random picked relays from a selected pool by default , apps can overwrite these read and write relays using the `arr` (read relays) and `awr` (write relays) params. More relays can be passed, separated by commas. For example:
+
+```
+http://start.njump.me/?an=Coracle&at=web&ac=https://coracle.social&arr=wss://relay.damus.io&awr=wss://nos.lol,wss://wss://offchain.pub
+```
+
 ## Disable the multi-signature bunker
 
 Some apps are not ready to manage the multi-signature bunker, or cannot fully take advantage of it since it does not support encryption (e.g. DMs). They can disable this specific step using the `asb=yes` param. For example:

@@ -6,7 +6,9 @@
 		callingAppType,
 		callingAppCode,
 		skipBunker,
-		avoidNsec
+		avoidNsec,
+		readRelays,
+		writeRelays
 	} from '$lib/store';
 
 	const baseUrl = import.meta.env.VITE_BASE_URL;
@@ -44,6 +46,13 @@
 		if (skipBunker) {
 			$avoidNsec = true;
 		}
+
+		// Manage custom relays
+		const readRelays = params.get('awr');
+		$readRelays = readRelays ? readRelays.split(',') : [];
+		const writeRelays = params.get('arr');
+		$writeRelays = writeRelays ? writeRelays.split(',') : [];
+
 	});
 </script>
 

@@ -1,6 +1,8 @@
+import { get } from 'svelte/store';
 import { type NostrEvent, type UnsignedEvent } from '@nostr/tools';
 import { SimplePool } from 'nostr-tools/pool'
 import { nip19 } from '@nostr/tools';
+import { readRelays, writeRelays } from '$lib/store';
 
 import HashWorker from './worker?worker';
 
@@ -51,7 +53,13 @@ export async function minePow(
 }
 
 export function selectWriteRelays(): string[] {
-	const writeRelays = [
+	const currentWriteRelays = get(writeRelays);
+
+	if (currentWriteRelays && currentWriteRelays.length > 0) {
+		return currentWriteRelays;
+	}
+
+	const writeRelaysSelection = [
 		'wss://relay.damus.io',
 		'wss://offchain.pub',
 		'wss://nostr.mom',
@@ -61,14 +69,20 @@ export function selectWriteRelays(): string[] {
 	];
 
 	const urls = [];
-	urls.push(pick(writeRelays));
-	urls.push(pick(writeRelays));
-	urls.push(pick(writeRelays));
+	urls.push(pick(writeRelaysSelection));
+	urls.push(pick(writeRelaysSelection));
+	urls.push(pick(writeRelaysSelection));
 	return urls;
 }
 
 export function selectReadRelays(): string[] {
-	const wotRelays = [
+	const currentReadRelays = get(readRelays);
+
+	if (currentReadRelays && currentReadRelays.length > 0) {
+		return currentReadRelays;
+	}
+
+	const wotRelaysSelection = [
 		'wss://wot.utxo.one',
 		'wss://nostrelites.org',
 		'wss://wot.nostr.party',
@@ -78,8 +92,8 @@ export function selectReadRelays(): string[] {
 
 	const urls = [];
 	urls.push('wss://nostr.mom');
-	urls.push(pick(wotRelays));
-	urls.push(pick(wotRelays));
+	urls.push(pick(wotRelaysSelection));
+	urls.push(pick(wotRelaysSelection));
 	urls.push(pick(safeRelays));
 	return urls;
 }
