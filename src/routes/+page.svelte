@@ -15,8 +15,8 @@
 		const params = new URLSearchParams(window.location.search);
 
 		// Manage suggested profiles
-		const itemsParam = params.get('s');
-		$followerSuggestions = itemsParam ? itemsParam.split(',') : [];
+		const followerSuggestions = params.get('s');
+		$followerSuggestions = followerSuggestions ? followerSuggestions.split(',') : [];
 
 		// Manage return back auto-login
 		const callingAppName = params.get('an');
@@ -33,14 +33,14 @@
 			$callingAppCode = '';
 		}
 
-		// Manage skipBunker param
-		const skipBunker = params.get('skipBunker');
+		// Manage asb param to skip Bunker step
+		const skipBunker = params.get('asb');
 		if (skipBunker) {
 			$skipBunker = true;
 		}
 
-		// Manage avoidNsec param
-		const avoidNsec = params.get('avoidNsec');
+		// Manage aan to avoid returning Nsec
+		const avoidNsec = params.get('aan');
 		if (skipBunker) {
 			$avoidNsec = true;
 		}

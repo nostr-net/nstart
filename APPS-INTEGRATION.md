@@ -73,16 +73,16 @@ To do that instead of "web" use `at=popup` when opening the popup.
 
 ## Disable the multi-signature bunker
 
-Some apps are not ready to manage the multi-signature bunker, or cannot fully take advantage of it since it does not support encryption (e.g. DMs). They can disable this specific step using the `skipBunker=yes` param. For example:
+Some apps are not ready to manage the multi-signature bunker, or cannot fully take advantage of it since it does not support encryption (e.g. DMs). They can disable this specific step using the `asb=yes` param. For example:
 
 ```
-https://start.njump.me?an=Coracle&at=web&ac=https://coracle.social&skipBunker=yes
+https://start.njump.me?an=Coracle&at=web&ac=https://coracle.social&asb=yes
 ```
 
 ## Disable returning the plain nsec
 
-Some apps do not support login by nsec or may prefer not to handle an unencrypted credential for security reasons. With the param `avoidNsec=yes` you can force that; in this case the credential passed back will be `null`. For example:
+Some apps do not support login by nsec or may prefer not to handle an unencrypted credential for security reasons. With the param `aan=yes` you can force that; in this case the credential passed back will be `null`. For example:
 
 ```
-https://start.njump.me?an=Coracle&at=web&ac=https://coracle.social&avoidNsec=yes
+https://start.njump.me?an=Coracle&at=web&ac=https://coracle.social&aan=yes
 ```
