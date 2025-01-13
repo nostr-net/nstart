@@ -14,6 +14,20 @@
 	let activateBunker = true;
 	let bunkerActivating = false;
 	let activationProgress = 0;
+	let showSignerSelection = false;
+	let selectedSigners = new Set(signers.map((s) => s.pubkey));
+
+	function toggleSigner(pubkey: string) {
+		if (selectedSigners.has(pubkey)) {
+			if (selectedSigners.size > 3) {
+				selectedSigners.delete(pubkey);
+				selectedSigners = selectedSigners;
+			}
+		} else {
+			selectedSigners.add(pubkey);
+			selectedSigners = selectedSigners;
+		}
+	}
 
 	onMount(() => {
 		if ($name.length === 0) {
@@ -31,13 +45,16 @@
 		}, 3000);
 
 		try {
+			// convert selected signers back to array of pubkeys
+			const selectedSignerPubkeys = Array.from(selectedSigners);
+
 			$bunkerURI = await shardGetBunker(
 				pool,
 				$sk,
 				$pk,
 				2,
 				import.meta.env.DEV ? 2 : 3,
-				signers,
+				selectedSignerPubkeys,
 				'wss://promenade.fiatjaf.com',
 				20,
 				$inboxes,
@@ -119,8 +136,40 @@
 			</div>
 			{#if activateBunker}
 				<div class="mt-6">
-					The key will be split and shared with these 3 independent signers.<br />
+					The key will be split and shared with 3 independent signers.<br />
+					<button
+						class="mt-4 text-xs text-strongpink underline"
+						on:click={() => (showSignerSelection = !showSignerSelection)}
+					>
+						{showSignerSelection ? 'Hide signer selection' : 'Advanced signer selection'}
+					</button>
 				</div>
+
+				{#if showSignerSelection}
+					<div class="mt-4 space-y-2">
+						{#each signers as signer}
+							<label class="flex items-center">
+								<input
+									type="checkbox"
+									checked={selectedSigners.has(signer.pubkey)}
+									on:change={() => toggleSigner(signer.pubkey)}
+									disabled={selectedSigners.size <= 3 && selectedSigners.has(signer.pubkey)}
+									class="mr-2"
+								/>
+								<span>{signer.name}</span>
+							</label>
+						{/each}
+						<div class="text-sm text-neutral-500">
+							{#if selectedSigners.size < 3}
+								Select at least {3 - selectedSigners.size} more signer{selectedSigners.size === 2
+									? ''
+									: 's'}
+							{:else}
+								We'll use 3 of the {selectedSigners.size} signers selected
+							{/if}
+						</div>
+					</div>
+				{/if}
 			{/if}
 			{#if bunkerActivating || $bunkerURI !== ''}
 				<div class="mt-6">
@@ -134,8 +183,8 @@
 				<img src="/icons/done.svg" alt="Done" class="w-24" />
 			</div>
 			<div class="mt-10 text-neutral-600">
-				All done! your bunker code is ready. Save it for later so that you can log
-				into Nostr clients without having to use your secret key:
+				All done! your bunker code is ready. Save it for later so that you can log into Nostr
+				clients without having to use your secret key:
 			</div>
 			<div class="mt-6 text-xl">
 				<div class="break-words">
