@@ -7,6 +7,7 @@
 	import CheckboxWithLabel from '$lib/CheckboxWithLabel.svelte';
 	import LoadingBar from '$lib/LoadingBar.svelte';
 	import { sendEmail } from '$lib/actions';
+	import { isWasmSupported } from '$lib/wasm';
 
 	let wantEmailBackup = false;
 	let emailInput: HTMLInputElement;
@@ -104,11 +105,19 @@
 	<div slot="interactive">
 		<div class=" mt-6">
 			<div>
-				<CheckboxWithLabel bind:checked={wantEmailBackup} disabled={activationProgress > 0}>
+				<CheckboxWithLabel
+					bind:checked={wantEmailBackup}
+					disabled={activationProgress > 0 || !isWasmSupported()}
+				>
 					I want to send my encrypted nsec {#if !needsPassword}(with the same password already
 						entered previously){/if} to the following email address:
 				</CheckboxWithLabel>
 			</div>
+			{#if !isWasmSupported()}
+				<div class="mt-6 bg-amber-100 p-2">
+					Sorry your browser doesn't support WASM, so you cannot use this feature
+				</div>
+			{/if}
 			<!-- svelte-ignore a11y-autofocus -->
 			<input
 				bind:this={emailInput}

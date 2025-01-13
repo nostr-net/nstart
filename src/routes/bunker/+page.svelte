@@ -10,8 +10,9 @@
 	import CheckboxWithLabel from '$lib/CheckboxWithLabel.svelte';
 	import LoadingBar from '$lib/LoadingBar.svelte';
 	import { signers, minePow, selectReadRelays } from '$lib/nostr';
+	import { isWasmSupported } from '$lib/wasm';
 
-	let activateBunker = true;
+	let activateBunker = isWasmSupported();
 	let bunkerActivating = false;
 	let activationProgress = 0;
 
@@ -111,12 +112,20 @@
 		{#if $bunkerURI === ''}
 			<div class=" mt-6">
 				<div>
-					<CheckboxWithLabel bind:checked={activateBunker} disabled={bunkerActivating}>
+					<CheckboxWithLabel
+						bind:checked={activateBunker}
+						disabled={bunkerActivating || !isWasmSupported()}
+					>
 						I want to save my nsec, split in a pool of remote signers to be used for "bunker"
 						connections
 					</CheckboxWithLabel>
 				</div>
 			</div>
+			{#if !isWasmSupported()}
+				<div class="mt-6 bg-amber-100 p-2">
+					Sorry your browser doesn't support WASM, so you cannot use this feature
+				</div>
+			{/if}
 			{#if activateBunker}
 				<div class="mt-6">
 					The key will be split and shared with these 3 independent signers.<br />
@@ -134,8 +143,8 @@
 				<img src="/icons/done.svg" alt="Done" class="w-24" />
 			</div>
 			<div class="mt-10 text-neutral-600">
-				All done! your bunker code is ready. Save it for later so that you can log
-				into Nostr clients without having to use your secret key:
+				All done! your bunker code is ready. Save it for later so that you can log into Nostr
+				clients without having to use your secret key:
 			</div>
 			<div class="mt-6 text-xl">
 				<div class="break-words">

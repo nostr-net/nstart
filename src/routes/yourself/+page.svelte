@@ -11,12 +11,13 @@
 	import TwoColumnLayout from '$lib/TwoColumnLayout.svelte';
 	import LoadingBar from '$lib/LoadingBar.svelte';
 	import { mineEmail, publishRelayList, publishProfile } from '$lib/actions';
+	import { isWasmSupported } from '$lib/wasm';
 
 	let picturePreview: string | null = null;
 	let activationProgress = 0;
 
 	onMount(() => {
-		if ($sk.length === 0) {
+		if ($sk.length === 0 && isWasmSupported()) {
 			mineEmail($sk, $pk);
 		}
 	});
