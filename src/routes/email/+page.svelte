@@ -127,6 +127,7 @@
 				bind:value={$email}
 				autofocus={!$isMobile}
 				disabled={!wantEmailBackup || activationProgress > 0}
+				autocapitalize="off"
 				class="input-hover-enabled mt-6 w-full rounded border-2 border-neutral-300 px-4 py-2 text-xl focus:border-neutral-700 focus:outline-none"
 			/>
 
@@ -136,6 +137,7 @@
 					placeholder="Pick a password"
 					bind:value={$password}
 					disabled={!wantEmailBackup || activationProgress > 0}
+					autocapitalize="off"
 					class="input-hover-enabled mt-6 w-full rounded border-2 border-neutral-300 px-4 py-2 text-xl focus:border-neutral-700 focus:outline-none"
 				/>
 			{/if}

@@ -130,6 +130,7 @@
 						placeholder="Pick a password"
 						required
 						autofocus={!$isMobile}
+						autocapitalize="off"
 						class="input-hover-enabled w-full rounded border-2 border-neutral-300 px-4 py-2 text-xl focus:border-neutral-700 focus:outline-none"
 					/>
 					<button
