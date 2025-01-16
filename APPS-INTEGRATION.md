@@ -69,7 +69,7 @@ if (window.location.hash && window.location.hash.startsWith('#nostr-login')) {
 ## Popup option
 
 Web applications have the option to open a popup instead of redirecting; this permits to keep the app state (e.g. when posting a first comment), let the user sign-up, and then resume the flow.
-To do that instead of "web" use `at=popup` when opening the popup.
+To do that instead of "web" use `at=popup` when opening the popup. Njump will not open the `ac` url you provide, but instead will do `window.opener.location.href=ac + "#nostr-login=..."` to force `hashchange` event on your page. Make sure to specify a random `target` to `window.open` instead of `_blank` so that Njump has access to `window.opener`, and then listen to `hashchange` event to accept the `#nostr-login=...` return value (and consume it as described above). 
 
 ## Custom relays
 
