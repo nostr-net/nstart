@@ -22,12 +22,12 @@
 			goto('/');
 		}
 
-		if (avoidNsec) {
-			loginToken = 'null'
-		} else if ($bunkerURI.length > 0) {
+		if ($bunkerURI.length > 0) {
 			loginToken = $bunkerURI;
 		} else if ($ncryptsec.length > 0) {
 			loginToken = $ncryptsec;
+		} else if ($avoidNsec) {
+			loginToken = 'null';
 		} else {
 			loginToken = nip19.nsecEncode($sk);
 		}

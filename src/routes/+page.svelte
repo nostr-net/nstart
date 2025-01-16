@@ -37,13 +37,13 @@
 
 		// Manage asb param to skip Bunker step
 		const skipBunker = params.get('asb');
-		if (skipBunker) {
+		if (skipBunker == 'yes') {
 			$skipBunker = true;
 		}
 
 		// Manage aan to avoid returning Nsec
 		const avoidNsec = params.get('aan');
-		if (skipBunker) {
+		if (avoidNsec == 'yes') {
 			$avoidNsec = true;
 		}
 
@@ -52,7 +52,6 @@
 		$readRelays = readRelays ? readRelays.split(',') : [];
 		const writeRelays = params.get('arr');
 		$writeRelays = writeRelays ? writeRelays.split(',') : [];
-
 	});
 </script>
 
@@ -128,8 +127,8 @@
 									profile and safely manage it, in a few steps. Are you ready?
 								{:else}
 									This wizard is one of the many ways to bootstrap a Nostr profile that you can
-									later use in other apps. We help you to create your keypair and safely manage it in
-									a few steps. Are you ready?
+									later use in other apps. We help you to create your keypair and safely manage it
+									in a few steps. Are you ready?
 								{/if}
 							</p>
 						</div>
