@@ -89,8 +89,16 @@ https://start.njump.me?an=Coracle&at=web&ac=https://coracle.social&asb=yes
 
 ## Disable returning the plain nsec
 
-Some apps do not support login by nsec or may prefer not to handle an unencrypted credential for security reasons. With the param `aan=yes` you can force that; in this case the credential passed back will be `null`. For example:
+Some apps do not support login by nsec or may prefer not to handle unencrypted credential for security reasons. With the param `aan=yes` you can force that; in this case the credential passed back will be `null`. For example:
 
 ```
 https://start.njump.me?an=Coracle&at=web&ac=https://coracle.social&aan=yes
+```
+
+## Disable returning the ncryptsec
+
+Some apps do not support login by ncryptsec or may prefer not to handle also encrypted credential for security reasons. With the param `aac=yes` you can force that; in this case the credential passed back will be the nsec (if `aan` is not set a `yes`, otherwise `null` in returned). For example:
+
+```
+https://start.njump.me?an=Coracle&at=web&ac=https://coracle.social&aac=yes
 ```

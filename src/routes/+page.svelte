@@ -7,6 +7,7 @@
 		callingAppCode,
 		skipBunker,
 		avoidNsec,
+		avoidNcryptsec,
 		readRelays,
 		writeRelays
 	} from '$lib/store';
@@ -45,6 +46,12 @@
 		const avoidNsec = params.get('aan');
 		if (avoidNsec == 'yes') {
 			$avoidNsec = true;
+		}
+
+		// Manage aac to avoid returning Ncryptsec
+		const avoidNcryptsec = params.get('aac');
+		if (avoidNcryptsec == 'yes') {
+			$avoidNcryptsec = true;
 		}
 
 		// Manage custom relays
