@@ -12,6 +12,9 @@
 		readRelays,
 		writeRelays
 	} from '$lib/store';
+	import { getContext } from 'svelte';
+
+	const isModal = getContext('isModal');
 
 	const baseUrl = import.meta.env.VITE_BASE_URL;
 
@@ -95,11 +98,13 @@
 					<div
 						class="flex animate-fade2down justify-center sm:relative sm:h-screen sm:basis-[45vw] sm:overflow-hidden"
 					>
-						<img
-							src="/images/relay.png"
-							class="z-0 mb-8 w-60 sm:absolute sm:-right-[20px] sm:top-[15%] sm:w-full sm:object-left"
-							alt="Nostr Client"
-						/>
+						{#if !isModal}
+							<img
+								src="/images/relay.png"
+								class="z-0 mb-8 w-60 sm:absolute sm:-right-[20px] sm:top-[15%] sm:w-full sm:object-left"
+								alt="Nostr Client"
+							/>
+						{/if}
 					</div>
 
 					<div class="z-20 basis-[55%] sm:py-10 sm:pl-[16vw]">
@@ -164,14 +169,16 @@
 							</a>
 						</div>
 
-						<!-- Footer -->
-						<div
-							class="animate-fade1 leading-6 text-neutral-500 opacity-0"
-							style="animation-delay: 1s;"
-						>
-							Would you like to know more about Nostr first?<br class="hidden sm:inline-block" />
-							<a href="https://njump.me" class="underline">Read a quick introduction</a>
-						</div>
+						{#if !isModal}
+							<!-- Footer -->
+							<div
+								class="animate-fade1 leading-6 text-neutral-500 opacity-0"
+								style="animation-delay: 1s;"
+							>
+								Would you like to know more about Nostr first?<br class="hidden sm:inline-block" />
+								<a href="https://njump.me" class="underline">Read a quick introduction</a>
+							</div>
+						{/if}
 					</div>
 				</div>
 				<!-- /content -->

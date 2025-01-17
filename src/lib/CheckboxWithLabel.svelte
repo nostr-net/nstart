@@ -10,9 +10,9 @@
 <div>
 	<label
 		for={id}
-		class="flex w-full cursor-pointer justify-between items-{alignment} {position === 'right'
-			? 'flex-row-reverse'
-			: 'flex-row'}"
+		class="flex w-full cursor-pointer {position === 'right'
+			? 'justify-between'
+			: ''} items-{alignment} {position === 'right' ? 'flex-row-reverse' : 'flex-row'}"
 	>
 		<span
 			class={`custom-focus mr-2 inline-block h-6 w-6 flex-none rounded border-2 focus-within:ring-1 ${checked ? 'border-strongpink bg-strongpink' : 'enabled:input-hover-enabled border-neutral-300'}`}

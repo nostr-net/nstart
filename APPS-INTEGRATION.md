@@ -59,17 +59,56 @@ The caller app has the responsibility to correctly manage the returning credenti
 The use of `#nostr-login` hash in the url allows the use of a simple GET request while manteining a good security, since the hash is not passed to the server (and so not logged). Nevertheless, the app MUST remove the credentials from the url as soon as possibile so that they cannot remain saved, for example in browser history.  
 The following is a Javascript code that achieves this goal:
 
-```
+```js
 if (window.location.hash && window.location.hash.startsWith('#nostr-login')) {
     const urlWithoutHash = window.location.href.split('#')[0];
     history.replaceState(null, '', urlWithoutHash);
 }
 ```
 
+## Modal option
+
+Web applications have the option to open a modal instead of redirecting; this permits to keep the app state (e.g. when posting a first comment), let the user sign-up, and then resume the flow.
+
+![Modal](/static/images/apps-integration03.jpg)
+
+To do that you have to import a JS from start.njump.me and initialize a NstartModal object:
+
+```js
+<button id="openBtn">Create a Nostr account</button>
+
+<script src="https://start.njump.me/modal.js"></script>
+<script>
+    // Create the modal instance with required parameters
+    const wizard = new NstartModal({
+        baseUrl: 'https://start.njump.me',
+        // Required parameters
+        an: 'Great Nostr App', // appName
+        // Optional parameters
+        afb: true, // skipBunker
+        asb: false, // skipBunker
+        aan: true, // avoidNsec
+        aac: false, // avoidNcryptsec
+        arr: ['wss://relay.example.com'], //readRelays
+        awr: ['wss://relay.example.com'], //writeRelays
+        // Callbacks
+        onComplete: (result) => {
+            console.log('Login token:', result.nostrLogin);
+        },
+        onCancel: () => {
+            console.log('Wizard cancelled');
+        }
+    });
+
+    document.getElementById('openBtn').onclick = () => wizard.open();
+</script>
+```
+After the followers step, the modal is automatically closed without showing the final screen; it is the application's responsibility to greet the new user and inform him or her that he or she has logged in and can begin exploring the application.
+
 ## Popup option
 
-Web applications have the option to open a popup instead of redirecting; this permits to keep the app state (e.g. when posting a first comment), let the user sign-up, and then resume the flow.
-To do that instead of "web" use `at=popup` when opening the popup. Njump will not open the `ac` url you provide, but instead will do `window.opener.location.href=ac + "#nostr-login=..."` to force `hashchange` event on your page. Make sure to specify a random `target` to `window.open` instead of `_blank` so that Njump has access to `window.opener`, and then listen to `hashchange` event to accept the `#nostr-login=...` return value (and consume it as described above).
+This is an alternative to the modal option, the use of which is suggested for usability reason only if the modal option cannot be applied.  
+To use the popup instead of "web" use the `at=popup` param when opening it. Nstart will not open the `ac` url you provide, but instead will do `window.opener.location.href=ac + "#nostr-login=..."` to force `hashchange` event on your page. Make sure to specify a random `target` to `window.open` instead of `_blank` so that Nstart has access to `window.opener`, and then listen to `hashchange` event to accept the `#nostr-login=...` return value (and consume it as described above).
 
 ## Custom relays
 

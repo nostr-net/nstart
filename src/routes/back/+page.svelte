@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
+	import { browser } from '$app/environment';
 	import * as nip19 from '@nostr/tools/nip19';
 	import { goto } from '$app/navigation';
 	import {
@@ -34,6 +35,19 @@
 		}
 
 		switch ($callingAppType) {
+			case 'modal':
+				if (browser && window.self !== window.top) {
+					window.parent.postMessage(
+						{
+							type: 'WIZARD_COMPLETE',
+							result: {
+								nostrLogin: loginToken
+							}
+						},
+						'*'
+					);
+				}
+				break;
 			case 'web':
 			case 'popup':
 				actionURL = `${$callingAppCode}#nostr-login=${loginToken}`;
