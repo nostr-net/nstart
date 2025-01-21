@@ -10,7 +10,7 @@ Where:
 
 `an` is the name of your application;  
 `at` is the type, from web, android, ios;  
-`ac` is the returning point, it's a URL for a web application, or the app code for a mobile one;  
+`ac` is the returning point, it's a URL for a web application, or the app code for a mobile one;
 
 For example, for a web application:
 
@@ -69,7 +69,7 @@ if (window.location.hash && window.location.hash.startsWith('#nostr-login')) {
 ## Popup option
 
 Web applications have the option to open a popup instead of redirecting; this permits to keep the app state (e.g. when posting a first comment), let the user sign-up, and then resume the flow.
-To do that instead of "web" use `at=popup` when opening the popup. Njump will not open the `ac` url you provide, but instead will do `window.opener.location.href=ac + "#nostr-login=..."` to force `hashchange` event on your page. Make sure to specify a random `target` to `window.open` instead of `_blank` so that Njump has access to `window.opener`, and then listen to `hashchange` event to accept the `#nostr-login=...` return value (and consume it as described above). 
+To do that instead of "web" use `at=popup` when opening the popup. Njump will not open the `ac` url you provide, but instead will do `window.opener.location.href=ac + "#nostr-login=..."` to force `hashchange` event on your page. Make sure to specify a random `target` to `window.open` instead of `_blank` so that Njump has access to `window.opener`, and then listen to `hashchange` event to accept the `#nostr-login=...` return value (and consume it as described above).
 
 ## Custom relays
 
@@ -79,9 +79,17 @@ While Nstart creates a 10002 event with random picked relays from a selected poo
 http://start.njump.me/?an=Coracle&at=web&ac=https://coracle.social&arr=wss://relay.damus.io&awr=wss://nos.lol,wss://wss://offchain.pub
 ```
 
-## Disable the multi-signature bunker
+## Force the multi-signature bunker
 
-Some apps are not ready to manage the multi-signature bunker, or cannot fully take advantage of it since it does not support encryption (e.g. DMs). They can disable this specific step using the `asb=yes` param. For example:
+Some apps only accept login via bunker. They can force this specific step (the user can't deselect it) using the `afb=yes` param. For example:
+
+```
+https://start.njump.me?an=Coracle&at=web&ac=https://coracle.social&afb=yes
+```
+
+## Skip the multi-signature bunker
+
+Some apps are not ready to manage the multi-signature bunker, or cannot fully take advantage of it since it does not support encryption (e.g. DMs). They can hide this specific step using the `asb=yes` param. For example:
 
 ```
 https://start.njump.me?an=Coracle&at=web&ac=https://coracle.social&asb=yes

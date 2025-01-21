@@ -6,6 +6,7 @@
 		callingAppType,
 		callingAppCode,
 		skipBunker,
+		forceBunker,
 		avoidNsec,
 		avoidNcryptsec,
 		readRelays,
@@ -40,6 +41,12 @@
 		const skipBunker = params.get('asb');
 		if (skipBunker == 'yes') {
 			$skipBunker = true;
+		}
+
+		// Manage afb param to skip Bunker step
+		const forceBunker = params.get('afb');
+		if (forceBunker == 'yes') {
+			$forceBunker = true;
 		}
 
 		// Manage aan to avoid returning Nsec

@@ -82,6 +82,7 @@ export const callingAppName = createSessionWritable('callingAppName', '');
 export const callingAppType = createSessionWritable('callingAppType', '');
 export const callingAppCode = createSessionWritable('callingAppCode', '');
 export const skipBunker = createSessionWritable('skipBunker', false);
+export const forceBunker = createSessionWritable('forceBunker', false);
 export const avoidNsec = createSessionWritable('avoidNsec', false);
 export const avoidNcryptsec = createSessionWritable('avoidNcryptsec', false);
 export const readRelays = createSessionWritable('readRelays', []);

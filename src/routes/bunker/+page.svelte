@@ -5,7 +5,7 @@
 
 	import { goto } from '$app/navigation';
 	import TwoColumnLayout from '$lib/TwoColumnLayout.svelte';
-	import { sk, name, pk, inboxes, bunkerURI } from '$lib/store';
+	import { sk, name, pk, inboxes, bunkerURI, forceBunker } from '$lib/store';
 	import ClipToCopy from '$lib/ClipToCopy.svelte';
 	import CheckboxWithLabel from '$lib/CheckboxWithLabel.svelte';
 	import LoadingBar from '$lib/LoadingBar.svelte';
@@ -111,15 +111,17 @@
 	<div slot="interactive">
 		{#if $bunkerURI === ''}
 			<div class=" mt-6">
-				<div>
-					<CheckboxWithLabel
-						bind:checked={activateBunker}
-						disabled={bunkerActivating || !isWasmSupported()}
-					>
-						I want to save my nsec, split in a pool of remote signers to be used for "bunker"
-						connections
-					</CheckboxWithLabel>
-				</div>
+				{#if !$forceBunker}
+					<div>
+						<CheckboxWithLabel
+							bind:checked={activateBunker}
+							disabled={bunkerActivating || !isWasmSupported()}
+						>
+							I want to save my nsec, split in a pool of remote signers to be used for "bunker"
+							connections
+						</CheckboxWithLabel>
+					</div>
+				{/if}
 			</div>
 			{#if !isWasmSupported()}
 				<div class="mt-6 bg-amber-100 p-2">
@@ -128,7 +130,8 @@
 			{/if}
 			{#if activateBunker}
 				<div class="mt-6">
-					The key will be split and shared with these 3 independent signers.<br />
+					The key will be split and shared with these 3 independent signers. The procedure could
+					require some time, please hold on.<br />
 				</div>
 			{/if}
 			{#if bunkerActivating || $bunkerURI !== ''}
