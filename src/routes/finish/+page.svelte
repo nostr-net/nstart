@@ -42,26 +42,32 @@
 				application or by downloading an app. These are some suggestions for getting started
 				immediately:
 			</p>
-			<div
-				class="mt-8 grid grid-cols-2 gap-x-12 gap-y-6 sm:flex sm:flex-row sm:flex-wrap sm:gap-4"
-			>
+			<div class="mt-8 grid grid-cols-2 gap-x-12 gap-y-6 sm:flex sm:flex-row sm:flex-wrap sm:gap-4">
 				<a
 					href="https://coracle.social"
 					target="_blank"
-					class="flex flex-col justify-self-center p-2 rounded-lg hover:bg-neutral-200 w-[8.5rem]"
+					class="flex w-[8.5rem] flex-col justify-self-center rounded-lg p-2 hover:bg-neutral-200"
 				>
 					<img src="/icons/coracle.svg" alt="Coracle" class="h-24" />
 					<div class="mt-2 text-center">Coracle</div>
 					<div class="mt-2 text-center text-sm text-neutral-500">Social & Micro blogging</div>
 					<div class="mt-2 text-center text-sm text-strongpink">Web app</div>
 				</a>
-				<a href="https://chachi.chat" target="_blank" class="flex flex-col justify-self-center p-2 rounded-lg hover:bg-neutral-200 w-[8.5rem]">
+				<a
+					href="https://chachi.chat"
+					target="_blank"
+					class="flex w-[8.5rem] flex-col justify-self-center rounded-lg p-2 hover:bg-neutral-200"
+				>
 					<img src="/icons/chachi.svg" alt="Chachi" class="h-24" />
 					<div class="mt-2 text-center">Chachi</div>
 					<div class="mt-2 text-center text-sm text-neutral-500">Group conversations</div>
 					<div class="mt-2 text-center text-sm text-strongpink">Web app</div>
 				</a>
-				<a href="https://olas.app" target="_blank" class="flex flex-col justify-self-center p-2 rounded-lg hover:bg-neutral-200 w-[8.5rem]">
+				<a
+					href="https://olas.app"
+					target="_blank"
+					class="flex w-[8.5rem] flex-col justify-self-center rounded-lg p-2 hover:bg-neutral-200"
+				>
 					<img src="/icons/olas.svg" alt="Olas" class="h-24" />
 					<div class="mt-2 text-center">Olas</div>
 					<div class="mt-2 text-center text-sm text-neutral-500">Photo & video social</div>
@@ -77,16 +83,17 @@
 					<div class="mt-2 text-center text-sm text-neutral-500">Open encyclopedia</div>
 					<div class="mt-2 text-center text-sm text-strongpink">Web app</div>
 				</a>
-				<div
-					class="flex flex-col justify-self-center p-2 rounded-lg w-[8.5rem]"
+				<a
+					href="https://jumble.social"
+					target="_blank"
+					class="flex w-[8.5rem] flex-col justify-self-center rounded-lg p-2"
 				>
-					<img src="/icons/habla.svg" alt="Habla" class="h-24" />
-					<div class="mt-2 text-center">Habla.news</div>
-					<div class="mt-2 text-center text-sm text-neutral-500">Articles and blogging</div>
+					<img src="/icons/jumble.svg" alt="Habla" class="h-24" />
+					<div class="mt-2 text-center">Jumble.social</div>
+					<div class="mt-2 text-center text-sm text-neutral-500">Social & Micro blogging</div>
 					<div class="mt-2 text-center text-sm text-strongpink">Web app</div>
-					<div class="absolute mt-16 w-28 text-center bg-strongpink rounded-md text-neutral-50 py-1 rotate-6">Soon</div>
-			</div>
 
+				</a>
 			</div>
 			<p class="mt-8 text-neutral-500 sm:w-[80%]">
 				This is only a quick selection of the 80+ applications that have already been built on
@@ -96,7 +103,9 @@
 			</p>
 			<p class="mt-6 sm:w-[80%]">
 				This is your web profile, you can share it anywhere and with anyone:<br />
-				<a href="https://njump.me/{$npub}" target="_blank" class="break-all underline">njump.me/{$npub}</a>
+				<a href="https://njump.me/{$npub}" target="_blank" class="break-all underline"
+					>njump.me/{$npub}</a
+				>
 			</p>
 		</div>
 	</div>
