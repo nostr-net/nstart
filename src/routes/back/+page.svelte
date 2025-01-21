@@ -78,7 +78,7 @@
 						type="submit"
 						class="inline-flex items-center rounded bg-strongpink px-6 py-4 text-[1.8rem] text-white sm:px-10"
 					>
-						Start using Nostr
+						Go back to {$callingAppName}
 						<img src="/icons/arrow-right.svg" alt="Icon" class="ml-4 mr-2 h-7 w-7" />
 					</button>
 				{:else}
@@ -86,7 +86,7 @@
 						href={actionURL}
 						class="inline-flex items-center rounded bg-strongpink px-6 py-4 text-[1.8rem] text-white sm:px-10"
 					>
-						Start using Nostr
+						Go back to {$callingAppName}
 						<img src="/icons/arrow-right.svg" alt="Icon" class="ml-4 mr-2 h-7 w-7" />
 					</a>
 				{/if}
