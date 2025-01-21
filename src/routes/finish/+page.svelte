@@ -86,7 +86,7 @@
 				<a
 					href="https://jumble.social"
 					target="_blank"
-					class="flex w-[8.5rem] flex-col justify-self-center rounded-lg p-2"
+					class="flex w-[8.5rem] flex-col justify-self-center rounded-lg p-2 hover:bg-neutral-200"
 				>
 					<img src="/icons/jumble.svg" alt="Habla" class="h-24" />
 					<div class="mt-2 text-center">Jumble.social</div>
