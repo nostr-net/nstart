@@ -74,14 +74,14 @@
 					<div class="mt-2 text-center text-sm text-strongpink">Android / IOS</div>
 				</a>
 				<a
-					href="https://wikistr.com"
+					href="https://nostur.com/"
 					target="_blank"
-					class="flex flex-col justify-self-center p-2 rounded-lg hover:bg-neutral-200 w-[8.5rem]"
+					class="flex w-[8.5rem] flex-col justify-self-center rounded-lg p-2 hover:bg-neutral-200"
 				>
-					<img src="/icons/wikistr.svg" alt="Wikistr" class="h-24" />
-					<div class="mt-2 text-center">Wikistr</div>
-					<div class="mt-2 text-center text-sm text-neutral-500">Open encyclopedia</div>
-					<div class="mt-2 text-center text-sm text-strongpink">Web app</div>
+					<img src="/icons/nostur.svg" alt="Wikistr" class="h-24" />
+					<div class="mt-2 text-center">Nostur</div>
+					<div class="mt-2 text-center text-sm text-neutral-500">Social & Micro blogging</div>
+					<div class="mt-2 text-center text-sm text-strongpink">IOS / macOS</div>
 				</a>
 				<a
 					href="https://jumble.social"
@@ -92,7 +92,6 @@
 					<div class="mt-2 text-center">Jumble.social</div>
 					<div class="mt-2 text-center text-sm text-neutral-500">Social & Micro blogging</div>
 					<div class="mt-2 text-center text-sm text-strongpink">Web app</div>
-
 				</a>
 			</div>
 			<p class="mt-8 text-neutral-500 sm:w-[80%]">
