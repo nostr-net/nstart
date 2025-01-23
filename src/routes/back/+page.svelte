@@ -65,6 +65,11 @@
 		window.opener.location.href = actionURL;
 		window.close();
 	}
+
+	function redirectBack() {
+		window.location.href = actionURL;
+		sessionStorage.clear();
+	}
 </script>
 
 <BasicLayout>
@@ -86,24 +91,14 @@
 				to go back to <strong>{$callingAppName}</strong>:
 			</p>
 			<div class="mt-8">
-				{#if $callingAppType === 'popup'}
-					<button
-						on:click={redirectAndClose}
-						type="submit"
-						class="inline-flex items-center rounded bg-strongpink px-6 py-4 text-[1.8rem] text-white sm:px-10"
-					>
-						Go back to {$callingAppName}
-						<img src="/icons/arrow-right.svg" alt="Icon" class="ml-4 mr-2 h-7 w-7" />
-					</button>
-				{:else}
-					<a
-						href={actionURL}
-						class="inline-flex items-center rounded bg-strongpink px-6 py-4 text-[1.8rem] text-white sm:px-10"
-					>
-						Go back to {$callingAppName}
-						<img src="/icons/arrow-right.svg" alt="Icon" class="ml-4 mr-2 h-7 w-7" />
-					</a>
-				{/if}
+				<button
+					on:click={$callingAppType === 'popup' ? redirectAndClose : redirectBack}
+					type="submit"
+					class="inline-flex items-center rounded bg-strongpink px-6 py-4 text-[1.8rem] text-white sm:px-10"
+				>
+					Go back to {$callingAppName}
+					<img src="/icons/arrow-right.svg" alt="Icon" class="ml-4 mr-2 h-7 w-7" />
+				</button>
 			</div>
 			{#if $callingAppType != 'popup'}
 				<p class="mt-8 text-neutral-500 sm:w-[80%]">

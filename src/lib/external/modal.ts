@@ -20,7 +20,7 @@ export class NstartModal {
 	private iframe: HTMLIFrameElement;
 	private closeButton: HTMLButtonElement;
 	private config: WizardConfig;
-  private baseURL: string;
+	private baseURL: string;
 
 	constructor(config: WizardConfig) {
 		// Validate mandatory parameters
@@ -41,24 +41,24 @@ export class NstartModal {
 
 		this.setupModal();
 		this.setupMessageHandling();
-    this.baseURL = this.buildURL();
+		this.baseURL = this.buildURL();
 	}
 
-  private buildURL(): string {
-    const url = new URL(this.config.baseUrl);
-    url.searchParams.set('an', this.config.an);
-    url.searchParams.set('at', this.config.at);
-    url.searchParams.set('ac', this.config.ac);
+	private buildURL(): string {
+		const url = new URL(this.config.baseUrl);
+		url.searchParams.set('an', this.config.an);
+		url.searchParams.set('at', this.config.at);
+		url.searchParams.set('ac', this.config.ac);
 
-    if (this.config.asb) url.searchParams.set('asb', 'yes');
-    if (this.config.afb) url.searchParams.set('afb', 'yes');
-    if (this.config.aan) url.searchParams.set('aan', 'yes');
-    if (this.config.aac) url.searchParams.set('aac', 'yes');
-    if (this.config.awr?.length) url.searchParams.set('awr', this.config.awr.join(','));
-    if (this.config.arr?.length) url.searchParams.set('arr', this.config.arr.join(','));
+		if (this.config.asb) url.searchParams.set('asb', 'yes');
+		if (this.config.afb) url.searchParams.set('afb', 'yes');
+		if (this.config.aan) url.searchParams.set('aan', 'yes');
+		if (this.config.aac) url.searchParams.set('aac', 'yes');
+		if (this.config.awr?.length) url.searchParams.set('awr', this.config.awr.join(','));
+		if (this.config.arr?.length) url.searchParams.set('arr', this.config.arr.join(','));
 
-    return url.toString();
-  }
+		return url.toString();
+	}
 
 	private setupModal() {
 		this.container = document.createElement('div');
@@ -119,10 +119,10 @@ export class NstartModal {
       box-shadow: 0 2px 4px rgba(0,0,0,0.1);
     `;
 
-    this.closeButton.addEventListener('click', () => {
-      this.config.onCancel?.();
-      this.close();
-    });
+		this.closeButton.addEventListener('click', () => {
+			this.config.onCancel?.();
+			this.close();
+		});
 
 		this.iframe = document.createElement('iframe');
 
@@ -171,6 +171,11 @@ export class NstartModal {
 			switch (event.data.type) {
 				case 'WIZARD_COMPLETE':
 					this.config.onComplete?.(event.data.result);
+					console.log('Running sessionStorage.clear()');
+					this.iframe.contentWindow.postMessage(
+						{ type: 'CLEAR_SESSION_STORAGE' },
+						this.config.baseUrl
+					);
 					this.close();
 					break;
 				case 'WIZARD_CANCEL':
@@ -181,18 +186,18 @@ export class NstartModal {
 		});
 	}
 
-  private resetIframe() {
-    this.iframe.src = this.baseURL;
-  }
+	private resetIframe() {
+		this.iframe.src = this.baseURL;
+	}
 
 	open() {
-    this.resetIframe();
+		this.resetIframe();
 		this.container.style.display = 'block';
 	}
 
 	close() {
 		this.container.style.display = 'none';
-    this.resetIframe();
+		this.resetIframe();
 	}
 
 	destroy() {
