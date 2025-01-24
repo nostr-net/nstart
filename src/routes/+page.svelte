@@ -92,9 +92,9 @@
 >
 	<div>
 		<div class="flex min-h-screen items-center justify-center">
-			<div class="mx-auto">
+			<div class="mx-auto py-8">
 				<!-- content-->
-				<div class="p-8 sm:flex sm:flex-row-reverse sm:items-center sm:p-0">
+				<div class="px-8 sm:flex sm:flex-row-reverse sm:items-center sm:p-0">
 					<div
 						class="flex animate-fade2down justify-center sm:relative sm:h-screen sm:basis-[45vw] sm:overflow-hidden"
 					>
@@ -180,6 +180,16 @@
 							</div>
 						{/if}
 					</div>
+				</div>
+				<div
+					class="mt-10 animate-fade1 text-center text-sm text-neutral-400 opacity-0 sm:mt-4"
+					style="animation-delay: 1.2s;"
+				>
+					The source code for this service is <a
+						href="https://github.com/dtonon/nstart"
+						target="_blank"
+						class="underline">free and open</a
+					>
 				</div>
 				<!-- /content -->
 			</div>
