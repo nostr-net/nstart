@@ -10,3 +10,7 @@ deploy target: build
   rsync -av --delete --progress build package.json package-lock.json {{target}}:~/nstart/
   ssh {{target}} 'cd nstart; nvm use; npm ci --omit dev'
   ssh {{target}} 'systemctl restart nstart'
+
+npm-publish:
+  npm login
+  cd modal-package && npm publish

@@ -6,6 +6,7 @@ pubkeys-emailed-db
 .vercel
 /.svelte-kit
 /build
+modal-package/dist
 
 # OS
 .DS_Store

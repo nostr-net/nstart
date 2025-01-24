@@ -16,9 +16,9 @@ type WizardConfig = {
 };
 
 export class NstartModal {
-	private container: HTMLDivElement;
-	private iframe: HTMLIFrameElement;
-	private closeButton: HTMLButtonElement;
+	private container!: HTMLDivElement;
+	private iframe!: HTMLIFrameElement;
+	private closeButton!: HTMLButtonElement;
 	private config: WizardConfig;
 	private baseURL: string;
 
@@ -27,6 +27,8 @@ export class NstartModal {
 		if (!config.an) {
 			throw new Error('NstartModal requires the an (appName) param');
 		}
+
+		config.baseUrl = config.baseUrl || window.location.origin;
 
 		this.config = {
 			onComplete: () => {},
@@ -45,7 +47,7 @@ export class NstartModal {
 	}
 
 	private buildURL(): string {
-		const url = new URL(this.config.baseUrl);
+		const url = new URL(this.config.baseUrl || window.location.origin);
 		url.searchParams.set('an', this.config.an);
 		url.searchParams.set('at', this.config.at);
 		url.searchParams.set('ac', this.config.ac);
@@ -166,16 +168,21 @@ export class NstartModal {
 
 	private setupMessageHandling() {
 		window.addEventListener('message', (event) => {
-			if (event.origin !== new URL(this.config.baseUrl).origin) return;
+			if (!this.config.baseUrl) return;
+
+			const baseOrigin = new URL(this.config.baseUrl).origin;
+			if (event.origin !== baseOrigin) return;
 
 			switch (event.data.type) {
 				case 'WIZARD_COMPLETE':
 					this.config.onComplete?.(event.data.result);
 					console.log('Running sessionStorage.clear()');
-					this.iframe.contentWindow.postMessage(
-						{ type: 'CLEAR_SESSION_STORAGE' },
-						this.config.baseUrl
-					);
+					if (this.iframe?.contentWindow) {
+						this.iframe.contentWindow.postMessage(
+							{ type: 'CLEAR_SESSION_STORAGE' },
+							this.config.baseUrl
+						);
+					}
 					this.close();
 					break;
 				case 'WIZARD_CANCEL':

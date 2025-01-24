@@ -1,6 +1,6 @@
 // Move the file to: src/routes/modal.js/+server.ts
 
-import { NstartModal } from '$lib/external/modal';
+import { NstartModal } from '../../../modal-package/src/modal';
 import type { RequestHandler } from '@sveltejs/kit';
 
 // Generate the modal code
