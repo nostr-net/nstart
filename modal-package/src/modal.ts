@@ -14,6 +14,7 @@ type WizardConfig = {
 	aac?: boolean;
 	awr?: string[];
 	arr?: string[];
+	ahc?: boolean;
 };
 
 export class NstartModal {
@@ -61,6 +62,8 @@ export class NstartModal {
 		if (this.config.awr?.length) url.searchParams.set('awr', this.config.awr.join(','));
 		if (this.config.arr?.length) url.searchParams.set('arr', this.config.arr.join(','));
 
+		if (!this.config.ahc) this.config.ahc = false;
+
 		return url.toString();
 	}
 
@@ -100,13 +103,14 @@ export class NstartModal {
 			}
     `;
 
-		this.closeButton = document.createElement('button');
-		this.closeButton.innerHTML = `
+		if (!this.config.ahc) {
+			this.closeButton = document.createElement('button');
+			this.closeButton.innerHTML = `
       <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
         <path d="M18 6L6 18M6 6l12 12"/>
       </svg>
     `;
-		this.closeButton.style.cssText = `
+			this.closeButton.style.cssText = `
       position: absolute;
       top: 10px;
       right: 10px;
@@ -123,10 +127,13 @@ export class NstartModal {
       box-shadow: 0 2px 4px rgba(0,0,0,0.1);
     `;
 
-		this.closeButton.addEventListener('click', () => {
-			this.config.onCancel?.();
-			this.close();
-		});
+			this.closeButton.addEventListener('click', () => {
+				this.config.onCancel?.();
+				this.close();
+			});
+
+			modalWrapper.appendChild(this.closeButton);
+		}
 
 		this.iframe = document.createElement('iframe');
 
@@ -138,7 +145,6 @@ export class NstartModal {
     background: white;
   `;
 
-		modalWrapper.appendChild(this.closeButton);
 		modalWrapper.appendChild(this.iframe);
 		this.container.appendChild(modalWrapper);
 		document.body.appendChild(this.container);
