@@ -5,8 +5,6 @@ type WizardConfig = {
 	height?: string;
 	baseUrl?: string;
 	an: string;
-	at: string;
-	ac: string;
 	s?: string[];
 	asb?: boolean;
 	afb?: boolean;
@@ -38,9 +36,7 @@ export class NstartModal {
 			width: '600px',
 			height: '80vh',
 			baseUrl: window.location.origin,
-			...config,
-			at: 'modal',
-			ac: 'modal'
+			...config
 		};
 
 		this.setupModal();
@@ -51,8 +47,8 @@ export class NstartModal {
 	private buildURL(): string {
 		const url = new URL(this.config.baseUrl || window.location.origin);
 		url.searchParams.set('an', this.config.an);
-		url.searchParams.set('at', this.config.at);
-		url.searchParams.set('ac', this.config.ac);
+		url.searchParams.set('at', 'modal');
+		url.searchParams.set('ac', 'modal');
 
 		if (this.config.s?.length) url.searchParams.set('s', this.config.s.join(','));
 		if (this.config.asb) url.searchParams.set('asb', 'yes');
