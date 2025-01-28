@@ -61,8 +61,8 @@ The following is a Javascript code that achieves this goal:
 
 ```js
 if (window.location.hash && window.location.hash.startsWith('#nostr-login')) {
-    const urlWithoutHash = window.location.href.split('#')[0];
-    history.replaceState(null, '', urlWithoutHash);
+	const urlWithoutHash = window.location.href.split('#')[0];
+	history.replaceState(null, '', urlWithoutHash);
 }
 ```
 
@@ -103,7 +103,10 @@ To do that you have to import a JS from start.njump.me and initialize a NstartMo
     document.getElementById('openBtn').onclick = () => wizard.open();
 </script>
 ```
+
 After the followers step, the modal is automatically closed without showing the final screen; it is the application's responsibility to greet the new user and inform him or her that he or she has logged in and can begin exploring the application.
+
+If you prefer, there is also a npm package available at https://www.npmjs.com/package/nstart-modal.
 
 ## Popup option
 
