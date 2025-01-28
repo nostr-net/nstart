@@ -60,16 +60,14 @@
 
 	async function uploadImage(file: File) {
 		let auth = await blossomAuth(file);
-		const formData = new FormData();
-		formData.append('uploadtype', 'avatar');
-		formData.append('file', file);
+		const arrayBuffer = await file.arrayBuffer();
 
-		const response = await fetch('https://cdn.nostrcheck.me', {
-			method: 'POST',
+		const response = await fetch('https://cdn.nostrcheck.me/upload', {
+			method: 'PUT',
 			headers: {
 				Authorization: `Nostr ${auth}`
 			},
-			body: formData
+			body: arrayBuffer
 		});
 
 		if (response.ok) {
