@@ -40,4 +40,4 @@ Discaimer: this bunker implementation needs a small update from the classic impl
 
 Nstart also offers an onboarding process to external Nostr clients, web and mobile! Taking advantage of this opportunity is really simple, [read more](APPS-INTEGRATION.md).
 
-![Modal](/static/images/apps-integration03.jpg)
+https://github.com/user-attachments/assets/367a316d-34ab-42b9-b9c0-da7830e1dfa2
