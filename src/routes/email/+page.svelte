@@ -1,7 +1,18 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
 	import { goto } from '$app/navigation';
-	import { sk, pk, npub, password, email, name, ncryptsec, skipBunker } from '$lib/store';
+	import {
+		sk,
+		pk,
+		npub,
+		password,
+		email,
+		name,
+		ncryptsec,
+		skipBunker,
+		skipFollow,
+		callingAppCode
+	} from '$lib/store';
 	import { isMobile } from '$lib/mobile';
 	import TwoColumnLayout from '$lib/TwoColumnLayout.svelte';
 	import CheckboxWithLabel from '$lib/CheckboxWithLabel.svelte';
@@ -61,7 +72,15 @@
 
 	function navigateContinue() {
 		if ($skipBunker) {
-			goto('/follow');
+			if ($skipFollow) {
+				if ($callingAppCode) {
+					goto('/back');
+				} else {
+					goto('/finish');
+				}
+			} else {
+				goto('/follow');
+			}
 		} else {
 			goto('/bunker');
 		}

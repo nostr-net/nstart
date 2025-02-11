@@ -10,7 +10,8 @@
 		avoidNsec,
 		avoidNcryptsec,
 		readRelays,
-		writeRelays
+		writeRelays,
+		skipFollow
 	} from '$lib/store';
 	import { getContext } from 'svelte';
 
@@ -69,6 +70,12 @@
 		$readRelays = readRelays ? readRelays.split(',') : [];
 		const writeRelays = params.get('arr');
 		$writeRelays = writeRelays ? writeRelays.split(',') : [];
+
+		// Manage aaf to skip following
+		const skipFollow = params.get('asf');
+		if (skipFollow == 'yes') {
+			$skipFollow = true;
+		}
 	});
 </script>
 
@@ -92,7 +99,7 @@
 >
 	<div>
 		<div class="flex min-h-screen items-center justify-center">
-			<div class="mx-auto py-8">
+			<div class="mx-auto py-8 sm:pt-0">
 				<!-- content-->
 				<div class="px-8 sm:flex sm:flex-row-reverse sm:items-center sm:p-0">
 					<div

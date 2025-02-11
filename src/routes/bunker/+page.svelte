@@ -5,7 +5,16 @@
 
 	import { goto } from '$app/navigation';
 	import TwoColumnLayout from '$lib/TwoColumnLayout.svelte';
-	import { sk, name, pk, inboxes, bunkerURI, forceBunker } from '$lib/store';
+	import {
+		sk,
+		name,
+		pk,
+		inboxes,
+		bunkerURI,
+		forceBunker,
+		skipFollow,
+		callingAppCode
+	} from '$lib/store';
 	import ClipToCopy from '$lib/ClipToCopy.svelte';
 	import CheckboxWithLabel from '$lib/CheckboxWithLabel.svelte';
 	import LoadingBar from '$lib/LoadingBar.svelte';
@@ -71,7 +80,15 @@
 	}
 
 	function navigateContinue() {
-		goto('/follow');
+		if ($skipFollow) {
+			if ($callingAppCode) {
+				goto('/back');
+			} else {
+				goto('/finish');
+			}
+		} else {
+			goto('/follow');
+		}
 	}
 </script>
 

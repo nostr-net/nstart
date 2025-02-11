@@ -137,6 +137,14 @@ Some apps are not ready to manage the multi-signature bunker, or cannot fully ta
 https://start.njump.me?an=Coracle&at=web&ac=https://coracle.social&asb=yes
 ```
 
+## Skip the follows suggestions
+
+Some apps may prefer to handle the suggestion of a list of first contacts using an internal procedure. They can hide this final step using the `asf=yes` param. For example:
+
+```
+https://start.njump.me?an=Coracle&at=web&ac=https://coracle.social&asf=yes
+```
+
 ## Disable returning the plain nsec
 
 Some apps do not support login by nsec or may prefer not to handle unencrypted credential for security reasons. With the param `aan=yes` you can force that; in this case the credential passed back will be `null`. For example:
