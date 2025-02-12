@@ -81,16 +81,18 @@ To do that you have to import a JS from start.njump.me and initialize a NstartMo
 <script>
     // Create the modal instance with required parameters
     const wizard = new NstartModal({
-        baseUrl: 'https://start.njump.me',
         // Required parameters
-        an: 'Great Nostr App', // appName
+        baseUrl: 'https://start.njump.me',
+        an: 'Great Nostr App', // App name
+
         // Optional parameters
-        afb: true, // skipBunker
-        asb: false, // skipBunker
-        aan: true, // avoidNsec
-        aac: false, // avoidNcryptsec
-        arr: ['wss://relay.example.com'], //readRelays
-        awr: ['wss://relay.example.com'], //writeRelays
+        afb: true, // Force bunker (default False)
+        asb: true, // Skip bunker (default False)
+        aan: true, // Don't return Nsec (default False)
+        aac: true, // Don't return  Ncryptsec (default False)
+        arr: ['wss://relay.example.com'], // Custom read relays
+        awr: ['wss://relay.example.com'], // Custom write relays
+
         // Callbacks
         onComplete: (result) => {
             console.log('Login token:', result.nostrLogin);
