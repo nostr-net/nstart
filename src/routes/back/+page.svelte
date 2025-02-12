@@ -4,6 +4,7 @@
 	import * as nip19 from '@nostr/tools/nip19';
 	import { goto } from '$app/navigation';
 	import {
+		accent,
 		sk,
 		bunkerURI,
 		ncryptsec,
@@ -20,6 +21,8 @@
 	let actionURL: string;
 
 	onMount(() => {
+		document.documentElement.style.setProperty('--accent-color', '#' + $accent);
+
 		if ($name.length === 0) {
 			goto('/');
 		}
@@ -75,7 +78,7 @@
 <BasicLayout>
 	<div slot="content" class="animate-fade1">
 		<!-- Welcome title -->
-		<div class="relative mb-8 border-l-[0.9rem] border-strongpink pl-4 sm:-ml-8">
+		<div class="relative mb-8 border-l-[0.9rem] border-accent pl-4 sm:-ml-8">
 			<h1 class="font-bold">
 				<div class="text-[3rem] leading-[1em] text-neutral-500 sm:text-[6rem]">YOU ARE</div>
 				<div class="break-words text-[3.5rem] leading-[1em] sm:h-auto sm:text-[7rem]" id="tw">
@@ -94,7 +97,7 @@
 				<button
 					on:click={$callingAppType === 'popup' ? redirectAndClose : redirectBack}
 					type="submit"
-					class="inline-flex items-center rounded bg-strongpink px-6 py-4 text-[1.8rem] text-white sm:px-10"
+					class="inline-flex items-center rounded bg-accent px-6 py-4 text-[1.8rem] text-white sm:px-10"
 				>
 					Go back to {$callingAppName}
 					<img src="/icons/arrow-right.svg" alt="Icon" class="ml-4 mr-2 h-7 w-7" />

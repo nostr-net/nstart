@@ -86,6 +86,7 @@ To do that you have to import a JS from start.njump.me and initialize a NstartMo
         an: 'Great Nostr App', // App name
 
         // Optional parameters
+        aa: '689600' // Hex accent color
         afb: true, // Force bunker (default False)
         asb: true, // Skip bunker (default False)
         aan: true, // Don't return Nsec (default False)
@@ -114,6 +115,14 @@ If you prefer, there is also a npm package available at https://www.npmjs.com/pa
 
 This is an alternative to the modal option, the use of which is suggested for usability reason only if the modal option cannot be applied.  
 To use the popup instead of "web" use the `at=popup` param when opening it. Nstart will not open the `ac` url you provide, but instead will do `window.opener.location.href=ac + "#nostr-login=..."` to force `hashchange` event on your page. Make sure to specify a random `target` to `window.open` instead of `_blank` so that Nstart has access to `window.opener`, and then listen to `hashchange` event to accept the `#nostr-login=...` return value (and consume it as described above).
+
+## Accent color
+
+You can overwrite Nstart accent with a custom one using the `aa` param and passing the hex color code. For example:
+
+```
+http://start.njump.me/?an=Coracle&aa=fc560e
+```
 
 ## Custom relays
 

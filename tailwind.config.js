@@ -10,10 +10,7 @@ export default {
         xl: ['22px', '24px'],
 			},
 			colors: {
-				lavender: '#fdf0f5',
-				strongpink: '#e32a6d',
-				crimson: '#bc1150',
-				garnet: '#42091e'
+				accent: 'var(--accent-color)'
 			},
 			animation: {
 				fade1: 'fadeIn 0.5s ease-in-out forwards',

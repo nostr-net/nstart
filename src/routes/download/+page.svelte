@@ -4,7 +4,7 @@
 	import * as nip49 from '@nostr/tools/nip49';
 
 	import { goto } from '$app/navigation';
-	import { sk, npub, ncryptsec, backupDownloaded, name, password } from '$lib/store';
+	import { accent, sk, npub, ncryptsec, backupDownloaded, name, password } from '$lib/store';
 	import { isMobile } from '$lib/mobile';
 	import TwoColumnLayout from '$lib/TwoColumnLayout.svelte';
 	import ClipToCopy from '$lib/ClipToCopy.svelte';
@@ -16,6 +16,8 @@
 	let encrypt = false;
 
 	onMount(() => {
+		document.documentElement.style.setProperty('--accent-color', '#' + $accent);
+
 		if ($name.length === 0) {
 			goto('/');
 		}
@@ -59,7 +61,7 @@
 <TwoColumnLayout>
 	<div slot="intro">
 		<div class="w-full sm:mr-10 sm:max-w-[350px]">
-			<div class="mb-8 border-l-[0.9rem] border-strongpink pl-4 sm:-ml-8">
+			<div class="mb-8 border-l-[0.9rem] border-accent pl-4 sm:-ml-8">
 				<h1 class="font-bold">
 					<div class="text-[3rem] leading-[1em] text-neutral-500 sm:text-[3rem]">YOUR KEYS</div>
 					<div class="break-words text-[3.5rem] leading-[1em] sm:h-auto sm:text-[3.5rem]" id="tw">
@@ -104,7 +106,7 @@
 				{#if !encrypt}
 					<button
 						on:click={downloadBackup}
-						class="inline-flex w-full items-center justify-center rounded bg-strongpink px-8 py-3 text-[1.3rem] text-white"
+						class="inline-flex w-full items-center justify-center rounded bg-accent px-8 py-3 text-[1.3rem] text-white"
 					>
 						Save my nsec <img
 							src="/icons/arrow-right.svg"
@@ -134,7 +136,7 @@
 						class="input-hover-enabled w-full rounded border-2 border-neutral-300 px-4 py-2 text-xl focus:border-neutral-700 focus:outline-none"
 					/>
 					<button
-						class="mt-6 inline-flex w-full items-center justify-center rounded bg-strongpink px-8 py-3 text-[1.3rem] text-white"
+						class="mt-6 inline-flex w-full items-center justify-center rounded bg-accent px-8 py-3 text-[1.3rem] text-white"
 						disabled={$ncryptsec === ''}
 						on:click={downloadBackup}
 					>
@@ -199,7 +201,7 @@
 			<button
 				on:click={navigateContinue}
 				disabled={!backupDone && !$backupDownloaded}
-				class={`inline-flex items-center rounded px-8 py-3 text-[1.6rem] sm:text-[1.3rem] ${backupDone || $backupDownloaded ? 'bg-strongpink text-white' : 'cursor-not-allowed bg-neutral-400 text-neutral-100'}`}
+				class={`inline-flex items-center rounded px-8 py-3 text-[1.6rem] sm:text-[1.3rem] ${backupDone || $backupDownloaded ? 'bg-accent text-white' : 'cursor-not-allowed bg-neutral-400 text-neutral-100'}`}
 			>
 				Continue <img src="/icons/arrow-right.svg" alt="continue" class="ml-4 mr-2 h-6 w-6" />
 			</button>

@@ -3,10 +3,12 @@
 	import { goto } from '$app/navigation';
 	import { bunkerURI } from '$lib/store';
 	import BasicLayout from '$lib/BasicLayout.svelte';
-	import { name, npub } from '$lib/store';
+	import { accent, name, npub } from '$lib/store';
 	import QrCode from '$lib/QrCode.svelte';
 
 	onMount(() => {
+		document.documentElement.style.setProperty('--accent-color', '#' + $accent);
+
 		if ($name.length === 0) {
 			goto('/');
 		}
@@ -16,7 +18,7 @@
 <BasicLayout>
 	<div slot="content" class="animate-fade1">
 		<!-- Welcome title -->
-		<div class="relative mb-8 border-l-[0.9rem] border-strongpink pl-4 sm:-ml-8">
+		<div class="relative mb-8 border-l-[0.9rem] border-accent pl-4 sm:-ml-8">
 			<h1 class="font-bold">
 				<div class="text-[3rem] leading-[1em] text-neutral-500 sm:text-[6rem]">EXPLORE</div>
 				<div class="break-words text-[3.5rem] leading-[1em] sm:h-auto sm:text-[7rem]" id="tw">
@@ -28,9 +30,7 @@
 					class="absolute right-0 top-8 hidden w-48 rotate-6 flex-col items-center text-center sm:flex"
 				>
 					<QrCode className="" data={$bunkerURI} />
-					<span class="mt-4 text-sm text-strongpink"
-						>Scan the QrCode for quick login from mobile!</span
-					>
+					<span class="mt-4 text-sm text-accent">Scan the QrCode for quick login from mobile!</span>
 				</div>
 			{/if}
 		</div>
@@ -51,7 +51,7 @@
 					<img src="/icons/coracle.svg" alt="Coracle" class="h-24" />
 					<div class="mt-2 text-center">Coracle</div>
 					<div class="mt-2 text-center text-sm text-neutral-500">Social & Micro blogging</div>
-					<div class="mt-2 text-center text-sm text-strongpink">Web app</div>
+					<div class="mt-2 text-center text-sm text-accent">Web app</div>
 				</a>
 				<a
 					href="https://chachi.chat"
@@ -61,7 +61,7 @@
 					<img src="/icons/chachi.svg" alt="Chachi" class="h-24" />
 					<div class="mt-2 text-center">Chachi</div>
 					<div class="mt-2 text-center text-sm text-neutral-500">Group conversations</div>
-					<div class="mt-2 text-center text-sm text-strongpink">Web app</div>
+					<div class="mt-2 text-center text-sm text-accent">Web app</div>
 				</a>
 				<a
 					href="https://olas.app"
@@ -71,7 +71,7 @@
 					<img src="/icons/olas.svg" alt="Olas" class="h-24" />
 					<div class="mt-2 text-center">Olas</div>
 					<div class="mt-2 text-center text-sm text-neutral-500">Photo & video social</div>
-					<div class="mt-2 text-center text-sm text-strongpink">Android / IOS</div>
+					<div class="mt-2 text-center text-sm text-accent">Android / IOS</div>
 				</a>
 				<a
 					href="https://nostur.com/"
@@ -81,7 +81,7 @@
 					<img src="/icons/nostur.svg" alt="Wikistr" class="h-24" />
 					<div class="mt-2 text-center">Nostur</div>
 					<div class="mt-2 text-center text-sm text-neutral-500">Social & Micro blogging</div>
-					<div class="mt-2 text-center text-sm text-strongpink">IOS / macOS</div>
+					<div class="mt-2 text-center text-sm text-accent">IOS / macOS</div>
 				</a>
 				<a
 					href="https://jumble.social"
@@ -91,7 +91,7 @@
 					<img src="/icons/jumble.svg" alt="Habla" class="h-24" />
 					<div class="mt-2 text-center">Jumble.social</div>
 					<div class="mt-2 text-center text-sm text-neutral-500">Social & Micro blogging</div>
-					<div class="mt-2 text-center text-sm text-strongpink">Web app</div>
+					<div class="mt-2 text-center text-sm text-accent">Web app</div>
 				</a>
 			</div>
 			<p class="mt-8 text-neutral-500 sm:w-[80%]">

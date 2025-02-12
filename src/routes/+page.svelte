@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
 	import {
+		accent,
 		followerSuggestions,
 		callingAppName,
 		callingAppType,
@@ -21,6 +22,13 @@
 
 	onMount(() => {
 		const params = new URLSearchParams(window.location.search);
+
+		// Set the accent color, if present, otherwise use the store default
+		const accent = params.get('aa');
+		if (accent) {
+			$accent = accent;
+		}
+		document.documentElement.style.setProperty('--accent-color', '#' + $accent);
 
 		// Manage suggested profiles
 		const followerSuggestions = params.get('s');
@@ -117,7 +125,7 @@
 					<div class="z-20 basis-[55%] sm:py-10 sm:pl-[16vw]">
 						<!-- Welcome title -->
 						<div
-							class="mb-8 animate-fade2 border-l-[0.9rem] border-strongpink pl-4 opacity-0 sm:-ml-8"
+							class="mb-8 animate-fade2 border-l-[0.9rem] border-accent pl-4 opacity-0 sm:-ml-8"
 							style="animation-delay: 0.2s;"
 						>
 							<h1 class="font-bold">
@@ -127,7 +135,7 @@
 									id="tw"
 								>
 									<span class="text-neutral-500">TO</span>
-									<span class="text-strongpink">NOSTR</span>
+									<span class="text-accent">NOSTR</span>
 								</div>
 							</h1>
 						</div>
@@ -165,7 +173,7 @@
 							style="animation-delay: 0.7s;"
 						>
 							<a
-								class="inline-flex items-center rounded bg-strongpink px-10 py-4 text-[1.8rem] text-white"
+								class="inline-flex items-center rounded bg-accent px-10 py-4 text-[1.8rem] text-white"
 								href="/yourself"
 							>
 								Let's Start <img

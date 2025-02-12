@@ -6,7 +6,7 @@
 	import { base64 } from '@scure/base';
 
 	import { goto } from '$app/navigation';
-	import { sk, pk, name, picture, about, website } from '$lib/store';
+	import { accent, sk, pk, name, picture, about, website } from '$lib/store';
 	import { isMobile } from '$lib/mobile';
 	import TwoColumnLayout from '$lib/TwoColumnLayout.svelte';
 	import LoadingBar from '$lib/LoadingBar.svelte';
@@ -17,6 +17,7 @@
 	let activationProgress = 0;
 
 	onMount(() => {
+		document.documentElement.style.setProperty('--accent-color', '#' + $accent);
 		if ($sk.length === 0 && isWasmSupported()) {
 			mineEmail($sk, $pk);
 		}
@@ -118,7 +119,7 @@
 <TwoColumnLayout>
 	<div slot="intro">
 		<div class="w-full sm:mr-10 sm:max-w-[350px]">
-			<div class="mb-8 border-l-[0.9rem] border-strongpink pl-4 sm:-ml-8">
+			<div class="mb-8 border-l-[0.9rem] border-accent pl-4 sm:-ml-8">
 				<h1 class="font-bold">
 					<div class="text-[3rem] leading-[1em] text-neutral-500 sm:text-[3rem]">PRESENT</div>
 					<div class="break-words text-[3.5rem] leading-[1em] sm:h-auto sm:text-[3.5rem]" id="tw">
@@ -224,7 +225,7 @@
 			<button
 				on:click={navigateContinue}
 				disabled={activationProgress > 0 || !$name}
-				class={`inline-flex items-center rounded px-8 py-3 text-[1.6rem] text-white sm:text-[1.3rem] ${activationProgress == 0 && $name ? 'bg-strongpink text-white' : 'cursor-not-allowed bg-neutral-400 text-neutral-100'}`}
+				class={`inline-flex items-center rounded px-8 py-3 text-[1.6rem] text-white sm:text-[1.3rem] ${activationProgress == 0 && $name ? 'bg-accent text-white' : 'cursor-not-allowed bg-neutral-400 text-neutral-100'}`}
 			>
 				{activationProgress > 0 ? 'Uploading...' : 'Continue'}
 				<img src="/icons/arrow-right.svg" alt="continue" class="ml-4 mr-2 h-6 w-6" />

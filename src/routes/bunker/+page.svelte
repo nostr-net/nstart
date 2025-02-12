@@ -6,6 +6,7 @@
 	import { goto } from '$app/navigation';
 	import TwoColumnLayout from '$lib/TwoColumnLayout.svelte';
 	import {
+		accent,
 		sk,
 		name,
 		pk,
@@ -26,6 +27,8 @@
 	let activationProgress = 0;
 
 	onMount(() => {
+		document.documentElement.style.setProperty('--accent-color', '#' + $accent);
+
 		if ($name.length === 0) {
 			goto('/');
 			return;
@@ -95,7 +98,7 @@
 <TwoColumnLayout>
 	<div slot="intro">
 		<div class="w-full sm:mr-10 sm:max-w-[350px]">
-			<div class="mb-8 border-l-[0.9rem] border-strongpink pl-4 sm:-ml-8">
+			<div class="mb-8 border-l-[0.9rem] border-accent pl-4 sm:-ml-8">
 				<h1 class="font-bold">
 					<div class="text-[3rem] leading-[1em] text-neutral-500 sm:text-[3rem]">MULTI SIGNER</div>
 					<div class="break-words text-[3.5rem] leading-[1em] sm:h-auto sm:text-[3.5rem]" id="tw">
@@ -188,7 +191,7 @@
 				<button
 					on:click={activate}
 					disabled={bunkerActivating}
-					class={`inline-flex items-center rounded px-8 py-3 text-[1.6rem] text-white sm:text-[1.3rem] ${!bunkerActivating ? 'bg-strongpink text-white' : 'cursor-not-allowed bg-neutral-400 text-neutral-100'}`}
+					class={`inline-flex items-center rounded px-8 py-3 text-[1.6rem] text-white sm:text-[1.3rem] ${!bunkerActivating ? 'bg-accent text-white' : 'cursor-not-allowed bg-neutral-400 text-neutral-100'}`}
 				>
 					Activate the bunker
 					<img src="/icons/arrow-right.svg" alt="continue" class="ml-4 mr-2 h-6 w-6" />
@@ -200,7 +203,7 @@
 			<div class="mt-16 flex justify-center sm:justify-end">
 				<button
 					on:click={navigateContinue}
-					class="inline-flex items-center rounded bg-strongpink px-8 py-3 text-[1.6rem] text-white sm:text-[1.3rem]"
+					class="inline-flex items-center rounded bg-accent px-8 py-3 text-[1.6rem] text-white sm:text-[1.3rem]"
 				>
 					{$bunkerURI !== '' ? 'Continue' : 'No, thanks, continue'}
 					<img src="/icons/arrow-right.svg" alt="continue" class="ml-4 mr-2 h-6 w-6" />

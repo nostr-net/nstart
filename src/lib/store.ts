@@ -88,6 +88,7 @@ export const avoidNcryptsec = createSessionWritable('avoidNcryptsec', false);
 export const readRelays = createSessionWritable('readRelays', []);
 export const writeRelays = createSessionWritable('writeRelays', []);
 export const skipFollow = createSessionWritable('skipFollow', false);
+export const accent = createSessionWritable('accent', 'e32a6d');
 
 // Runtime stores
 export const inboxes = readable<{ [pubkey: string]: string[] }>({}, (set) => {
