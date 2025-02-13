@@ -31,6 +31,14 @@
 		}
 		document.documentElement.style.setProperty('--accent-color', '#' + $accent);
 
+		// Set forced theme if specified
+		const forcedTheme = params.get('am');
+		console.log("reading am...")
+		if (forcedTheme === 'light' || forcedTheme === 'dark') {
+			console.log("forcedTheme =>", forcedTheme)
+			$theme = forcedTheme;
+		}
+
 		// Manage suggested profiles
 		const followerSuggestions = params.get('s');
 		$followerSuggestions = followerSuggestions ? followerSuggestions.split(',') : [];

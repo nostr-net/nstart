@@ -6,6 +6,7 @@ type WizardConfig = {
 	baseUrl?: string;
 	an: string;
 	aa?: string;
+	am?: 'light' | 'dark';
 	s?: string[];
 	asb?: boolean;
 	afb?: boolean;
@@ -52,7 +53,7 @@ export class NstartModal {
 		url.searchParams.set('ac', 'modal');
 
 		if (this.config.aa) url.searchParams.set('aa', this.config.aa);
-
+		if (this.config.am) url.searchParams.set('am', this.config.am);
 		if (this.config.s?.length) url.searchParams.set('s', this.config.s.join(','));
 		if (this.config.asb) url.searchParams.set('asb', 'yes');
 		if (this.config.afb) url.searchParams.set('afb', 'yes');
