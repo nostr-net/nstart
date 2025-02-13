@@ -81,7 +81,6 @@ export class NstartModal {
 
 		this.currentTheme = theme;
 
-		// Update close button
 		this.closeButton.style.cssText = `
       position: absolute;
       top: 10px;
@@ -104,7 +103,6 @@ export class NstartModal {
 			svg.style.stroke = theme === 'dark' ? 'white' : 'black';
 		}
 
-		// Update iframe background
 		this.iframe.style.background = theme === 'dark' ? '#1a1a1a' : 'white';
 	}
 
@@ -119,11 +117,15 @@ export class NstartModal {
       background: rgba(0, 0, 0, 0.5);
       display: none;
       z-index: 9999;
+      opacity: 0;
+      transition: opacity 0.3s ease-in-out;
     `;
 
 		const modalWrapper = document.createElement('div');
 		modalWrapper.style.cssText = `
       position: absolute;
+      opacity: 0;
+      transition: opacity 0.3s ease-in-out;
       ${
 				window.innerWidth >= 768
 					? `
@@ -166,18 +168,30 @@ export class NstartModal {
       border: none;
       border-radius: inherit;
       background: ${this.currentTheme === 'dark' ? '#1a1a1a' : 'white'};
+      opacity: 0;
+      transition: opacity 0.3s ease-in-out;
     `;
+
+		this.iframe.addEventListener('load', () => {
+			// Fade in the iframe after it's loaded
+			setTimeout(() => {
+				this.iframe.style.opacity = '1';
+				modalWrapper.style.opacity = '1';
+				this.container.style.opacity = '1';
+			}, 50);
+		});
 
 		modalWrapper.appendChild(this.iframe);
 		this.container.appendChild(modalWrapper);
 		document.body.appendChild(this.container);
 
-		// Apply initial theme
 		this.updateTheme(this.currentTheme);
 
 		window.addEventListener('resize', () => {
 			modalWrapper.style.cssText = `
         position: absolute;
+        opacity: ${modalWrapper.style.opacity};
+        transition: opacity 0.3s ease-in-out;
         ${
 					window.innerWidth >= 768
 						? `
@@ -262,12 +276,17 @@ export class NstartModal {
 
 	open() {
 		this.resetIframe();
+		this.container.style.opacity = '0';
 		this.container.style.display = 'block';
 	}
 
 	close() {
-		this.container.style.display = 'none';
-		this.resetIframe();
+		// Fade out
+		this.container.style.opacity = '0';
+		setTimeout(() => {
+			this.container.style.display = 'none';
+			this.resetIframe();
+		}, 200);
 	}
 
 	destroy() {
