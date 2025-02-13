@@ -20,8 +20,8 @@
 		<!-- Welcome title -->
 		<div class="relative mb-8 border-l-[0.9rem] border-accent pl-4 sm:-ml-8">
 			<h1 class="font-bold">
-				<div class="text-[3rem] leading-[1em] text-neutral-500 sm:text-[6rem]">EXPLORE</div>
-				<div class="break-words text-[3.5rem] leading-[1em] sm:h-auto sm:text-[7rem]" id="tw">
+				<div class="text-[3rem] leading-[1em] text-neutral-500 dark:text-neutral-400 sm:text-[6rem]">EXPLORE</div>
+				<div class="break-words text-[3.5rem] leading-[1em] text-black dark:text-white sm:h-auto sm:text-[7rem]" id="tw">
 					NOSTR
 				</div>
 			</h1>
@@ -36,7 +36,7 @@
 		</div>
 
 		<!-- Intro text -->
-		<div class="text-neutral-700 sm:w-[100%]">
+		<div class="text-neutral-700 dark:text-neutral-200 sm:w-[100%]">
 			<p class="text-xl sm:w-[80%]">
 				We're done, <strong>{$name}</strong>! Now you can start exploring Nostr, using a web
 				application or by downloading an app. These are some suggestions for getting started
@@ -46,57 +46,57 @@
 				<a
 					href="https://coracle.social"
 					target="_blank"
-					class="flex w-[8.5rem] flex-col justify-self-center rounded-lg p-2 hover:bg-neutral-200"
+					class="flex w-[8.5rem] flex-col justify-self-center rounded-lg p-2 hover:bg-neutral-200 dark:hover:bg-neutral-700"
 				>
 					<img src="/icons/coracle.svg" alt="Coracle" class="h-24" />
 					<div class="mt-2 text-center">Coracle</div>
-					<div class="mt-2 text-center text-sm text-neutral-500">Social & Micro blogging</div>
+					<div class="mt-2 text-center text-sm text-neutral-500 dark:text-neutral-400">Social & Micro blogging</div>
 					<div class="mt-2 text-center text-sm text-accent">Web app</div>
 				</a>
 				<a
 					href="https://chachi.chat"
 					target="_blank"
-					class="flex w-[8.5rem] flex-col justify-self-center rounded-lg p-2 hover:bg-neutral-200"
+					class="flex w-[8.5rem] flex-col justify-self-center rounded-lg p-2 hover:bg-neutral-200 dark:hover:bg-neutral-700"
 				>
 					<img src="/icons/chachi.svg" alt="Chachi" class="h-24" />
 					<div class="mt-2 text-center">Chachi</div>
-					<div class="mt-2 text-center text-sm text-neutral-500">Group conversations</div>
+					<div class="mt-2 text-center text-sm text-neutral-500 dark:text-neutral-400">Group conversations</div>
 					<div class="mt-2 text-center text-sm text-accent">Web app</div>
 				</a>
 				<a
 					href="https://olas.app"
 					target="_blank"
-					class="flex w-[8.5rem] flex-col justify-self-center rounded-lg p-2 hover:bg-neutral-200"
+					class="flex w-[8.5rem] flex-col justify-self-center rounded-lg p-2 hover:bg-neutral-200 dark:hover:bg-neutral-700"
 				>
 					<img src="/icons/olas.svg" alt="Olas" class="h-24" />
 					<div class="mt-2 text-center">Olas</div>
-					<div class="mt-2 text-center text-sm text-neutral-500">Photo & video social</div>
+					<div class="mt-2 text-center text-sm text-neutral-500 dark:text-neutral-400">Photo & video social</div>
 					<div class="mt-2 text-center text-sm text-accent">Android / IOS</div>
 				</a>
 				<a
 					href="https://nostur.com/"
 					target="_blank"
-					class="flex w-[8.5rem] flex-col justify-self-center rounded-lg p-2 hover:bg-neutral-200"
+					class="flex w-[8.5rem] flex-col justify-self-center rounded-lg p-2 hover:bg-neutral-200 dark:hover:bg-neutral-700"
 				>
 					<img src="/icons/nostur.svg" alt="Wikistr" class="h-24" />
 					<div class="mt-2 text-center">Nostur</div>
-					<div class="mt-2 text-center text-sm text-neutral-500">Social & Micro blogging</div>
+					<div class="mt-2 text-center text-sm text-neutral-500 dark:text-neutral-400">Social & Micro blogging</div>
 					<div class="mt-2 text-center text-sm text-accent">IOS / macOS</div>
 				</a>
 				<a
 					href="https://jumble.social"
 					target="_blank"
-					class="flex w-[8.5rem] flex-col justify-self-center rounded-lg p-2 hover:bg-neutral-200"
+					class="flex w-[8.5rem] flex-col justify-self-center rounded-lg p-2 hover:bg-neutral-200 dark:hover:bg-neutral-700"
 				>
 					<img src="/icons/jumble.svg" alt="Habla" class="h-24" />
 					<div class="mt-2 text-center">Jumble.social</div>
-					<div class="mt-2 text-center text-sm text-neutral-500">Social & Micro blogging</div>
+					<div class="mt-2 text-center text-sm text-neutral-500 dark:text-neutral-400">Social & Micro blogging</div>
 					<div class="mt-2 text-center text-sm text-accent">Web app</div>
 				</a>
 			</div>
-			<p class="mt-8 text-neutral-500 sm:w-[80%]">
+			<p class="mt-8 text-neutral-500 dark:text-neutral-400 sm:w-[80%]">
 				This is only a quick selection of the 80+ applications that have already been built on
-				Nostr, <a href="https://nostrapps.com" target="_blank" class="underline"
+				Nostr, <a href="https://nostrapps.com" target="_blank" class="underline"
 					>discover them all</a
 				>!
 			</p>

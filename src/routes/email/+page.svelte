@@ -95,14 +95,14 @@
 		<div class="w-full sm:mr-10 sm:max-w-[350px]">
 			<div class="mb-8 border-l-[0.9rem] border-accent pl-4 sm:-ml-8">
 				<h1 class="font-bold">
-					<div class="text-[3rem] leading-[1em] text-neutral-500 sm:text-[3rem]">EMAIL</div>
-					<div class="break-words text-[3.5rem] leading-[1em] sm:h-auto sm:text-[3.5rem]" id="tw">
+					<div class="text-[3rem] leading-[1em] text-neutral-500 dark:text-neutral-400 sm:text-[3rem]">EMAIL</div>
+					<div class="break-words text-[3.5rem] leading-[1em] text-black dark:text-white sm:h-auto sm:text-[3.5rem]" id="tw">
 						BACKUP
 					</div>
 				</h1>
 			</div>
 
-			<div class="leading-5 text-neutral-700 sm:w-[90%]">
+			<div class="leading-5 text-neutral-700 dark:text-neutral-300 sm:w-[90%]">
 				<p class="mt-6">
 					We offer you the possibility to send your encrypted <em class="italic">nsec</em> (so
 					actually a <em class="italic">ncryptsec</em>) to your email address to have another
@@ -125,7 +125,7 @@
 	</div>
 
 	<div slot="interactive">
-		<div class=" mt-6">
+		<div class=" mt-6 text-neutral-700 dark:text-neutral-300">
 			<div>
 				<CheckboxWithLabel
 					bind:checked={wantEmailBackup}
@@ -150,7 +150,7 @@
 				autofocus={!$isMobile}
 				disabled={!wantEmailBackup || activationProgress > 0}
 				autocapitalize="off"
-				class="input-hover-enabled mt-6 w-full rounded border-2 border-neutral-300 px-4 py-2 text-xl focus:border-neutral-700 focus:outline-none"
+				class="input-hover-enabled mt-6 w-full rounded border-2 border-neutral-300 dark:border-neutral-600 bg-white dark:bg-neutral-800 px-4 py-2 text-xl text-black dark:text-white focus:border-neutral-700 dark:focus:border-neutral-400 focus:outline-none"
 			/>
 
 			{#if needsPassword}
@@ -160,7 +160,7 @@
 					bind:value={$password}
 					disabled={!wantEmailBackup || activationProgress > 0}
 					autocapitalize="off"
-					class="input-hover-enabled mt-6 w-full rounded border-2 border-neutral-300 px-4 py-2 text-xl focus:border-neutral-700 focus:outline-none"
+					class="input-hover-enabled mt-6 w-full rounded border-2 border-neutral-300 dark:border-neutral-600 bg-white dark:bg-neutral-800 px-4 py-2 text-xl text-black dark:text-white focus:border-neutral-700 dark:focus:border-neutral-400 focus:outline-none"
 				/>
 			{/if}
 

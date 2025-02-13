@@ -22,6 +22,7 @@
 	import { signers, minePow, selectReadRelays } from '$lib/nostr';
 	import { isWasmSupported } from '$lib/wasm';
 	import ContinueButton from '$lib/ContinueButton.svelte';
+	import DoneIcon from '$lib/DoneIcon.svelte';
 
 	let activateBunker = isWasmSupported();
 	let bunkerActivating = false;
@@ -101,14 +102,14 @@
 		<div class="w-full sm:mr-10 sm:max-w-[350px]">
 			<div class="mb-8 border-l-[0.9rem] border-accent pl-4 sm:-ml-8">
 				<h1 class="font-bold">
-					<div class="text-[3rem] leading-[1em] text-neutral-500 sm:text-[3rem]">MULTI SIGNER</div>
-					<div class="break-words text-[3.5rem] leading-[1em] sm:h-auto sm:text-[3.5rem]" id="tw">
+					<div class="text-[3rem] leading-[1em] text-neutral-500 dark:text-neutral-400 sm:text-[3rem]">MULTI SIGNER</div>
+					<div class="break-words text-[3.5rem] leading-[1em] text-black dark:text-white sm:h-auto sm:text-[3.5rem]" id="tw">
 						BUNKER
 					</div>
 				</h1>
 			</div>
 
-			<div class="leading-5 text-neutral-700 sm:w-[90%]">
+			<div class="leading-5 text-neutral-700 dark:text-neutral-300 sm:w-[90%]">
 				<p class="">
 					Now you have the possibility to split your <em class="italic">nsec</em> in 3 using a
 					technique called
@@ -145,12 +146,12 @@
 				{/if}
 			</div>
 			{#if !isWasmSupported()}
-				<div class="mt-6 bg-amber-100 p-2">
+				<div class="mt-6 bg-amber-100 dark:bg-amber-900 p-2">
 					Sorry your browser doesn't support WASM, so you cannot use this feature
 				</div>
 			{/if}
 			{#if activateBunker}
-				<div class="mt-6">
+				<div class="mt-6 text-neutral-700 dark:text-neutral-300">
 					The key will be split and shared with these 3 independent signers. The procedure could
 					require some time, please hold on.<br />
 				</div>
@@ -163,10 +164,10 @@
 		{/if}
 
 		{#if $bunkerURI !== ''}
-			<div class="flex justify-center">
-				<img src="/icons/done.svg" alt="Done" class="w-24" />
+			<div class="flex justify-center h-24 text-neutral-700 dark:text-neutral-300">
+				<DoneIcon />
 			</div>
-			<div class="mt-10 text-neutral-600">
+			<div class="mt-10 text-neutral-600 dark:text-neutral-300">
 				All done! your bunker code is ready. Save it for later so that you can log into Nostr
 				clients without having to use your secret key:
 			</div>
@@ -177,7 +178,7 @@
 			</div>
 			<button
 				on:click={downloadBunker}
-				class="mt-4 inline-flex w-full items-center justify-center rounded bg-neutral-600 px-8 py-3 text-[1.3rem] text-white"
+				class="mt-4 inline-flex w-full items-center justify-center rounded bg-accent px-8 py-3 text-[1.3rem] text-white"
 			>
 				Save my bunker <img
 					src="/icons/arrow-right.svg"

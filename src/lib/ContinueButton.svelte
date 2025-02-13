@@ -8,7 +8,9 @@
 	on:click={onClick}
 	{disabled}
 	class={`inline-flex items-center rounded px-8 py-3 text-[1.6rem] sm:text-[1.3rem] ${
-		disabled ? 'cursor-not-allowed bg-neutral-400 text-neutral-300' : 'bg-accent text-white'
+		disabled
+			? 'cursor-not-allowed bg-neutral-400 dark:bg-neutral-600 text-neutral-300 dark:text-neutral-500'
+			: 'bg-accent text-white'
 	}`}
 >
 	{text}

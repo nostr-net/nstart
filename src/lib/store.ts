@@ -67,6 +67,30 @@ function base64ToUint8Array(base64: string): Uint8Array {
 	return bytes;
 }
 
+// Utility function to persist values in localStorage
+function createLocalWritable<T>(label: string, initialValue: T): Writable<T> {
+	const isBrowser = typeof window !== 'undefined';
+	let data = initialValue;
+	if (isBrowser) {
+		const storedValue = localStorage.getItem(label);
+		if (storedValue) {
+			try {
+				const parsed = JSON.parse(storedValue);
+				data = parsed.value;
+			} catch (e) {
+				data = initialValue;
+			}
+		}
+	}
+	const store = writable<T>(data);
+	if (isBrowser) {
+		store.subscribe(value => {
+			localStorage.setItem(label, JSON.stringify({ type: typeof value, value }));
+		});
+	}
+	return store;
+}
+
 // Stores with session persistence
 export const sk = createSessionWritable<Uint8Array>('sk', generateSecretKey());
 export const name = createSessionWritable('name', '');
@@ -89,6 +113,7 @@ export const readRelays = createSessionWritable('readRelays', []);
 export const writeRelays = createSessionWritable('writeRelays', []);
 export const skipFollow = createSessionWritable('skipFollow', false);
 export const accent = createSessionWritable('accent', 'e32a6d');
+export const theme = createLocalWritable('theme', ''); // Empty = system
 
 // Runtime stores
 export const inboxes = readable<{ [pubkey: string]: string[] }>({}, (set) => {

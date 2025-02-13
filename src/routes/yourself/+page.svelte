@@ -122,14 +122,14 @@
 		<div class="w-full sm:mr-10 sm:max-w-[350px]">
 			<div class="mb-8 border-l-[0.9rem] border-accent pl-4 sm:-ml-8">
 				<h1 class="font-bold">
-					<div class="text-[3rem] leading-[1em] text-neutral-500 sm:text-[3rem]">PRESENT</div>
-					<div class="break-words text-[3.5rem] leading-[1em] sm:h-auto sm:text-[3.5rem]" id="tw">
+					<div class="text-[3rem] leading-[1em] text-neutral-500 dark:text-neutral-400 sm:text-[3rem]">PRESENT</div>
+					<div class="break-words text-[3.5rem] leading-[1em] text-black dark:text-white sm:h-auto sm:text-[3.5rem]" id="tw">
 						YOURSELF
 					</div>
 				</h1>
 			</div>
 
-			<div class="leading-5 text-neutral-700 sm:w-[90%]">
+			<div class="leading-5 text-neutral-700 dark:text-neutral-300 sm:w-[90%]">
 				<p class="">On Nostr you decide to be whoever you want.</p>
 				<p class="mt-6">
 					A Nostr profile usually includes a name, a picture and some additional information, but
@@ -139,11 +139,11 @@
 				<p class="mt-6">
 					The name is not a unique username, we can have as many Jacks we want! Feel free to use
 					your real name or a nickname; you can always change it later.<br />
-					But remember: online privacy matters, don’t share sensitive data.
+					But remember: online privacy matters, don't share sensitive data.
 				</p>
 
 				<p class="mt-6">
-					And yes, to join Nostr you don’t need to give your email address, phone number or anything
+					And yes, to join Nostr you don't need to give your email address, phone number or anything
 					like that, it is KYC free.
 				</p>
 			</div>
@@ -152,11 +152,11 @@
 
 	<div slot="interactive">
 		<div class="mb-6 flex items-end justify-end">
-			<button on:click={triggerFileInput} class="text-xl text-neutral-400">Your image</button>
-			<div class="-mr-8 ml-2 mt-2 h-1 w-20 border-t-2 border-neutral-300"></div>
+			<button on:click={triggerFileInput} class="text-xl text-neutral-400 dark:text-neutral-500">Your image</button>
+			<div class="-mr-8 ml-2 mt-2 h-1 w-20 border-t-2 border-neutral-300 dark:border-neutral-600"></div>
 			<button
 				on:click={triggerFileInput}
-				class="input-hover-enabled h-24 w-24 rounded-full border-2 border-neutral-300 bg-neutral-100"
+				class="input-hover-enabled h-24 w-24 rounded-full border-2 border-neutral-300 dark:border-neutral-600 bg-neutral-100 dark:bg-neutral-800"
 			>
 				<!-- svelte-ignore a11y-img-redundant-alt -->
 				{#if picturePreview || $picture}
@@ -179,10 +179,10 @@
 			<input type="file" id="image" accept="image/*" on:change={previewImage} class="hidden" />
 			<!-- svelte-ignore a11y-autofocus -->
 			<div class="mb-1 flex items-end justify-between">
-				{#if $name != ''}<label for="name" class="ml-4 text-xs uppercase text-neutral-700"
+				{#if $name != ''}<label for="name" class="ml-4 text-xs uppercase text-neutral-700 dark:text-neutral-300"
 						>Your (nick)name</label
 					>{:else}<div></div>{/if}
-				<div class="mr-4 text-right text-xs uppercase text-neutral-500">required</div>
+				<div class="mr-4 text-right text-xs uppercase text-neutral-500 dark:text-neutral-400">required</div>
 			</div>
 			<input
 				id="name"
@@ -190,31 +190,31 @@
 				placeholder="Your (nick)name"
 				bind:value={$name}
 				autofocus={!isMobile}
-				class="input-hover-enabled mb-4 w-full rounded border-2 border-neutral-300 px-4 py-2 text-xl focus:border-neutral-700 focus:outline-none"
+				class="input-hover-enabled mb-4 w-full rounded border-2 border-neutral-300 dark:border-neutral-600 bg-white dark:bg-neutral-800 px-4 py-2 text-xl text-black dark:text-white focus:border-neutral-700 dark:focus:border-neutral-400 focus:outline-none"
 			/>
 			<div class="mb-1 flex items-end justify-between">
-				{#if $about != ''}<label for="about" class="ml-4 text-xs uppercase text-neutral-700"
+				{#if $about != ''}<label for="about" class="ml-4 text-xs uppercase text-neutral-700 dark:text-neutral-300"
 						>Something about you</label
 					>{:else}<div></div>{/if}
-				<div class="mr-4 text-right text-xs uppercase text-neutral-400">optional</div>
+				<div class="mr-4 text-right text-xs uppercase text-neutral-400 dark:text-neutral-600">optional</div>
 			</div>
 			<textarea
 				id="about"
 				placeholder="Something about you"
 				bind:value={$about}
-				class="input-hover-enabled mb-4 w-full rounded border-2 border-neutral-300 px-4 py-2 text-xl focus:border-neutral-700 focus:outline-none"
+				class="input-hover-enabled mb-4 w-full rounded border-2 border-neutral-300 dark:border-neutral-600 bg-white dark:bg-neutral-800 px-4 py-2 text-xl text-black dark:text-white focus:border-neutral-700 dark:focus:border-neutral-400 focus:outline-none"
 			></textarea>
 			<div class="mb-1 flex items-end justify-between">
-				{#if $website != ''}<label for="about" class="ml-4 text-xs uppercase text-neutral-700"
+				{#if $website != ''}<label for="about" class="ml-4 text-xs uppercase text-neutral-700 dark:text-neutral-300"
 						>Your website</label
 					>{:else}<div></div>{/if}
-				<div class="mr-4 text-right text-xs uppercase text-neutral-400">optional</div>
+				<div class="mr-4 text-right text-xs uppercase text-neutral-400 dark:text-neutral-600">optional</div>
 			</div>
 			<input
 				type="text"
 				placeholder="Your website"
 				bind:value={$website}
-				class="input-hover-enabled w-full rounded border-2 border-neutral-300 px-4 py-2 text-xl focus:border-neutral-700 focus:outline-none"
+				class="input-hover-enabled w-full rounded border-2 border-neutral-300 dark:border-neutral-600 bg-white dark:bg-neutral-800 px-4 py-2 text-xl text-black dark:text-white focus:border-neutral-700 dark:focus:border-neutral-400 focus:outline-none"
 			/>
 			{#if activationProgress > 0}
 				<div class="mt-6">

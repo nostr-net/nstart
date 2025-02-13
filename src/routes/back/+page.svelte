@@ -80,15 +80,15 @@
 		<!-- Welcome title -->
 		<div class="relative mb-8 border-l-[0.9rem] border-accent pl-4 sm:-ml-8">
 			<h1 class="font-bold">
-				<div class="text-[3rem] leading-[1em] text-neutral-500 sm:text-[6rem]">YOU ARE</div>
-				<div class="break-words text-[3.5rem] leading-[1em] sm:h-auto sm:text-[7rem]" id="tw">
+				<div class="text-[3rem] leading-[1em] text-neutral-500 dark:text-neutral-400 sm:text-[6rem]">YOU ARE</div>
+				<div class="break-words text-[3.5rem] leading-[1em] text-black dark:text-white sm:h-auto sm:text-[7rem]" id="tw">
 					READY TO GO!
 				</div>
 			</h1>
 		</div>
 
 		<!-- Intro text -->
-		<div class="text-neutral-700 sm:w-[90%]">
+		<div class="text-neutral-700 dark:text-neutral-200 sm:w-[90%]">
 			<p class="text-xl sm:w-[80%]">
 				We're done, <strong>{$name}</strong>! Now you can start exploring Nostr — just click below
 				to go back to <strong>{$callingAppName}</strong>:
@@ -104,7 +104,7 @@
 				</button>
 			</div>
 			{#if $callingAppType != 'popup'}
-				<p class="mt-8 text-neutral-500 sm:w-[80%]">
+				<p class="mt-8 text-neutral-500 dark:text-neutral-400 sm:w-[80%]">
 					{$callingAppName} is only one of the 80+ applications that have already been built on Nostr,
 					<a href="https://nostrapps.com" target="_blank" class="underline">discover them all</a>!
 				</p>

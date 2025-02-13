@@ -194,14 +194,14 @@
 		<div class="w-full sm:mr-10 sm:max-w-[350px]">
 			<div class="mb-8 border-l-[0.9rem] border-accent pl-4 sm:-ml-8">
 				<h1 class="font-bold">
-					<div class="text-[3rem] leading-[1em] text-neutral-500 sm:text-[3rem]">FOLLOW</div>
-					<div class="break-words text-[3.5rem] leading-[1em] sm:h-auto sm:text-[3.5rem]" id="tw">
+					<div class="text-[3rem] leading-[1em] text-neutral-500 dark:text-neutral-400 sm:text-[3rem]">FOLLOW</div>
+					<div class="break-words text-[3.5rem] leading-[1em] text-black dark:text-white sm:h-auto sm:text-[3.5rem]" id="tw">
 						SOMEONE
 					</div>
 				</h1>
 			</div>
 
-			<div class="leading-5 text-neutral-700 sm:w-[90%]">
+			<div class="leading-5 text-neutral-700 dark:text-neutral-300 sm:w-[90%]">
 				<p class="">
 					What do you think now of following some interesting profiles? We offer you the possibility
 					to copy the full following list of some Nostr users, so you can start your Nostr journey
@@ -218,7 +218,7 @@
 	<div slot="interactive">
 		<div class="sm:mt-20">
 			<!-- list of follows -->
-			<div>See the same things these Nostr users are seeing in their feed:</div>
+			<div class="text-neutral-700 dark:text-neutral-300">See the same things these Nostr users are seeing in their feed:</div>
 			<div class="mt-4">
 				{#each suggestedUsers as user}
 					<CheckboxWithLabel
@@ -227,12 +227,12 @@
 						position="right"
 						alignment="center"
 					>
-						<div class="flex items-center border-b-4 border-neutral-200 pb-4 pt-4">
+						<div class="flex items-center border-b-4 border-neutral-200 dark:border-neutral-700 pb-4 pt-4">
 							<div
 								class="inline-block h-8 w-8 rounded-full bg-cover bg-center"
 								style="background-image: url('{user.image}');"
 							></div>
-							<div class="ml-2 text-xl">{user.name}</div>
+							<div class="ml-2 text-xl text-neutral-700 dark:text-neutral-300">{user.name}</div>
 						</div>
 					</CheckboxWithLabel>
 				{/each}
