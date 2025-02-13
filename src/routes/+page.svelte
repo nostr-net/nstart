@@ -15,6 +15,7 @@
 		skipFollow
 	} from '$lib/store';
 	import { getContext } from 'svelte';
+	import { theme } from '$lib/store';
 
 	const isModal = getContext('isModal');
 
@@ -101,7 +102,6 @@
 	<meta property="og:image" content="{baseUrl}/images/relay.png" />
 </svelte:head>
 
-
 <div class="dark:bg-neutral-800">
 	<div
 		class="gradient max-h-max bg-white"
@@ -117,7 +117,7 @@
 						>
 							{#if !isModal}
 								<img
-									src="/images/relay.png"
+									src={`/images/${$theme === 'dark' ? 'dark-relay' : 'relay'}.png`}
 									class="z-0 mb-8 w-60 sm:absolute sm:-right-[20px] sm:top-[15%] sm:w-full sm:object-left"
 									alt="Nostr Client"
 								/>
