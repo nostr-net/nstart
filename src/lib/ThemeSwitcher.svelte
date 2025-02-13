@@ -18,18 +18,18 @@
 		mediaQuery.addEventListener('change', (e) => {
 			systemTheme = e.matches ? 'dark' : 'light';
 			// If theme is synced with system, update it
-			if ($theme === (e.matches ? 'light' : 'dark')) {
+			if ($theme === (systemTheme === 'dark' ? 'light' : 'dark')) {
 				$theme = systemTheme;
 			}
 		});
 	}
 
 	function toggleTheme() {
-		// If current theme matches system, switch to opposite
 		if ($theme === systemTheme) {
+			// If synced with system, switch to opposite
 			$theme = systemTheme === 'dark' ? 'light' : 'dark';
 		} else {
-			// If current theme doesn't match system, switch back to system
+			// If not synced, go back to system theme
 			$theme = systemTheme;
 		}
 	}
