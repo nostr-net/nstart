@@ -21,6 +21,7 @@
 	import LoadingBar from '$lib/LoadingBar.svelte';
 	import { signers, minePow, selectReadRelays } from '$lib/nostr';
 	import { isWasmSupported } from '$lib/wasm';
+	import ContinueButton from '$lib/ContinueButton.svelte';
 
 	let activateBunker = isWasmSupported();
 	let bunkerActivating = false;
@@ -188,26 +189,21 @@
 
 		{#if activateBunker && $bunkerURI === ''}
 			<div class="mt-16 flex justify-center sm:justify-end">
-				<button
-					on:click={activate}
+				<ContinueButton
+					onClick={activate}
 					disabled={bunkerActivating}
-					class={`inline-flex items-center rounded px-8 py-3 text-[1.6rem] text-white sm:text-[1.3rem] ${!bunkerActivating ? 'bg-accent text-white' : 'cursor-not-allowed bg-neutral-400 text-neutral-100'}`}
-				>
-					Activate the bunker
-					<img src="/icons/arrow-right.svg" alt="continue" class="ml-4 mr-2 h-6 w-6" />
-				</button>
+					text={bunkerActivating ? 'Activating...' : 'Activate the bunker'}
+				/>
 			</div>
 		{/if}
 
 		{#if $bunkerURI !== '' || !activateBunker}
 			<div class="mt-16 flex justify-center sm:justify-end">
-				<button
-					on:click={navigateContinue}
-					class="inline-flex items-center rounded bg-accent px-8 py-3 text-[1.6rem] text-white sm:text-[1.3rem]"
-				>
-					{$bunkerURI !== '' ? 'Continue' : 'No, thanks, continue'}
-					<img src="/icons/arrow-right.svg" alt="continue" class="ml-4 mr-2 h-6 w-6" />
-				</button>
+				<ContinueButton
+					onClick={navigateContinue}
+					disabled={false}
+					text={$bunkerURI !== '' ? 'Continue' : 'No, thanks, continue'}
+				/>
 			</div>
 		{/if}
 	</div>

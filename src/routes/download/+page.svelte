@@ -9,6 +9,7 @@
 	import TwoColumnLayout from '$lib/TwoColumnLayout.svelte';
 	import ClipToCopy from '$lib/ClipToCopy.svelte';
 	import CheckboxWithLabel from '$lib/CheckboxWithLabel.svelte';
+	import ContinueButton from '$lib/ContinueButton.svelte';
 
 	let backupInitialized = false;
 	let backupDone = false;
@@ -198,13 +199,11 @@
 		</div>
 
 		<div class="mt-16 flex justify-center sm:justify-end">
-			<button
-				on:click={navigateContinue}
+			<ContinueButton
+				onClick={navigateContinue}
 				disabled={!backupDone && !$backupDownloaded}
-				class={`inline-flex items-center rounded px-8 py-3 text-[1.6rem] sm:text-[1.3rem] ${backupDone || $backupDownloaded ? 'bg-accent text-white' : 'cursor-not-allowed bg-neutral-400 text-neutral-100'}`}
-			>
-				Continue <img src="/icons/arrow-right.svg" alt="continue" class="ml-4 mr-2 h-6 w-6" />
-			</button>
+				text="Continue"
+			/>
 		</div>
 	</div>
 </TwoColumnLayout>

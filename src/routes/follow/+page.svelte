@@ -8,6 +8,7 @@
 	import { indexRelays, getProfile } from '$lib/nostr';
 	import { publishFollows } from '$lib/actions';
 	import { pool } from '@nostr/gadgets/global';
+	import ContinueButton from '$lib/ContinueButton.svelte';
 
 	const FOLLOWS = [
 		{
@@ -245,14 +246,11 @@
 		{/if}
 
 		<div class="mt-16 flex justify-center sm:justify-end">
-			<button
-				on:click={navigateContinue}
+			<ContinueButton
+				onClick={navigateContinue}
 				disabled={activationProgress > 0}
-				class={`inline-flex items-center rounded px-8 py-3 text-[1.6rem] text-white sm:text-[1.3rem] ${activationProgress == 0 ? 'bg-accent text-white' : 'cursor-not-allowed bg-neutral-400 text-neutral-100'}`}
-			>
-				{activationProgress > 0 ? 'Finishing...' : 'Finish'}
-				<img src="/icons/arrow-right.svg" alt="continue" class="ml-4 mr-2 h-6 w-6" />
-			</button>
+				text={activationProgress > 0 ? 'Finishing...' : 'Finish'}
+			/>
 		</div>
 	</div>
 </TwoColumnLayout>

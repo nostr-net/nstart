@@ -10,6 +10,7 @@
 	import { isMobile } from '$lib/mobile';
 	import TwoColumnLayout from '$lib/TwoColumnLayout.svelte';
 	import LoadingBar from '$lib/LoadingBar.svelte';
+	import ContinueButton from '$lib/ContinueButton.svelte';
 	import { mineEmail, publishRelayList, publishProfile } from '$lib/actions';
 	import { isWasmSupported } from '$lib/wasm';
 
@@ -222,14 +223,11 @@
 			{/if}
 		</div>
 		<div class="mt-16 flex justify-center sm:justify-end">
-			<button
-				on:click={navigateContinue}
+			<ContinueButton
+				onClick={navigateContinue}
 				disabled={activationProgress > 0 || !$name}
-				class={`inline-flex items-center rounded px-8 py-3 text-[1.6rem] text-white sm:text-[1.3rem] ${activationProgress == 0 && $name ? 'bg-accent text-white' : 'cursor-not-allowed bg-neutral-400 text-neutral-100'}`}
-			>
-				{activationProgress > 0 ? 'Uploading...' : 'Continue'}
-				<img src="/icons/arrow-right.svg" alt="continue" class="ml-4 mr-2 h-6 w-6" />
-			</button>
+				text={activationProgress > 0 ? 'Uploading...' : 'Continue'}
+			/>
 		</div>
 	</div>
 </TwoColumnLayout>
