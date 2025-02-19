@@ -121,8 +121,8 @@ export const inboxes = readable<{ [pubkey: string]: string[] }>({}, (set) => {
 	Promise.all(
 		signers.map(async (pk) => {
 			try {
-				const rl = await loadRelayList(pk);
-				inboxes[pk] = rl.items.filter((r) => r.read).map((r) => r.url);
+				const rl = await loadRelayList(pk.pubkey);
+				inboxes[pk.pubkey] = rl.items.filter((r) => r.read).map((r) => r.url);
 			} catch (err) {
 				console.error('failed to load inbox relays for', pk, err);
 			}
