@@ -1,32 +1,33 @@
-// server.js
-import { createServer } from 'http';
-import { handler } from './build/handler.js'; // Adjust the path based on your build output
+import polka from 'polka';
+import stoppable from 'stoppable';
 
-const PORT = process.env.PORT || 8001; // Define the port to listen on
+const PORT = process.env.PORT || 8001;
 
-const server = createServer(handler); // Create an HTTP server using the handler
+const app = polka();
+const server = stoppable(app.listen(PORT, (err) => {
+    if (err) throw err;
+    console.log(`Server is listening on port ${PORT}`);
+}));
 
-server.listen(PORT, () => {
-    console.log(`Server is listening on port ${PORT}`); // Log when the server starts
-});
+let isShuttingDown = false;
 
-// Graceful shutdown logic
 const shutdown = () => {
+    if (isShuttingDown) {
+        console.error('Shutdown already in progress, ignoring additional signal');
+        return;
+    }
+
+    isShuttingDown = true;
     console.log('Received shutdown signal, closing server gracefully...');
-    server.close((err) => {
+
+    server.stop((err) => {
         if (err) {
             console.error('Error during server shutdown:', err);
         }
         console.log('Server closed. Exiting process.');
         process.exit(0);
     });
-
-    // Force shutdown after a timeout
-    setTimeout(() => {
-        console.error('Forcing shutdown after timeout');
-        process.exit(1);
-    }, 10000); // 10 seconds timeout
 };
 
-process.on('SIGTERM', shutdown); // Handle SIGTERM signal
-process.on('SIGINT', shutdown);   // Handle SIGINT signal
+process.on('SIGTERM', shutdown);
+process.on('SIGINT', shutdown);

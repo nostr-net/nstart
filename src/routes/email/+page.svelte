@@ -1,12 +1,26 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
 	import { goto } from '$app/navigation';
-	import { sk, pk, npub, password, email, name, ncryptsec, skipBunker } from '$lib/store';
+	import {
+		accent,
+		sk,
+		pk,
+		npub,
+		password,
+		email,
+		name,
+		ncryptsec,
+		skipBunker,
+		skipFollow,
+		callingAppCode
+	} from '$lib/store';
 	import { isMobile } from '$lib/mobile';
 	import TwoColumnLayout from '$lib/TwoColumnLayout.svelte';
 	import CheckboxWithLabel from '$lib/CheckboxWithLabel.svelte';
 	import LoadingBar from '$lib/LoadingBar.svelte';
 	import { sendEmail } from '$lib/actions';
+	import { isWasmSupported } from '$lib/wasm';
+	import ContinueButton from '$lib/ContinueButton.svelte';
 
 	let wantEmailBackup = false;
 	let emailInput: HTMLInputElement;
@@ -14,6 +28,7 @@
 	let activationProgress = 0;
 
 	onMount(() => {
+		document.documentElement.style.setProperty('--accent-color', '#' + $accent);
 		needsPassword = !$password || $password == '';
 	});
 
@@ -60,7 +75,15 @@
 
 	function navigateContinue() {
 		if ($skipBunker) {
-			goto('/follow');
+			if ($skipFollow) {
+				if ($callingAppCode) {
+					goto('/back');
+				} else {
+					goto('/finish');
+				}
+			} else {
+				goto('/follow');
+			}
 		} else {
 			goto('/bunker');
 		}
@@ -70,16 +93,16 @@
 <TwoColumnLayout>
 	<div slot="intro">
 		<div class="w-full sm:mr-10 sm:max-w-[350px]">
-			<div class="mb-8 border-l-[0.9rem] border-strongpink pl-4 sm:-ml-8">
+			<div class="mb-8 border-l-[0.9rem] border-accent pl-4 sm:-ml-8">
 				<h1 class="font-bold">
-					<div class="text-[3rem] leading-[1em] text-neutral-500 sm:text-[3rem]">EMAIL</div>
-					<div class="break-words text-[3.5rem] leading-[1em] sm:h-auto sm:text-[3.5rem]" id="tw">
+					<div class="text-[3rem] leading-[1em] text-neutral-500 dark:text-neutral-400 sm:text-[3rem]">EMAIL</div>
+					<div class="break-words text-[3.5rem] leading-[1em] text-black dark:text-white sm:h-auto sm:text-[3.5rem]" id="tw">
 						BACKUP
 					</div>
 				</h1>
 			</div>
 
-			<div class="leading-5 text-neutral-700 sm:w-[90%]">
+			<div class="leading-5 text-neutral-700 dark:text-neutral-300 sm:w-[90%]">
 				<p class="mt-6">
 					We offer you the possibility to send your encrypted <em class="italic">nsec</em> (so
 					actually a <em class="italic">ncryptsec</em>) to your email address to have another
@@ -102,13 +125,21 @@
 	</div>
 
 	<div slot="interactive">
-		<div class=" mt-6">
+		<div class=" mt-6 text-neutral-700 dark:text-neutral-300">
 			<div>
-				<CheckboxWithLabel bind:checked={wantEmailBackup} disabled={activationProgress > 0}>
+				<CheckboxWithLabel
+					bind:checked={wantEmailBackup}
+					disabled={activationProgress > 0 || !isWasmSupported()}
+				>
 					I want to send my encrypted nsec {#if !needsPassword}(with the same password already
 						entered previously){/if} to the following email address:
 				</CheckboxWithLabel>
 			</div>
+			{#if !isWasmSupported()}
+				<div class="mt-6 bg-amber-100 p-2">
+					Sorry your browser doesn't support WASM, so you cannot use this feature
+				</div>
+			{/if}
 			<!-- svelte-ignore a11y-autofocus -->
 			<input
 				bind:this={emailInput}
@@ -118,7 +149,8 @@
 				bind:value={$email}
 				autofocus={!$isMobile}
 				disabled={!wantEmailBackup || activationProgress > 0}
-				class="input-hover-enabled mt-6 w-full rounded border-2 border-neutral-300 px-4 py-2 text-xl focus:border-neutral-700 focus:outline-none"
+				autocapitalize="off"
+				class="input-hover-enabled mt-6 w-full rounded border-2 border-neutral-300 dark:border-neutral-600 bg-white dark:bg-neutral-800 px-4 py-2 text-xl text-black dark:text-white focus:border-neutral-700 dark:focus:border-neutral-400 focus:outline-none"
 			/>
 
 			{#if needsPassword}
@@ -127,7 +159,8 @@
 					placeholder="Pick a password"
 					bind:value={$password}
 					disabled={!wantEmailBackup || activationProgress > 0}
-					class="input-hover-enabled mt-6 w-full rounded border-2 border-neutral-300 px-4 py-2 text-xl focus:border-neutral-700 focus:outline-none"
+					autocapitalize="off"
+					class="input-hover-enabled mt-6 w-full rounded border-2 border-neutral-300 dark:border-neutral-600 bg-white dark:bg-neutral-800 px-4 py-2 text-xl text-black dark:text-white focus:border-neutral-700 dark:focus:border-neutral-400 focus:outline-none"
 				/>
 			{/if}
 
@@ -140,22 +173,13 @@
 
 		<div class="mt-16 flex justify-center sm:justify-end">
 			{#if wantEmailBackup}
-				<button
-					on:click={send}
+				<ContinueButton
+					onClick={send}
 					disabled={$ncryptsec === '' || activationProgress > 0}
-					class={`inline-flex items-center rounded px-8 py-3 text-[1.6rem] text-white sm:text-[1.3rem] ${$password && $password !== '' && $email && $email !== '' && activationProgress == 0 ? 'bg-strongpink text-white' : 'cursor-not-allowed bg-neutral-400 text-neutral-100'}`}
-				>
-					{activationProgress > 0 ? 'Sending...' : 'Send now'}
-					<img src="/icons/arrow-right.svg" alt="continue" class="ml-4 mr-2 h-6 w-6" />
-				</button>
+					text={activationProgress > 0 ? 'Sending...' : 'Send now'}
+				/>
 			{:else}
-				<button
-					on:click={navigateContinue}
-					class="inline-flex items-center rounded bg-strongpink px-8 py-3 text-[1.6rem] text-white sm:text-[1.3rem]"
-				>
-					No, thanks, continue
-					<img src="/icons/arrow-right.svg" alt="continue" class="ml-4 mr-2 h-6 w-6" />
-				</button>
+				<ContinueButton onClick={navigateContinue} disabled={false} text="No, thanks, continue" />
 			{/if}
 		</div>
 	</div>

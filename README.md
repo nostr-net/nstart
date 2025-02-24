@@ -8,7 +8,8 @@ Nstart aims to guide new users to [Nostr](https://njump.me) offering a easy and 
 - Auto follow the contacts list of some old Nostr users
 - Customize of contact suggestions, useful for onboarding friends & family
 
-Check it now at https://start.njump.me
+Check it now at https://start.njump.me  
+Are you a dev? Discover the new [integration for apps](APPS-INTEGRATION.md)!
 
 https://github.com/user-attachments/assets/23dfe2a0-bdb8-4c70-83e0-912f67c41b0c
 
@@ -34,3 +35,9 @@ You can pass more profiles, separated by commas.
 The multi-signer bunker is managed by [promenade](https://git.fiatjaf.com/promenade); it uses FROST to split your nsec in 3 (or more) and distribute each shard to an independent trusted remote signer. This will give you a bunker code that you can use to login in many web, mobile and desktop apps without exposing your nsec. If you ever lose your bunker code, if the signers vanish from Earth and it stops working or if it gets stolen by a malware virus you can use your nsec to create a new and invalidate the old one.
 
 Discaimer: this bunker implementation needs a small update from the classic implementation, so not all apps support it yet, please beg your favorite developer to update their app. It also does not support encryption, so it cannot be used for DMs apps.
+
+## External apps integration
+
+Nstart also offers an onboarding process to external Nostr clients, web and mobile! Taking advantage of this opportunity is really simple, [read more](APPS-INTEGRATION.md).
+
+https://github.com/user-attachments/assets/367a316d-34ab-42b9-b9c0-da7830e1dfa2
