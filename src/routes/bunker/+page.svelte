@@ -29,16 +29,40 @@
 	let activationProgress = 0;
 	let showSignerSelection = false;
 	let selectedSigners = new Set(signers.map((s) => s.pubkey));
+	const defaultThreshold = 3;
+	const minThreshold = 2;
+	let threshold = defaultThreshold;
+
+	function toggleAdvancedMode() {
+		showSignerSelection = !showSignerSelection;
+		if (!showSignerSelection) {
+			threshold = defaultThreshold;
+			selectedSigners = new Set(signers.map((s) => s.pubkey));
+		}
+	}
 
 	function toggleSigner(pubkey: string) {
 		if (selectedSigners.has(pubkey)) {
-			if (selectedSigners.size > 3) {
+			if (selectedSigners.size > threshold) {
 				selectedSigners.delete(pubkey);
 				selectedSigners = selectedSigners;
+				// If we remove a signer and threshold is now greater than selected signers, adjust it
+				if (threshold > selectedSigners.size) {
+					threshold = selectedSigners.size;
+				}
 			}
 		} else {
 			selectedSigners.add(pubkey);
 			selectedSigners = selectedSigners;
+		}
+	}
+
+	// Function to increment threshold
+	function incrementThreshold() {
+		if (threshold >= selectedSigners.size) {
+			threshold = minThreshold;
+		} else {
+			threshold++;
 		}
 	}
 
@@ -67,8 +91,8 @@
 				pool,
 				$sk,
 				$pk,
-				2,
-				import.meta.env.DEV ? 2 : 3,
+				threshold,
+				selectedSignerPubkeys.length,
 				selectedSignerPubkeys,
 				'wss://promenade.fiatjaf.com',
 				20,
@@ -119,8 +143,15 @@
 		<div class="w-full sm:mr-10 sm:max-w-[350px]">
 			<div class="mb-8 border-l-[0.9rem] border-accent pl-4 sm:-ml-8">
 				<h1 class="font-bold">
-					<div class="text-[3rem] leading-[1em] text-neutral-500 dark:text-neutral-400 sm:text-[3rem]">MULTI SIGNER</div>
-					<div class="break-words text-[3.5rem] leading-[1em] text-black dark:text-white sm:h-auto sm:text-[3.5rem]" id="tw">
+					<div
+						class="text-[3rem] leading-[1em] text-neutral-500 dark:text-neutral-400 sm:text-[3rem]"
+					>
+						MULTI SIGNER
+					</div>
+					<div
+						class="break-words text-[3.5rem] leading-[1em] text-black dark:text-white sm:h-auto sm:text-[3.5rem]"
+						id="tw"
+					>
 						BUNKER
 					</div>
 				</h1>
@@ -147,7 +178,7 @@
 		</div>
 	</div>
 
-	<div slot="interactive">
+	<div slot="interactive" class="text-neutral-700 dark:text-neutral-300">
 		{#if $bunkerURI === ''}
 			<div class=" mt-6">
 				{#if !$forceBunker}
@@ -163,47 +194,61 @@
 				{/if}
 			</div>
 			{#if !isWasmSupported()}
-				<div class="mt-6 bg-amber-100 dark:bg-amber-900 p-2">
+				<div class="mt-6 bg-amber-100 p-2 dark:bg-amber-900">
 					Sorry your browser doesn't support WASM, so you cannot use this feature
 				</div>
 			{/if}
 			{#if activateBunker}
-				<div class="mt-6">
-					The key will be split and shared with 3 independent signers. The procedure could
-					require some time, please hold on.<br />
-					<button
-						class="mt-4 text-xs text-strongpink underline"
-						on:click={() => (showSignerSelection = !showSignerSelection)}
-					>
-						{showSignerSelection ? 'Hide signer selection' : 'Advanced signer selection'}
-					</button>
-				</div>
-
+				{#if !showSignerSelection}
+					<div class="mt-6">
+						The key will be split and shared with {selectedSigners.size} independent signers, {threshold}
+						signers are required to sign an event.<br />
+					</div>
+					<div class="mt-4">The procedure could require some time, please hold on.</div>
+				{/if}
 				{#if showSignerSelection}
-					<div class="mt-4 space-y-2">
-						{#each signers as signer}
-							<label class="flex items-center">
-								<input
-									type="checkbox"
+					<hr class="mt-6 border-2" />
+					<div class="mt-2">Select the desidered signers:</div>
+					<div class="mt-4">
+						<div class="space-y-2">
+							{#each signers as signer}
+								<CheckboxWithLabel
 									checked={selectedSigners.has(signer.pubkey)}
-									on:change={() => toggleSigner(signer.pubkey)}
-									disabled={selectedSigners.size <= 3 && selectedSigners.has(signer.pubkey)}
-									class="mr-2"
-								/>
-								<span>{signer.name}</span>
-							</label>
-						{/each}
-						<div class="text-sm text-neutral-500">
-							{#if selectedSigners.size < 3}
+									onClick={() => toggleSigner(signer.pubkey)}
+									disabled={selectedSigners.size <= threshold && selectedSigners.has(signer.pubkey)}
+									>{signer.name}</CheckboxWithLabel
+								>
+							{/each}
+						</div>
+						<div class="mt-4">
+							{#if selectedSigners.size < minThreshold}
 								Select at least {3 - selectedSigners.size} more signer{selectedSigners.size === 2
 									? ''
 									: 's'}
 							{:else}
-								We'll use 3 of the {selectedSigners.size} signers selected
+								We'll use a <button
+									class="cursor-pointer text-accent underline hover:no-underline"
+									on:click={incrementThreshold}>{threshold}</button
+								>-of-{selectedSigners.size} multi-signature schema using the selected signers
 							{/if}
 						</div>
+						{#if threshold == selectedSigners.size}
+							<div class="mt-2">
+								<strong>Warning</strong>, this scheme is risky, if one of the signers is offline,
+								the events will not be able to be signed.
+							</div>
+						{/if}
 					</div>
 				{/if}
+
+				<button
+					class="text-strongpink mt-4 text-left text-sm underline"
+					on:click={() => toggleAdvancedMode()}
+				>
+					{showSignerSelection
+						? 'I want to use the automatic signers selection'
+						: 'Advanced signers selection'}
+				</button>
 			{/if}
 			{#if bunkerActivating || $bunkerURI !== ''}
 				<div class="mt-6">
@@ -213,7 +258,7 @@
 		{/if}
 
 		{#if $bunkerURI !== ''}
-			<div class="flex justify-center h-24 text-neutral-700 dark:text-neutral-300">
+			<div class="flex h-24 justify-center text-neutral-700 dark:text-neutral-300">
 				<DoneIcon />
 			</div>
 			<div class="mt-10 text-neutral-600 dark:text-neutral-300">

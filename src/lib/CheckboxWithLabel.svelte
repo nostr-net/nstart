@@ -16,8 +16,10 @@
 	>
 		<span
 			class={`custom-focus mr-2 inline-block h-6 w-6 flex-none rounded border-2 focus-within:ring-1 ${
-				checked
+				checked && !disabled
 					? 'border-accent bg-accent'
+					: checked && disabled
+					? 'border-neutral-600 bg-neutral-500'
 					: disabled
 					? 'border-neutral-300 dark:border-neutral-600 bg-neutral-100 dark:bg-neutral-800'
 					: 'enabled:input-hover-enabled border-neutral-300 dark:border-neutral-600'
