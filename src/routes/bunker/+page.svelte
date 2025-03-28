@@ -27,15 +27,16 @@
 	let activateBunker = isWasmSupported();
 	let bunkerActivating = false;
 	let activationProgress = 0;
-	let showSignerSelection = false;
+	let advanceSignersSelection = false;
 	let selectedSigners = new Set(signers.map((s) => s.pubkey));
-	const defaultThreshold = 3;
+	const defaultThreshold = 2;
+	const defaultSelected = 3;
 	const minThreshold = 2;
 	let threshold = defaultThreshold;
 
 	function toggleAdvancedMode() {
-		showSignerSelection = !showSignerSelection;
-		if (!showSignerSelection) {
+		advanceSignersSelection = !advanceSignersSelection;
+		if (!advanceSignersSelection) {
 			threshold = defaultThreshold;
 			selectedSigners = new Set(signers.map((s) => s.pubkey));
 		}
@@ -92,7 +93,7 @@
 				$sk,
 				$pk,
 				threshold,
-				selectedSignerPubkeys.length,
+				advanceSignersSelection ? selectedSignerPubkeys.length : defaultSelected,
 				selectedSignerPubkeys,
 				'wss://promenade.fiatjaf.com',
 				20,
@@ -159,8 +160,8 @@
 
 			<div class="leading-5 text-neutral-700 dark:text-neutral-300 sm:w-[90%]">
 				<p class="">
-					Now you have the possibility to split your <em class="italic">nsec</em> in 3 using a
-					technique called
+					Now you have the possibility to split your <em class="italic">nsec</em> using a technique
+					called
 					<a href="https://www.youtube.com/watch?v=ReN0kMzDFro" target="_blank">FROST</a> and distribute
 					each shard to an independent trusted remote signer.
 				</p>
@@ -199,14 +200,16 @@
 				</div>
 			{/if}
 			{#if activateBunker}
-				{#if !showSignerSelection}
+				{#if !advanceSignersSelection}
 					<div class="mt-6">
-						The key will be split and shared with {selectedSigners.size} independent signers, {threshold}
+						The key will be split and shared with {advanceSignersSelection
+							? selectedSigners.size
+							: defaultSelected} independent signers, {threshold}
 						signers are required to sign an event.<br />
 					</div>
 					<div class="mt-4">The procedure could require some time, please hold on.</div>
 				{/if}
-				{#if showSignerSelection}
+				{#if advanceSignersSelection}
 					<hr class="mt-6 border-2" />
 					<div class="mt-2">Select the desidered signers:</div>
 					<div class="mt-4">
@@ -245,7 +248,7 @@
 					class="text-strongpink mt-4 text-left text-sm underline"
 					on:click={() => toggleAdvancedMode()}
 				>
-					{showSignerSelection
+					{advanceSignersSelection
 						? 'I want to use the automatic signers selection'
 						: 'Advanced signers selection'}
 				</button>
