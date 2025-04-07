@@ -228,6 +228,8 @@
 								Select at least {3 - selectedSigners.size} more signer{selectedSigners.size === 2
 									? ''
 									: 's'}
+							{:else if selectedSigners.size == 2 && minThreshold == 2}
+								We'll use a 2-of-2 multi-signature schema using the selected signers
 							{:else}
 								We'll use a <button
 									class="cursor-pointer text-accent underline hover:no-underline"
