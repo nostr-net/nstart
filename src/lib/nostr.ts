@@ -26,6 +26,10 @@ export const signers = [
 	{
 		pubkey: 'ad1c6fa1daca939685d34ab541fc9e7b450ef6295aa273addafee74a579d57fb',
 		name: 'Sebastix'
+	},
+	{
+		pubkey: '077369139f12ec9de23fe3ce11d3d2619f86e068280d446e94b7d76ff44a8c41',
+		name: 'Artur Brugeman'
 	}
 	// {
 	// 	pubkey: '23a3ff76766f5ffc852fa6f2fc5058c1306ee25927632e0f8e213af11a5b8de5',
