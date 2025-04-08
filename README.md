@@ -8,24 +8,24 @@ Nstart aims to guide new users to [Nostr](https://njump.me) offering a easy and 
 - Auto follow the contacts list of some old Nostr users
 - Customize of contact suggestions, useful for onboarding friends & family
 
-Check it now at https://start.njump.me  
+Check it now at https://nstart.me
 Are you a dev? Discover the new [integration for apps](APPS-INTEGRATION.md)!
 
 https://github.com/user-attachments/assets/23dfe2a0-bdb8-4c70-83e0-912f67c41b0c
 
 ## How to use
 
-Just share https://start.njump.me with someone that you want to invite to Nostr.
+Just share https://nstart.me with someone that you want to invite to Nostr.
 If you want to give him or her the opportunity to follow you and your contact list, personalize the url with your npub (or nprofile):
 
 ```
-https://start.njump.me?s=<npub1>,<npub2>,<npub3>
+https://nstart.me?s=<npub1>,<npub2>,<npub3>
 ```
 
 Example:
 
 ```
-https://start.njump.me?s=npub10000003zmk89narqpczy4ff6rnuht2wu05na7kpnh3mak7z2tqzsv8vwqk
+https://nstart.me?s=npub10000003zmk89narqpczy4ff6rnuht2wu05na7kpnh3mak7z2tqzsv8vwqk
 ```
 
 You can pass more profiles, separated by commas.
