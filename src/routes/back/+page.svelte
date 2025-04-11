@@ -105,14 +105,14 @@
 			</div>
 			{#if $callingAppType != 'popup'}
 				<p class="mt-8 text-neutral-500 dark:text-neutral-400 sm:w-[80%]">
-					{$callingAppName} is only one of the 80+ applications that have already been built on Nostr,
-					<a href="https://nostrapps.com" target="_blank" class="underline">discover them all</a>!
+					{$callingAppName} is only one of the 100+ applications that have already been built on Nostr,
+					<a href="https://nostr.net" target="_blank" class="underline">discover them all</a>!
 				</p>
 			{/if}
 			<p class="mt-6 sm:w-[80%]">
 				This is your web profile, you can share it anywhere and with anyone:<br />
-				<a href="https://njump.me/{$npub}" target="_blank" class="break-all underline"
-					>njump.me/{$npub}</a
+				<a href="https://nostr.at/{$npub}" target="_blank" class="break-all underline"
+					>nostr.at/{$npub}</a
 				>
 			</p>
 		</div>

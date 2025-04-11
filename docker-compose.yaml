@@ -1,0 +1,17 @@
+services:
+  nstart:
+    build: .
+    container_name: nstart
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=production
+      - VITE_BASE_URL=http://localhost:3000
+      - SMTP_HOST=${SMTP_HOST:-localhost}
+      - SMTP_PORT=${SMTP_PORT:-25}
+      - SMTP_SECURE=${SMTP_SECURE:-no}
+      - SMTP_USER=${SMTP_USER:-user}
+      - SMTP_PASS=${SMTP_PASS:-password}
+      - SMTP_FROM_NAME=${SMTP_FROM_NAME:-Nstart}
+      - VITE_SMTP_FROM_EMAIL=${VITE_SMTP_FROM_EMAIL:-noreply@example.com}
+    restart: unless-stopped

@@ -84,7 +84,7 @@ export function selectWriteRelays(): string[] {
 	const writeRelaysSelection = [
 		'wss://relay.damus.io',
 		'wss://offchain.pub',
-		'wss://nostr.mom',
+		'wss://relay.nostr.net',
 		'wss://nos.lol',
 		'wss://relay.mostr.pub',
 		'wss://relay.primal.net'
@@ -107,7 +107,8 @@ export function selectReadRelays(): string[] {
 	const wotRelaysSelection = [
 		'wss://wot.utxo.one',
 		'wss://nostrelites.org',
-		'wss://wot.nostr.party'
+		'wss://wot.nostr.party',
+		'wss://wot.nostr.net'
 	];
 
 	const safeRelays = ['wss://pyramid.fiatjaf.com', 'wss://nostr.wine'];
