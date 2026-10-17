@@ -67,6 +67,11 @@
 		}
 	}
 
+	// Svelte 5 subscribes to `$store` lazily (on first read), so `$inboxes` would only
+	// start loading when "Activate" is clicked and come back empty. Subscribe on
+	// mount, like Svelte 4 did, so the signers' inbox relays are ready in time.
+	onMount(() => inboxes.subscribe(() => {}));
+
 	onMount(() => {
 		document.documentElement.style.setProperty('--accent-color', '#' + $accent);
 

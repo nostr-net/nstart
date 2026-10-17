@@ -4,6 +4,10 @@
 @custom-variant dark (&:where(.dark, .dark *));
 
 @theme {
+	/* keep Tailwind v3's default font stacks (v4.3 changed --font-sans) */
+	--font-sans: ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+	--font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace;
+
 	/* custom font sizes (overriding the defaults, as in the previous tailwind.config.js) */
 	--text-sm: 16px;
 	--text-sm--line-height: 18px;
