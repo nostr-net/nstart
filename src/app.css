@@ -1,10 +1,56 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import 'tailwindcss';
+
+/* dark mode via class strategy, as in Tailwind v3 */
+@custom-variant dark (&:where(.dark, .dark *));
+
+@theme {
+	/* keep Tailwind v3's default font stacks (v4.3 changed --font-sans) */
+	--font-sans: ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+	--font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace;
+
+	/* custom font sizes (overriding the defaults, as in the previous tailwind.config.js) */
+	--text-sm: 16px;
+	--text-sm--line-height: 18px;
+	--text-base: 18px;
+	--text-base--line-height: 20px;
+	--text-lg: 20px;
+	--text-lg--line-height: 22px;
+	--text-xl: 22px;
+	--text-xl--line-height: 24px;
+
+	/* accent color, driven by the --accent-color CSS variable set at runtime */
+	--color-accent: var(--accent-color);
+
+	/* animations */
+	--animate-fade1: fadeIn 0.5s ease-in-out forwards;
+	--animate-fade2: fadeIn 1s ease-in-out forwards;
+	--animate-down: down 1s ease-in-out forwards;
+	--animate-fade2down: fadeIn 1s ease-in-out, down 1s ease-in-out forwards;
+
+	@keyframes fadeIn {
+		0% {
+			opacity: 0;
+		}
+		100% {
+			opacity: 1;
+		}
+	}
+
+	@keyframes down {
+		0% {
+			transform: translateY(-100px);
+		}
+		100% {
+			transform: translateY(0px);
+		}
+	}
+}
 
 @layer base {
-	:focus-visible, .custom-focus:focus, .custom-focus:focus-within {
-		outline: 2px dashed rgb(255, 183, 0); /* Example: neutral-300 */
+	:focus-visible,
+	.custom-focus:focus,
+	.custom-focus:focus-within {
+		outline: 2px dashed rgb(255, 183, 0);
 		border-radius: 2px;
 	}
 
@@ -14,12 +60,20 @@
 
 	/* Dark mode background gradient */
 	.dark .gradient {
-		background: linear-gradient(to top right, rgba(60, 60, 60, 0.6), rgba(38, 38, 38, 1.0)), url('/bg/dark-noisy.png') !important;
+		background:
+			linear-gradient(to top right, rgba(60, 60, 60, 0.6), rgba(38, 38, 38, 1)),
+			url('/bg/dark-noisy.png') !important;
 	}
 
 	input::placeholder,
-  textarea::placeholder {
-    color: rgba(125, 125, 125);
-  }
+	textarea::placeholder {
+		color: rgba(125, 125, 125);
+	}
 
+	/* Tailwind v4 changed buttons to use the default cursor; keep the
+	   pointer cursor this app had with Tailwind v3 */
+	button:not(:disabled),
+	[role='button']:not(:disabled) {
+		cursor: pointer;
+	}
 }

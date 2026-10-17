@@ -1,10 +1,10 @@
 <script lang="ts">
 	import '../app.css';
 	import { setContext } from 'svelte';
-	import { browser } from '$app/environment';
+	import { browser } from '$app/env';
 	import { onMount, onDestroy } from 'svelte';
-	import { theme } from '$lib/store';
-	import ThemeSwitcher from '$lib/ThemeSwitcher.svelte';
+	import { theme } from '#lib/store';
+	import ThemeSwitcher from '#lib/ThemeSwitcher.svelte';
 
 	let isModal = browser && window.self !== window.top;
 	setContext('isModal', isModal);
@@ -28,7 +28,11 @@
 	}
 
 	function handleThemeUpdate(event: MessageEvent) {
-		if (event.data.type === 'THEME_UPDATE') {
+		// only accept postMessages coming from the parent window (the embedding
+		// app), never from other windows/iframes we may embed or open
+		if (event.source !== window.parent) return;
+
+		if (event.data && event.data.type === 'THEME_UPDATE') {
 			systemTheme = event.data.systemTheme;
 			const configuredTheme = event.data.configuredTheme;
 
@@ -37,6 +41,12 @@
 			} else {
 				$theme = configuredTheme;
 			}
+		}
+
+		// the modal embedding sends this when it closes, to make sure the
+		// generated secret key does not linger in sessionStorage
+		if (event.data && event.data.type === 'CLEAR_SESSION_STORAGE') {
+			sessionStorage.clear();
 		}
 	}
 
@@ -71,7 +81,7 @@
 </script>
 
 {#if !isModal}
-	<div class="fixed right-4 top-4 z-50">
+	<div class="fixed top-4 right-4 z-50">
 		<ThemeSwitcher />
 	</div>
 {/if}

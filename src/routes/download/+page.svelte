@@ -1,16 +1,15 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
 	import * as nip19 from '@nostr/tools/nip19';
-	import * as nip49 from '@nostr/tools/nip49';
 
 	import { goto } from '$app/navigation';
-	import { accent, sk, npub, ncryptsec, backupDownloaded, name, password } from '$lib/store';
-	import { isMobile } from '$lib/mobile';
-	import TwoColumnLayout from '$lib/TwoColumnLayout.svelte';
-	import ClipToCopy from '$lib/ClipToCopy.svelte';
-	import CheckboxWithLabel from '$lib/CheckboxWithLabel.svelte';
-	import ContinueButton from '$lib/ContinueButton.svelte';
-	import DoneIcon from '$lib/DoneIcon.svelte';
+	import { accent, sk, npub, ncryptsec, backupDownloaded, name, password } from '#lib/store';
+	import { isMobile } from '#lib/mobile';
+	import TwoColumnLayout from '#lib/TwoColumnLayout.svelte';
+	import ClipToCopy from '#lib/ClipToCopy.svelte';
+	import CheckboxWithLabel from '#lib/CheckboxWithLabel.svelte';
+	import ContinueButton from '#lib/ContinueButton.svelte';
+	import DoneIcon from '#lib/DoneIcon.svelte';
 
 	let backupInitialized = false;
 	let backupDone = false;
@@ -63,16 +62,23 @@
 <TwoColumnLayout>
 	<div slot="intro">
 		<div class="w-full sm:mr-10 sm:max-w-[350px]">
-			<div class="mb-8 border-l-[0.9rem] border-accent pl-4 sm:-ml-8">
+			<div class="border-accent mb-8 border-l-[0.9rem] pl-4 sm:-ml-8">
 				<h1 class="font-bold">
-					<div class="text-[3rem] leading-[1em] text-neutral-500 dark:text-neutral-400 sm:text-[3rem]">YOUR KEYS</div>
-					<div class="break-words text-[3.5rem] leading-[1em] text-black dark:text-white sm:h-auto sm:text-[3.5rem]" id="tw">
+					<div
+						class="text-[3rem] leading-[1em] text-neutral-500 sm:text-[3rem] dark:text-neutral-400"
+					>
+						YOUR KEYS
+					</div>
+					<div
+						class="text-[3.5rem] leading-[1em] break-words text-black sm:h-auto sm:text-[3.5rem] dark:text-white"
+						id="tw"
+					>
 						ARE READY
 					</div>
 				</h1>
 			</div>
 
-			<div class="leading-5 text-neutral-700 dark:text-neutral-300 sm:w-[90%]">
+			<div class="leading-5 text-neutral-700 sm:w-[90%] dark:text-neutral-300">
 				<p class="">
 					Well done <strong>{$name}</strong>, your Nostr profile is ready! Yes, it was that easy.
 				</p>
@@ -108,12 +114,12 @@
 				{#if !encrypt}
 					<button
 						on:click={downloadBackup}
-						class="inline-flex w-full items-center justify-center rounded bg-accent px-8 py-3 text-[1.3rem] text-white"
+						class="bg-accent inline-flex w-full items-center justify-center rounded px-8 py-3 text-[1.3rem] text-white"
 					>
 						Save my nsec <img
 							src="/icons/arrow-right.svg"
 							alt="continue"
-							class="ml-4 mr-2 h-5 w-5 rotate-90"
+							class="mr-2 ml-4 h-5 w-5 rotate-90"
 						/>
 					</button>
 
@@ -121,7 +127,7 @@
 						on:click={() => {
 							encrypt = true;
 						}}
-						class="mt-2 text-center text-sm text-neutral-400 dark:text-neutral-400 hover:underline"
+						class="mt-2 text-center text-sm text-neutral-400 hover:underline dark:text-neutral-400"
 						>I want to download the encrypted version</button
 					>
 				{/if}
@@ -135,17 +141,17 @@
 						required
 						autofocus={!$isMobile}
 						autocapitalize="off"
-						class="input-hover-enabled w-full rounded border-2 border-neutral-300 dark:border-neutral-600 bg-white dark:bg-neutral-800 px-4 py-2 text-xl text-black dark:text-white focus:border-neutral-700 dark:focus:border-neutral-400 focus:outline-none"
+						class="input-hover-enabled w-full rounded border-2 border-neutral-300 bg-white px-4 py-2 text-xl text-black focus:border-neutral-700 focus:outline-none dark:border-neutral-600 dark:bg-neutral-800 dark:text-white dark:focus:border-neutral-400"
 					/>
 					<button
-						class="mt-6 inline-flex w-full items-center justify-center rounded bg-accent px-8 py-3 text-[1.3rem] text-white"
+						class="bg-accent mt-6 inline-flex w-full items-center justify-center rounded px-8 py-3 text-[1.3rem] text-white"
 						disabled={$ncryptsec === ''}
 						on:click={downloadBackup}
 					>
 						Save my ncryptsec <img
 							src="/icons/arrow-right.svg"
 							alt="continue"
-							class="ml-4 mr-2 h-5 w-5 rotate-90"
+							class="mr-2 ml-4 h-5 w-5 rotate-90"
 						/>
 					</button>
 
@@ -154,7 +160,7 @@
 							encrypt = false;
 							$password = '';
 						}}
-						class="mt-2 text-center text-sm text-neutral-400 dark:text-neutral-500 hover:underline"
+						class="mt-2 text-center text-sm text-neutral-400 hover:underline dark:text-neutral-500"
 						>Nevermind, I want do download the plain nsec</button
 					>
 				{/if}
@@ -163,13 +169,15 @@
 					to keep safe.
 				</div>
 			{:else}
-				<div class="flex justify-center h-24 text-neutral-700 dark:text-neutral-300">
-						<DoneIcon />
+				<div class="flex h-24 justify-center text-neutral-700 dark:text-neutral-300">
+					<DoneIcon />
 				</div>
 				<div class="mt-10 text-neutral-600 dark:text-neutral-300">
 					Now please open the file and check that the long string after your npub matches these
 					starting and finishing characters:
-					<div class="my-4 rounded bg-yellow-100 dark:bg-yellow-500 px-6 py-4 dark:text-neutral-950">
+					<div
+						class="my-4 rounded bg-yellow-100 px-6 py-4 dark:bg-yellow-500 dark:text-neutral-950"
+					>
 						{previewDownloadKey(backupPrivKey)}
 					</div>
 					{#if encrypt}
@@ -193,7 +201,7 @@
 						backupInitialized = false;
 						backupDone = false;
 					}}
-					class="mt-6 text-left text-sm text-neutral-400 dark:text-neutral-400 hover:underline"
+					class="mt-6 text-left text-sm text-neutral-400 hover:underline dark:text-neutral-400"
 					>Do you need to download it again?</button
 				>
 			{/if}

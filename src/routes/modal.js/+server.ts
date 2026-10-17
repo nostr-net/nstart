@@ -6,7 +6,9 @@ import type { RequestHandler } from '@sveltejs/kit';
 // Generate the modal code
 const modalCode = `
 // Modal implementation
-${NstartModal.toString()}
+// (assigned to a const: the bundler may emit the class as an anonymous
+// class expression, whose toString() is "class { ... }" with no name)
+const NstartModal = ${NstartModal.toString()};
 
 // Expose to window
 if (typeof window !== 'undefined') {
