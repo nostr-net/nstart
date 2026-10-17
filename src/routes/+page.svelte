@@ -16,10 +16,27 @@
 	} from '$lib/store';
 	import { getContext } from 'svelte';
 	import { theme } from '$lib/store';
+	import { SITE_NAME, SITE_URL } from '$lib/seo';
 
 	const isModal = getContext('isModal');
 
-	const baseUrl = import.meta.env.VITE_BASE_URL;
+	const pageTitle = 'Nostr — Get Started: Create Your Free Nostr Account';
+	const pageDescription =
+		"New to Nostr? It's an open, decentralized social network that no company controls. Create your free Nostr account, back up your keys and log in to any Nostr app.";
+	const ogImage = `${SITE_URL}/images/relay.png`;
+	const jsonLd = {
+		'@context': 'https://schema.org',
+		'@type': 'WebPage',
+		name: pageTitle,
+		description: pageDescription,
+		url: `${SITE_URL}/`,
+		inLanguage: 'en',
+		isPartOf: {
+			'@type': 'WebSite',
+			name: SITE_NAME,
+			url: SITE_URL
+		}
+	};
 
 	onMount(() => {
 		const params = new URLSearchParams(window.location.search);
@@ -34,7 +51,7 @@
 		// Set forced theme if specified
 		const forcedTheme = params.get('am');
 		if (forcedTheme === 'light' || forcedTheme === 'dark') {
-			console.log("forcedTheme =>", forcedTheme)
+			console.log('forcedTheme =>', forcedTheme);
 			$theme = forcedTheme;
 		}
 
@@ -96,17 +113,24 @@
 </script>
 
 <svelte:head>
-	<title>Create your Nostr account</title>
+	<title>{pageTitle}</title>
+	<meta name="description" content={pageDescription} />
+	<link rel="canonical" href="{SITE_URL}/" />
+	<meta property="og:type" content="website" />
+	<meta property="og:site_name" content={SITE_NAME} />
+	<meta property="og:url" content="{SITE_URL}/" />
+	<meta property="og:title" content={pageTitle} />
+	<meta property="og:description" content={pageDescription} />
+	<meta property="og:image" content={ogImage} />
 	<meta
-		name="description"
-		content="Create your Nostr account, back it up, and get a Nostr Connect bunker URL in few easy steps!"
+		property="og:image:alt"
+		content="Illustration of Nostr relays transmitting signed notes between users"
 	/>
-	<meta property="og:title" content="Create your Nostr account" />
-	<meta
-		property="og:description"
-		content="Create your Nostr account, back it up, and get a Nostr Connect bunker URL in few easy steps!"
-	/>
-	<meta property="og:image" content="{baseUrl}/images/relay.png" />
+	<meta name="twitter:card" content="summary_large_image" />
+	<meta name="twitter:title" content={pageTitle} />
+	<meta name="twitter:description" content={pageDescription} />
+	<meta name="twitter:image" content={ogImage} />
+	{@html `<script type="application/ld+json">${JSON.stringify(jsonLd)}</` + `script>`}
 </svelte:head>
 
 <div class="dark:bg-neutral-800">
@@ -138,7 +162,9 @@
 								style="animation-delay: 0.2s;"
 							>
 								<h1 class="font-bold">
-									<div class="text-[3rem] leading-[1em] sm:text-[5rem] text-black dark:text-white">WELCOME</div>
+									<div class="text-[3rem] leading-[1em] text-black dark:text-white sm:text-[5rem]">
+										WELCOME
+									</div>
 									<div
 										class="break-words text-[3.5rem] leading-[1em] sm:h-auto sm:text-[6rem]"
 										id="tw"
@@ -151,12 +177,13 @@
 
 							<!-- Intro text -->
 							<div
-								class="animate-fade1 text-[1.3rem] leading-7 text-neutral-700 dark:text-neutral-100 opacity-0"
+								class="animate-fade1 text-[1.3rem] leading-7 text-neutral-700 opacity-0 dark:text-neutral-100"
 								style="animation-delay: 0.5s;"
 							>
 								<p class="">
 									To join Nostr you need a profile, but it is not the usual one that a company
-									generates and manages for you. You create it yourself, no permissions are required.
+									generates and manages for you. You create it yourself, no permissions are
+									required.
 								</p>
 								<p class="mt-6">
 									Nostr is a different experience from the beginning: because there is no central
@@ -166,8 +193,8 @@
 								</p>
 								<p class="mt-6">
 									{#if $callingAppName}
-										This wizard is used by <strong>{$callingAppName}</strong> to let you create your new
-										profile and safely manage it, in a few steps.
+										This wizard is used by <strong>{$callingAppName}</strong> to let you create your
+										new profile and safely manage it, in a few steps.
 									{:else}
 										This wizard is one of the many ways to bootstrap a Nostr profile that you can
 										later use in other apps. We help you to create your keypair and safely manage it
@@ -196,17 +223,42 @@
 							{#if !isModal}
 								<!-- Footer -->
 								<div
-									class="animate-fade1 leading-6 text-neutral-500 dark:text-neutral-300 opacity-0"
+									class="animate-fade1 leading-6 text-neutral-500 opacity-0 dark:text-neutral-300"
 									style="animation-delay: 1s;"
 								>
-									Would you like to know more about Nostr first?<br class="hidden sm:inline-block" />
+									Would you like to know more about Nostr first?<br
+										class="hidden sm:inline-block"
+									/>
 									<a href="https://njump.me" class="underline">Read a quick introduction</a>
 								</div>
+
+								<!-- Search-engine-visible explainer -->
+								<section
+									aria-labelledby="what-is-nostr"
+									class="mt-8 animate-fade1 text-base leading-6 text-neutral-600 opacity-0 dark:text-neutral-300"
+									style="animation-delay: 1.1s;"
+								>
+									<h2 id="what-is-nostr" class="font-bold text-neutral-800 dark:text-neutral-100">
+										What is Nostr?
+									</h2>
+									<p class="mt-2">
+										Nostr ("Notes and Other Stuff Transmitted by Relays") is an open protocol for
+										decentralized social media and messaging. There is no company in the middle:
+										your identity is a cryptographic key pair that you own, your posts are signed
+										with it and shared through independent relays, and you can use the same account
+										in many different Nostr apps.
+									</p>
+									<p class="mt-2">
+										This page helps you get started on Nostr: it creates your key pair and profile
+										in your browser, helps you back up your secret key, and lets you follow a few
+										people so you can log in to any Nostr app right away.
+									</p>
+								</section>
 							{/if}
 						</div>
 					</div>
 					<div
-						class="mt-10 animate-fade1 text-center text-sm text-neutral-400 dark:text-neutral-500 opacity-0 sm:mt-4"
+						class="mt-10 animate-fade1 text-center text-sm text-neutral-400 opacity-0 dark:text-neutral-500 sm:mt-4"
 						style="animation-delay: 1.2s;"
 					>
 						The source code for this service is <a
