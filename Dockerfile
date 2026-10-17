@@ -7,6 +7,11 @@ WORKDIR /app
 COPY package.json package-lock.json ./
 RUN npm ci
 
+# The sender address is shown in the browser on the email step, so it is
+# inlined into the client bundle at build time (pass --build-arg).
+ARG VITE_SMTP_FROM_EMAIL=""
+ENV VITE_SMTP_FROM_EMAIL=$VITE_SMTP_FROM_EMAIL
+
 # Copy source code and build
 COPY . .
 RUN npm run build
