@@ -19,7 +19,7 @@ WORKDIR /app
 ENV NODE_ENV=production
 
 # Production dependencies only (SMTP secrets and other configuration come
-# from runtime environment variables, read via $env/dynamic/private)
+# from runtime environment variables, read from process.env at runtime)
 COPY package.json package-lock.json ./
 RUN npm ci --omit=dev
 

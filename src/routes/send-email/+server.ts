@@ -3,9 +3,11 @@ import nodemailer from 'nodemailer';
 import type { Transporter } from 'nodemailer';
 import { getPow } from '@nostr/tools/nip13';
 import { verifyEvent, type NostrEvent } from '@nostr/tools/pure';
-import { env } from '$env/dynamic/private';
 import { isValidEmail, isValidNcryptsec, npubMatchesPubkey } from '#lib/validate';
 import { json } from '@sveltejs/kit';
+
+// read SMTP settings from the runtime environment (adapter-node), never inlined into the build
+const env = process.env;
 
 const REPLAY_TTL_MS = 15 * 60 * 1000; // auth events older than this are forgotten
 const REPLAY_MAX_ENTRIES = 10_000;

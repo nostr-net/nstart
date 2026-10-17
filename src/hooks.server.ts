@@ -6,8 +6,9 @@ const securityHeaders: Record<string, string> = {
 	// browsers, but stay strict anyway
 	'Referrer-Policy': 'no-referrer',
 	'Permissions-Policy': 'camera=(), microphone=(), geolocation=()',
-	// the popup login flow relies on window.opener, so same-origin is not an option
-	'Cross-Origin-Opener-Policy': 'same-origin-allow-popups',
+	// no Cross-Origin-Opener-Policy on purpose: the popup login flow is opened
+	// by third-party apps and relies on window.opener; any COOP other than
+	// unsafe-none would sever that link
 	'Strict-Transport-Security': 'max-age=31536000'
 };
 
