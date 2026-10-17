@@ -46,10 +46,13 @@
 	"dependencies": {
 		"@fiatjaf/promenade-trusted-dealer": "npm:@jsr/fiatjaf__promenade-trusted-dealer@^0.2.0",
 		"@nostr/gadgets": "npm:@jsr/nostr__gadgets@^0.0.4",
-		"@nostr/tools": "npm:@jsr/nostr__tools@^2.25.2",
+		"@nostr/tools": "npm:@jsr/nostr__tools@2.10.3",
 		"hash-wasm": "^4.12.0",
 		"nodemailer": "^10.1.2",
-		"nostr-tools": "^2.25.2",
+		"nostr-tools": "2.9.4",
 		"qr-code-styling": "^1.9.2"
+	},
+	"overrides": {
+		"@jsr/nostr__tools": "2.10.3"
 	}
 }
