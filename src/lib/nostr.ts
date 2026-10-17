@@ -2,7 +2,7 @@ import { get } from 'svelte/store';
 import { type NostrEvent, type UnsignedEvent } from '@nostr/tools';
 import { SimplePool } from 'nostr-tools/pool';
 import { nip19 } from '@nostr/tools';
-import { readRelays, writeRelays } from '$lib/store';
+import { readRelays, writeRelays } from '#lib/store';
 
 import HashWorker from './worker?worker';
 
@@ -154,13 +154,11 @@ export async function getProfile(code: string) {
 	return new Promise((resolve, reject) => {
 		const subscription = pool.subscribeMany(
 			indexRelays,
-			[
-				{
-					kinds: [0],
-					authors: [publicKey],
-					limit: 1
-				}
-			],
+			{
+				kinds: [0],
+				authors: [publicKey],
+				limit: 1
+			},
 			{
 				onevent(event) {
 					subscription.close();
