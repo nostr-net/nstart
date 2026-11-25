@@ -2,7 +2,7 @@ import { get } from 'svelte/store';
 import { type NostrEvent, type UnsignedEvent } from '@nostr/tools';
 import { SimplePool } from 'nostr-tools/pool';
 import { nip19 } from '@nostr/tools';
-import { readRelays, writeRelays } from '$lib/store';
+import { readRelays, writeRelays } from '#lib/store';
 
 import HashWorker from './worker?worker';
 

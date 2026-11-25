@@ -16,12 +16,21 @@ export async function sendEmail(
 		mineEmail(sk, pk);
 	}
 
+	// The server only accepts authorization events created in the last 10
+	// minutes, but mining starts as soon as the profile page opens. If the
+	// user took a while to get here, mine a fresh event.
+	let authEvent = await mining!;
+	if (Math.floor(Date.now() / 1000) - authEvent.created_at > MAX_AUTH_EVENT_AGE) {
+		mineEmail(sk, pk);
+		authEvent = await mining!;
+	}
+
 	try {
 		const response = await fetch('/send-email', {
 			method: 'POST',
 			headers: {
 				'Content-Type': 'application/json',
-				Authorization: 'Nostr ' + btoa(JSON.stringify(await mining))
+				Authorization: 'Nostr ' + btoa(JSON.stringify(authEvent))
 			},
 			body: JSON.stringify({ to: email, ncryptsec, npub: npub })
 		});
@@ -90,6 +99,9 @@ export async function publishFollows(sk: Uint8Array, follows: Promise<string[][]
 	pool.publish(indexRelays, signedEvent);
 	console.log('Published ' + JSON.stringify(signedEvent));
 }
+
+// keep below the server's 600 s window, with margin for clock skew
+const MAX_AUTH_EVENT_AGE = 300;
 
 let mining: Promise<NostrEvent> | undefined;
 

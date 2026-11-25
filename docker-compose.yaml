@@ -1,6 +1,9 @@
 services:
   nstart:
-    build: .
+    build:
+      context: .
+      args:
+        - VITE_SMTP_FROM_EMAIL=${VITE_SMTP_FROM_EMAIL:-noreply@example.com}
     container_name: nstart
     ports:
       - "3000:3000"

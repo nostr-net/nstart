@@ -28,7 +28,13 @@ export default tseslint.config(
 	},
 	{
 		rules: {
-			'@typescript-eslint/no-explicit-any': ['off']
+			'@typescript-eslint/no-explicit-any': ['off'],
+			// rules introduced in eslint-plugin-svelte v3 that assume runes mode /
+			// would require rewriting legacy-mode components; keep them off until
+			// the components are migrated
+			'svelte/no-navigation-without-resolve': 'off',
+			'svelte/prefer-svelte-reactivity': 'off',
+			'svelte/require-each-key': 'off'
 		}
 	},
 	{

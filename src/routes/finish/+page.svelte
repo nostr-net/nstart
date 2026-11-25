@@ -1,10 +1,10 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
 	import { goto } from '$app/navigation';
-	import { bunkerURI } from '$lib/store';
-	import BasicLayout from '$lib/BasicLayout.svelte';
-	import { accent, name, npub } from '$lib/store';
-	import QrCode from '$lib/QrCode.svelte';
+	import { bunkerURI } from '#lib/store';
+	import BasicLayout from '#lib/BasicLayout.svelte';
+	import { accent, name, npub } from '#lib/store';
+	import QrCode from '#lib/QrCode.svelte';
 
 	onMount(() => {
 		document.documentElement.style.setProperty('--accent-color', '#' + $accent);

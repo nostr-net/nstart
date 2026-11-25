@@ -77,14 +77,14 @@ function createLocalWritable<T>(label: string, initialValue: T): Writable<T> {
 			try {
 				const parsed = JSON.parse(storedValue);
 				data = parsed.value;
-			} catch (e) {
+			} catch {
 				data = initialValue;
 			}
 		}
 	}
 	const store = writable<T>(data);
 	if (isBrowser) {
-		store.subscribe(value => {
+		store.subscribe((value) => {
 			localStorage.setItem(label, JSON.stringify({ type: typeof value, value }));
 		});
 	}
@@ -101,7 +101,7 @@ export const website = createSessionWritable('website', '');
 export const password = createSessionWritable('password', '');
 export const bunkerURI = createSessionWritable('bunker', '');
 export const backupDownloaded = createSessionWritable('backupDownloaded', false);
-export const followerSuggestions = createSessionWritable('followerSuggestions', []);
+export const followerSuggestions = createSessionWritable<string[]>('followerSuggestions', []);
 export const callingAppName = createSessionWritable('callingAppName', '');
 export const callingAppType = createSessionWritable('callingAppType', '');
 export const callingAppCode = createSessionWritable('callingAppCode', '');
@@ -109,8 +109,8 @@ export const skipBunker = createSessionWritable('skipBunker', false);
 export const forceBunker = createSessionWritable('forceBunker', false);
 export const avoidNsec = createSessionWritable('avoidNsec', false);
 export const avoidNcryptsec = createSessionWritable('avoidNcryptsec', false);
-export const readRelays = createSessionWritable('readRelays', []);
-export const writeRelays = createSessionWritable('writeRelays', []);
+export const readRelays = createSessionWritable<string[]>('readRelays', []);
+export const writeRelays = createSessionWritable<string[]>('writeRelays', []);
 export const skipFollow = createSessionWritable('skipFollow', false);
 export const accent = createSessionWritable('accent', 'e32a6d');
 export const theme = createLocalWritable('theme', ''); // Empty = system
@@ -136,7 +136,7 @@ export const inboxes = readable<{ [pubkey: string]: string[] }>({}, (set) => {
 export const pk = derived<Readable<Uint8Array>, string>(sk, getPublicKey);
 export const npub = derived(pk, npubEncode);
 
-let ncryptsecTimeoutId: NodeJS.Timeout;
+let ncryptsecTimeoutId: ReturnType<typeof setTimeout> | undefined;
 export const ncryptsec = derived<[Readable<Uint8Array>, Readable<string>], string>(
 	[sk, password],
 	([sk, password], set) => {

@@ -13,14 +13,14 @@
 		skipBunker,
 		skipFollow,
 		callingAppCode
-	} from '$lib/store';
-	import { isMobile } from '$lib/mobile';
-	import TwoColumnLayout from '$lib/TwoColumnLayout.svelte';
-	import CheckboxWithLabel from '$lib/CheckboxWithLabel.svelte';
-	import LoadingBar from '$lib/LoadingBar.svelte';
-	import { sendEmail } from '$lib/actions';
-	import { isWasmSupported } from '$lib/wasm';
-	import ContinueButton from '$lib/ContinueButton.svelte';
+	} from '#lib/store';
+	import { isMobile } from '#lib/mobile';
+	import TwoColumnLayout from '#lib/TwoColumnLayout.svelte';
+	import CheckboxWithLabel from '#lib/CheckboxWithLabel.svelte';
+	import LoadingBar from '#lib/LoadingBar.svelte';
+	import { sendEmail } from '#lib/actions';
+	import { isWasmSupported } from '#lib/wasm';
+	import ContinueButton from '#lib/ContinueButton.svelte';
 
 	let wantEmailBackup = false;
 	let emailInput: HTMLInputElement;

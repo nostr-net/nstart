@@ -1,14 +1,14 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
 	import { goto } from '$app/navigation';
-	import { accent, sk, name, followerSuggestions, callingAppCode } from '$lib/store';
-	import TwoColumnLayout from '$lib/TwoColumnLayout.svelte';
-	import CheckboxWithLabel from '$lib/CheckboxWithLabel.svelte';
-	import LoadingBar from '$lib/LoadingBar.svelte';
-	import { indexRelays, getProfile } from '$lib/nostr';
-	import { publishFollows } from '$lib/actions';
+	import { accent, sk, name, followerSuggestions, callingAppCode } from '#lib/store';
+	import TwoColumnLayout from '#lib/TwoColumnLayout.svelte';
+	import CheckboxWithLabel from '#lib/CheckboxWithLabel.svelte';
+	import LoadingBar from '#lib/LoadingBar.svelte';
+	import { indexRelays, getProfile } from '#lib/nostr';
+	import { publishFollows } from '#lib/actions';
 	import { pool } from '@nostr/gadgets/global';
-	import ContinueButton from '$lib/ContinueButton.svelte';
+	import ContinueButton from '#lib/ContinueButton.svelte';
 
 	const FOLLOWS = [
 		{

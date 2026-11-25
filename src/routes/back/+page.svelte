@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
-	import { browser } from '$app/environment';
+	import { browser } from '$app/env';
+	import { get } from 'svelte/store';
 	import * as nip19 from '@nostr/tools/nip19';
 	import { goto } from '$app/navigation';
 	import {
@@ -13,31 +14,47 @@
 		callingAppCode,
 		avoidNsec,
 		avoidNcryptsec
-	} from '$lib/store';
-	import BasicLayout from '$lib/BasicLayout.svelte';
-	import { name, npub } from '$lib/store';
+	} from '#lib/store';
+	import { validateCallingAppParams, callingAppHost } from '#lib/callingApp';
+	import BasicLayout from '#lib/BasicLayout.svelte';
+	import { name, npub } from '#lib/store';
 
-	let loginToken;
+	let loginToken: string;
 	let actionURL: string;
+	let actionHost: string | undefined;
 
 	onMount(() => {
-		document.documentElement.style.setProperty('--accent-color', '#' + $accent);
+		document.documentElement.style.setProperty('--accent-color', '#' + get(accent));
 
-		if ($name.length === 0) {
+		if (get(name).length === 0) {
 			goto('/');
 		}
 
-		if ($bunkerURI.length > 0) {
-			loginToken = $bunkerURI;
-		} else if ($ncryptsec.length > 0 && !$avoidNcryptsec) {
-			loginToken = $ncryptsec;
-		} else if ($avoidNsec) {
-			loginToken = 'null';
-		} else {
-			loginToken = nip19.nsecEncode($sk);
+		// only build a redirect URL from params that pass validation
+		const callingApp = validateCallingAppParams(
+			get(callingAppName),
+			get(callingAppType),
+			get(callingAppCode)
+		);
+		if (!callingApp) {
+			callingAppName.set('');
+			callingAppType.set('');
+			callingAppCode.set('');
+			goto('/');
+			return;
 		}
 
-		switch ($callingAppType) {
+		if (get(bunkerURI).length > 0) {
+			loginToken = get(bunkerURI);
+		} else if (get(ncryptsec).length > 0 && !get(avoidNcryptsec)) {
+			loginToken = get(ncryptsec);
+		} else if (get(avoidNsec)) {
+			loginToken = 'null';
+		} else {
+			loginToken = nip19.nsecEncode(get(sk));
+		}
+
+		switch (callingApp.type) {
 			case 'modal':
 				if (browser && window.self !== window.top) {
 					window.parent.postMessage(
@@ -49,17 +66,20 @@
 						},
 						'*'
 					);
+					// the generated key must not linger in the iframe's storage
+					sessionStorage.clear();
 				}
 				break;
 			case 'web':
 			case 'popup':
-				actionURL = `${$callingAppCode}#nostr-login=${loginToken}`;
+				actionURL = `${callingApp.code}#nostr-login=${loginToken}`;
+				actionHost = callingAppHost(callingApp.type, callingApp.code) ?? undefined;
 				break;
 			case 'android':
-				actionURL = `intent:${loginToken}#Intent;scheme=nostr-login;package=${$callingAppCode};end;`;
+				actionURL = `intent:${loginToken}#Intent;scheme=nostr-login;package=${callingApp.code};end;`;
 				break;
 			case 'ios':
-				actionURL = `${$callingAppCode}://${loginToken}`;
+				actionURL = `${callingApp.code}://${loginToken}`;
 				break;
 		}
 	});
@@ -78,17 +98,24 @@
 <BasicLayout>
 	<div slot="content" class="animate-fade1">
 		<!-- Welcome title -->
-		<div class="relative mb-8 border-l-[0.9rem] border-accent pl-4 sm:-ml-8">
+		<div class="border-accent relative mb-8 border-l-[0.9rem] pl-4 sm:-ml-8">
 			<h1 class="font-bold">
-				<div class="text-[3rem] leading-[1em] text-neutral-500 dark:text-neutral-400 sm:text-[6rem]">YOU ARE</div>
-				<div class="break-words text-[3.5rem] leading-[1em] text-black dark:text-white sm:h-auto sm:text-[7rem]" id="tw">
+				<div
+					class="text-[3rem] leading-[1em] text-neutral-500 sm:text-[6rem] dark:text-neutral-400"
+				>
+					YOU ARE
+				</div>
+				<div
+					class="text-[3.5rem] leading-[1em] break-words text-black sm:h-auto sm:text-[7rem] dark:text-white"
+					id="tw"
+				>
 					READY TO GO!
 				</div>
 			</h1>
 		</div>
 
 		<!-- Intro text -->
-		<div class="text-neutral-700 dark:text-neutral-200 sm:w-[90%]">
+		<div class="text-neutral-700 sm:w-[90%] dark:text-neutral-200">
 			<p class="text-xl sm:w-[80%]">
 				We're done, <strong>{$name}</strong>! Now you can start exploring Nostr — just click below
 				to go back to <strong>{$callingAppName}</strong>:
@@ -97,14 +124,19 @@
 				<button
 					on:click={$callingAppType === 'popup' ? redirectAndClose : redirectBack}
 					type="submit"
-					class="inline-flex items-center rounded bg-accent px-6 py-4 text-[1.8rem] text-white sm:px-10"
+					class="bg-accent inline-flex items-center rounded px-6 py-4 text-[1.8rem] text-white sm:px-10"
 				>
 					Go back to {$callingAppName}
-					<img src="/icons/arrow-right.svg" alt="Icon" class="ml-4 mr-2 h-7 w-7" />
+					<img src="/icons/arrow-right.svg" alt="Icon" class="mr-2 ml-4 h-7 w-7" />
 				</button>
 			</div>
+			{#if actionHost}
+				<p class="mt-4 text-sm text-neutral-500 sm:w-[80%] dark:text-neutral-400">
+					You will be sent to <strong>{actionHost}</strong>
+				</p>
+			{/if}
 			{#if $callingAppType != 'popup'}
-				<p class="mt-8 text-neutral-500 dark:text-neutral-400 sm:w-[80%]">
+				<p class="mt-8 text-neutral-500 sm:w-[80%] dark:text-neutral-400">
 					{$callingAppName} is only one of the 100+ applications that have already been built on Nostr,
 					<a href="https://nostr.net" target="_blank" class="underline">discover them all</a>!
 				</p>
